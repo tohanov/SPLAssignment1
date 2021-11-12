@@ -23,7 +23,7 @@ link: bin/main.o bin/Action.o bin/Customer.o bin/Studio.o bin/Trainer.o bin/Work
 
 check: bin/studio
 	echo "Checking..."
-	valgrind --leak-check=full --show-reachable=yes bin/studio
+	valgrind --leak-check=full --show-reachable=yes bin/studio ExampleInput.txt
 
 #suppressing printing of the commands that are running
 ifndef VERBOSE
