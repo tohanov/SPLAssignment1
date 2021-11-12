@@ -28,6 +28,28 @@ private:
 };
 
 
+// mine
+struct  CommandHashPair {
+	size_t commandTypeHash;
+	BaseAction* (*matchingFunction)(std::istringstream &commandStream);
+};
+
+
+BaseAction* actionFromCommand(const std::string &command, std::vector<CommandHashPair> (&commandHashPairs));
+
+BaseAction* backupActionFromCommand(std::istringstream &commandStream);
+BaseAction* closeActionFromCommand(std::istringstream &commandStream);
+BaseAction* closeallActionFromCommand(std::istringstream &commandStream);
+BaseAction* logActionFromCommand(std::istringstream &commandStream);
+BaseAction* moveActionFromCommand(std::istringstream &commandStream);
+BaseAction* openActionFromCommand(std::istringstream &commandStream);
+BaseAction* orderActionFromCommand(std::istringstream &commandStream);
+BaseAction* restoreActionFromCommand(std::istringstream &commandStream);
+BaseAction* statusActionFromCommand(std::istringstream &commandStream);
+BaseAction* workout_optionsActionFromCommand(std::istringstream &commandStream);
+// end mine
+
+
 class OpenTrainer : public BaseAction {
 public:
     OpenTrainer(int id, std::vector<Customer *> &customersList);

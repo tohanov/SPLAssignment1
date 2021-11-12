@@ -4,10 +4,14 @@
 #include <vector>
 #include <string>
 #include "Workout.h"
+#include <iostream>
 
 class Customer{
 public:
     Customer(std::string c_name, int c_id);
+    Customer(const Customer &to_copy); //copy constructor
+    ~Customer();//destructor
+    //Customer& operator=(const Customer &to_assign);//assignment constructor
     virtual std::vector<int> order(const std::vector<Workout> &workout_options)=0;
     virtual std::string toString() const = 0;
     std::string getName() const;
@@ -20,7 +24,7 @@ private:
 
 class SweatyCustomer : public Customer {
 public:
-	SweatyCustomer(std::string name, int id);
+    SweatyCustomer(std::string name, int id);
     std::vector<int> order(const std::vector<Workout> &workout_options);
     std::string toString() const;
 private:
@@ -29,7 +33,7 @@ private:
 
 class CheapCustomer : public Customer {
 public:
-	CheapCustomer(std::string name, int id);
+    CheapCustomer(std::string name, int id);
     std::vector<int> order(const std::vector<Workout> &workout_options);
     std::string toString() const;
 private:
@@ -38,7 +42,7 @@ private:
 
 class HeavyMuscleCustomer : public Customer {
 public:
-	HeavyMuscleCustomer(std::string name, int id);
+    HeavyMuscleCustomer(std::string name, int id);
     std::vector<int> order(const std::vector<Workout> &workout_options);
     std::string toString() const;
 private:
@@ -47,11 +51,14 @@ private:
 
 class FullBodyCustomer : public Customer {
 public:
-	FullBodyCustomer(std::string name, int id);
+    FullBodyCustomer(std::string name, int id);
     std::vector<int> order(const std::vector<Workout> &workout_options);
     std::string toString() const;
 private:
 };
 
+int find_cheapest_workout(const std::vector<Workout> &workout_options);
+int find_cheapest_workout(const std::vector<Workout> &workout_options,WorkoutType type);
+int find_most_expensive_mixed_workout(const std::vector<Workout> &workout_options);
 
 #endif
