@@ -24,19 +24,6 @@
 using namespace std;
 
 Studio::Studio() {
-	std::hash<std::string> hasher;
-
-	hashedCommandPairs = {
-		{hasher("open"), openActionFromCommand},
-		{hasher("order"), orderActionFromCommand},
-		{hasher("close"), moveActionFromCommand},
-		{hasher("closeall"), closeActionFromCommand},
-		{hasher("workout_options"), closeallActionFromCommand},
-		{hasher("status"), workout_optionsActionFromCommand},
-		{hasher("log"), logActionFromCommand},
-		{hasher("backup"), backupActionFromCommand},
-		{hasher("restore"), restoreActionFromCommand}
-	};
 }
 
 Studio::Studio(const std::string &configFilePath) {
@@ -57,14 +44,18 @@ Studio::Studio(const std::string &configFilePath) {
 
 
 void Studio::start() {
+	std::istringstream commandStream;
 	std::cout << "Studio is now open!" << std::endl;
 	string command; // for storing current user input
 
 	do {
 		cout << "action> ";
 		cin >> command;
+		
+		commandStream.str(command);
+		commandStream.clear();	// clearing set flags
 
-		BaseAction* actionPtr = actionFromCommand(command, hashedCommandPairs);
+		BaseAction* actionPtr = BaseAction::actionFromCommand(commandStream);
 		actionPtr->act(*this);
 
 		actionsLog.push_back(actionPtr);

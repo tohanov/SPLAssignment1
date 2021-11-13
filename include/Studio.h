@@ -35,7 +35,6 @@ private:
     std::vector<BaseAction*> actionsLog;
 	
 	// mine
-	 std::vector<CommandHashPair> hashedCommandPairs;
 	void parseConfigFile(std::fstream &configFile);
 };
 

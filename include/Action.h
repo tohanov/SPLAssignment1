@@ -9,6 +9,17 @@ enum ActionStatus{
     COMPLETED, ERROR
 };
 
+// begin added
+// forward declaration for use in struct
+class BaseAction;
+
+struct  CommandHashPair {
+	size_t commandTypeHash;
+	BaseAction* (*matchingFunction)(std::istringstream &commandStream);
+};
+// end added
+
+
 //Forward declaration
 class Studio;
 
@@ -18,6 +29,8 @@ public:
     ActionStatus getStatus() const;
     virtual void act(Studio& studio)=0;
     virtual std::string toString() const=0;
+	// added
+	static BaseAction* actionFromCommand(std::istringstream &commandStream);
 protected:
     void complete();
     void error(std::string errorMsg);
@@ -25,29 +38,10 @@ protected:
 private:
     std::string errorMsg;
     ActionStatus status;
+	// added
+	static std::hash<std::string> hasher;
+	static CommandHashPair hashedCommandPairs[];
 };
-
-
-// mine
-struct  CommandHashPair {
-	size_t commandTypeHash;
-	BaseAction* (*matchingFunction)(std::istringstream &commandStream);
-};
-
-
-BaseAction* actionFromCommand(const std::string &command, std::vector<CommandHashPair> (&commandHashPairs));
-
-BaseAction* backupActionFromCommand(std::istringstream &commandStream);
-BaseAction* closeActionFromCommand(std::istringstream &commandStream);
-BaseAction* closeallActionFromCommand(std::istringstream &commandStream);
-BaseAction* logActionFromCommand(std::istringstream &commandStream);
-BaseAction* moveActionFromCommand(std::istringstream &commandStream);
-BaseAction* openActionFromCommand(std::istringstream &commandStream);
-BaseAction* orderActionFromCommand(std::istringstream &commandStream);
-BaseAction* restoreActionFromCommand(std::istringstream &commandStream);
-BaseAction* statusActionFromCommand(std::istringstream &commandStream);
-BaseAction* workout_optionsActionFromCommand(std::istringstream &commandStream);
-// end mine
 
 
 class OpenTrainer : public BaseAction {
@@ -55,9 +49,13 @@ public:
     OpenTrainer(int id, std::vector<Customer *> &customersList);
     void act(Studio &studio);
     std::string toString() const;
+	// added
+	static BaseAction* actionFromCommand(std::istringstream &commandStream);
 private:
 	const int trainerId;
 	std::vector<Customer *> customers;
+	// added
+	static std::string strategies[];
 };
 
 
@@ -66,6 +64,8 @@ public:
     Order(int id);
     void act(Studio &studio);
     std::string toString() const;
+	// added
+	static BaseAction* actionFromCommand(std::istringstream &commandStream);
 private:
     const int trainerId;
 };
@@ -76,6 +76,8 @@ public:
     MoveCustomer(int src, int dst, int customerId);
     void act(Studio &studio);
     std::string toString() const;
+	// added
+	static BaseAction* actionFromCommand(std::istringstream &commandStream);
 private:
     const int srcTrainer;
     const int dstTrainer;
@@ -88,6 +90,8 @@ public:
     Close(int id);
     void act(Studio &studio);
     std::string toString() const;
+	// added
+	static BaseAction* actionFromCommand(std::istringstream &commandStream);
 private:
     const int trainerId;
 };
@@ -98,6 +102,8 @@ public:
     CloseAll();
     void act(Studio &studio);
     std::string toString() const;
+	// added
+	static BaseAction* actionFromCommand(std::istringstream &commandStream);
 private:
 };
 
@@ -107,6 +113,8 @@ public:
     PrintWorkoutOptions();
     void act(Studio &studio);
     std::string toString() const;
+	// added
+	static BaseAction* actionFromCommand(std::istringstream &commandStream);
 private:
 };
 
@@ -116,6 +124,8 @@ public:
     PrintTrainerStatus(int id);
     void act(Studio &studio);
     std::string toString() const;
+	// added
+	static BaseAction* actionFromCommand(std::istringstream &commandStream);
 private:
     const int trainerId;
 };
@@ -126,6 +136,8 @@ public:
     PrintActionsLog();
     void act(Studio &studio);
     std::string toString() const;
+	// added
+	static BaseAction* actionFromCommand(std::istringstream &commandStream);
 private:
 };
 
@@ -135,6 +147,8 @@ public:
     BackupStudio();
     void act(Studio &studio);
     std::string toString() const;
+	// added
+	static BaseAction* actionFromCommand(std::istringstream &commandStream);
 private:
 };
 
@@ -144,8 +158,8 @@ public:
     RestoreStudio();
     void act(Studio &studio);
     std::string toString() const;
+	// added
+	static BaseAction* actionFromCommand(std::istringstream &commandStream);
 
 };
-
-
 #endif

@@ -4,41 +4,30 @@
 #include <unordered_map>
 #include "Action.h"
 
-//enum ActionStatus{
-//    COMPLETED, ERROR
-//};
-//
-////Forward declaration
-//class Studio;
-//
-//class BaseAction{
-//public:
-//    BaseAction();
-//    ActionStatus getStatus() const;
-//    virtual void act(Studio& studio)=0;
-//    virtual std::string toString() const=0;
-//protected:
-//    void complete();
-//    void error(std::string errorMsg);
-//    std::string getErrorMsg() const;
-//private:
-//    std::string errorMsg;
-//    ActionStatus status;
-//};
-
 using namespace std;
+std::string OpenTrainer::strategies[] = {"swt", "chp", "mcl", "fbd"};// static class property
+std::hash<std::string> BaseAction::hasher;// static class property
+CommandHashPair BaseAction::hashedCommandPairs[] = { // static class property
+	{hasher("open"), 	OpenTrainer::actionFromCommand},
+	{hasher("order"), 	Order::actionFromCommand},
+	{hasher("move"), 	MoveCustomer::actionFromCommand},
+	{hasher("close"), 	Close::actionFromCommand},
+	{hasher("closeall"), CloseAll::actionFromCommand},
+	{hasher("workout_options"), PrintWorkoutOptions::actionFromCommand},
+	{hasher("status"), 	PrintTrainerStatus::actionFromCommand},
+	{hasher("log"), 	PrintActionsLog::actionFromCommand},
+	{hasher("backup"), 	BackupStudio::actionFromCommand},
+	{hasher("restore"), RestoreStudio::actionFromCommand}
+};
 
-// TODO: merge all of this functionality with constructors for different Actions
-BaseAction* actionFromCommand(const std::string &command, std::vector<CommandHashPair> (&commandHashPairs)) {
-	std::istringstream commandStream(command);
+BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { // static 
+
 	std::string readingStr;
-	
-	std::hash<std::string> hasher;
-
-	commandStream >> readingStr;
 	size_t commandTypeHash = hasher(readingStr);
 
-	for (CommandHashPair i : commandHashPairs) {
+	commandStream >> readingStr; // first word in the command
+
+	for (CommandHashPair i : hashedCommandPairs) {
 		if (commandTypeHash == i.commandTypeHash) {
  			return (*i.matchingFunction)(commandStream);
 		}
@@ -48,33 +37,37 @@ BaseAction* actionFromCommand(const std::string &command, std::vector<CommandHas
 
 //open order move close closeall workout_options status log backup restore
 
-BaseAction* openActionFromCommand(std::istringstream &commandStream) {
+BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) {
 	int trainerId;
-	int customerTempId = 0;
+
 	string customerName;
 	string customerStrategy;
-	vector<Customer*> customers;
 	Customer* customer;
+
+	// TODO: maybe should be on stack
+	vector<Customer*> *customers = new vector<Customer*>;
+
 	commandStream >> trainerId;
 
-	while (getline(commandStream, customerName, ',')) {
-		if (customerStrategy == "swt") {
+	for (int customerTempId = 0; getline(commandStream, customerName, ','); ++customerTempId) {
+		commandStream >> customerStrategy;
+		
+		if (customerStrategy == strategies[0]) {
 			customer = new SweatyCustomer(customerName, customerTempId);
-		} else if (customerStrategy == "chp") {
+		} else if (customerStrategy == strategies[1]) {
 			customer = new CheapCustomer(customerName, customerTempId);
-		} else if (customerStrategy == "mcl") {
+		} else if (customerStrategy == strategies[2]) {
 			customer = new HeavyMuscleCustomer(customerName, customerTempId);
 		} else { // "fbd" due to correctness of input
 			customer = new FullBodyCustomer(customerName, customerTempId);
 		}
-		customers.push_back(customer);
-		++customerTempId;
+		(*customers).push_back(customer);
 	}
 
-	return new OpenTrainer(trainerId, customers);
+	return new OpenTrainer(trainerId, *customers);
 }
 
-BaseAction* orderActionFromCommand(std::istringstream &commandStream) {
+BaseAction* Order::actionFromCommand(std::istringstream &commandStream) {
 	int trainerId;
 	commandStream >> trainerId;
 
@@ -82,7 +75,7 @@ BaseAction* orderActionFromCommand(std::istringstream &commandStream) {
 }
 
 
-BaseAction* moveActionFromCommand(std::istringstream &commandStream) {
+BaseAction* MoveCustomer::actionFromCommand(std::istringstream &commandStream) {
 	int src, dst, customerId;
 
 	commandStream >> src;
@@ -92,7 +85,7 @@ BaseAction* moveActionFromCommand(std::istringstream &commandStream) {
 	return new MoveCustomer(src, dst, customerId);
 }
 
-BaseAction* closeActionFromCommand(std::istringstream &commandStream) {
+BaseAction* Close::actionFromCommand(std::istringstream &commandStream) {
 	int trainerId;
 	commandStream >> trainerId;
 	
@@ -100,17 +93,17 @@ BaseAction* closeActionFromCommand(std::istringstream &commandStream) {
 }
 
 
-BaseAction* closeallActionFromCommand(std::istringstream &commandStream) {
+BaseAction* CloseAll::actionFromCommand(std::istringstream &commandStream) {
 	return new CloseAll();
 }
 
 
-BaseAction* workout_optionsActionFromCommand(std::istringstream &commandStream) {
+BaseAction* PrintWorkoutOptions::actionFromCommand(std::istringstream &commandStream) {
 	return new PrintWorkoutOptions();
 }
 
 
-BaseAction* statusActionFromCommand(std::istringstream &commandStream) {
+BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStream) {
 	int trainerId;
 	commandStream >> trainerId;
 
@@ -118,23 +111,19 @@ BaseAction* statusActionFromCommand(std::istringstream &commandStream) {
 }
 
 
-BaseAction* logActionFromCommand(std::istringstream &commandStream) {
+BaseAction* PrintActionsLog::actionFromCommand(std::istringstream &commandStream) {
 	return new PrintActionsLog();
 }
 
 
-BaseAction* backupActionFromCommand(std::istringstream &commandStream) {
+BaseAction* BackupStudio::actionFromCommand(std::istringstream &commandStream) {
 	return new BackupStudio();
 }
 
 
-BaseAction* restoreActionFromCommand(std::istringstream &commandStream) {
+BaseAction* RestoreStudio::actionFromCommand(std::istringstream &commandStream) {
 	return new RestoreStudio();
 }
-
-
-
-
 
 
 
