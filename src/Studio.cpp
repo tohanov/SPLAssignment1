@@ -55,8 +55,8 @@ void Studio::start() {
 		commandStream.str(command);
 		commandStream.clear();	// clearing set flags
 
-		BaseAction* actionPtr = BaseAction::actionFromCommand(commandStream);
-		actionPtr->act(*this);
+		BaseAction* actionPtr;// = BaseAction::actionFromCommand(commandStream);
+		//actionPtr->act(*this);
 
 		actionsLog.push_back(actionPtr);
 	} while(command.compare("closeall") != 0);
@@ -85,14 +85,13 @@ std::vector<Workout>& Studio::getWorkoutOptions() {
 
 void Studio::parseConfigFile(fstream &configFile) {
 	// parse file line by line
-	// TODO: consider performing the parsing via c++11 built in regex capability instead
-	// TODO: account for all kinds of whitespace
 
 	istringstream inputStreamFromStr;
 	string configLine;
 	string readingStr;
 	string workoutType;
 
+	const char* typeOfWhitespaces = " \t\n\r\f\v";
 	size_t numOfTrainers = 0;
 	ConfigSection currentConfigSection = ConfigSection::numOfTrainers;
 
@@ -104,9 +103,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 		if (configLine[0] == '#') { // ignoring comment lines
 			continue;
 		}
-		else if (configLine.length() == 0) { // full line of whitespace is going to be read as empty if read using >> operator
-			//configLine[0] == '\0' || configLine[0] == '\n' || configLine[0] == '\n' || configLine[0] == '\t') {
-			// TODO: maybe need to loop, maybe can get away with using a istringstream and one input instruction
+		else if (configLine.find_first_not_of(typeOfWhitespaces) == string::npos) {
 			continue;
 		}
 		else {
@@ -134,18 +131,38 @@ void Studio::parseConfigFile(fstream &configFile) {
 			}
 			else { // currentConfigSection == ConfigSection::workoutOptions
 				int cost;
-				std::getline(inputStreamFromStr, readingStr, ','); // TODO: trim potential spaces of ends of strings
+				std::getline(inputStreamFromStr, readingStr, ',');
+				trim(readingStr);
 				std::getline(inputStreamFromStr, workoutType, ',');
+				trim(workoutType);
 				inputStreamFromStr >> cost;
 
 
 				// TODO: remove debug line
-				cout << "at config section 'workoutOptions' got str: '" << readingStr << " ::: " << workoutType << " ::: " << cost << "'" << endl;
-
-				//TODO: add parsed options to 
+				cout << "at config section 'workoutOptions' got str: '" << readingStr << "' ::: '" << workoutType << "' ::: '" << cost << "'" << endl;
+				
+				workout_options.push_back(Workout(workout_options.size(), readingStr, cost, workoutTypeFromStr(workoutType)));
 			}
 		}
 	}
 }
 
 
+void trim (string &str) {
+	const char* typeOfWhitespaces = " \t\n\r\f\v";
+	str.erase(str.find_last_not_of(typeOfWhitespaces) + 1);
+	str.erase(0,str.find_first_not_of(typeOfWhitespaces));
+}
+
+
+WorkoutType workoutTypeFromStr (const std::string &workoutTypeStr) { // assuming workoutTypeStr is trimmed
+
+	switch(workoutTypeStr[0]){
+		case 'A':
+			return WorkoutType::ANAEROBIC;
+		case 'M':
+			return WorkoutType::MIXED;
+		default: // 'C'
+			return WorkoutType::CARDIO;
+	}
+}

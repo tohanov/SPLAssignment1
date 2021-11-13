@@ -17,6 +17,9 @@ enum ConfigSection {
 	workoutOptions
 };
 
+// added
+WorkoutType workoutTypeFromStr (const std::string &workoutTypeStr);
+void trim (std::string &str);
 
 class Studio{		
 public:
@@ -27,14 +30,14 @@ public:
     Trainer* getTrainer(int tid);
 	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
     std::vector<Workout>& getWorkoutOptions();
-	//TODO: rule of 5 (has trainers, workout_options?, actionsLog)
+	//TODO: rule of 5 (has trainers, actionsLog)
 private:
     bool open;
     std::vector<Trainer*> trainers;
     std::vector<Workout> workout_options;
     std::vector<BaseAction*> actionsLog;
 	
-	// mine
+	// added
 	void parseConfigFile(std::fstream &configFile);
 };
 
