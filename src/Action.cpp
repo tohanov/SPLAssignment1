@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include "Action.h"
+#include "Studio.h"
 
 #include "Action/BaseAction.cpp"
 #include "Action/OpenTrainer.cpp"

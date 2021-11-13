@@ -5,6 +5,8 @@
 #include <iostream>
 #include "Customer.h"
 
+using namespace std;
+
 enum ActionStatus{
     COMPLETED, ERROR
 };
