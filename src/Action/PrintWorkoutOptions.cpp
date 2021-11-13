@@ -45,7 +45,7 @@ void PrintWorkoutOptions::act(Studio& studio) {
 	const std::vector<Workout>& refWorkoutOptions = studio.getWorkoutOptions();
 
 	for (Workout wo : refWorkoutOptions) {
-		cout << wo.getName() << COMMA << wo.getType() << COMMA << wo.getPrice() << endl;
+		cout << wo.getName() << COMMA << Workout::strFromWorkoutType(wo.getType()) << COMMA << wo.getPrice() << endl;
 	}
 }
 
