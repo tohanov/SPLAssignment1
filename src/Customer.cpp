@@ -68,43 +68,47 @@ std::vector<int> SweatyCustomer::order(const std::vector<Workout> &workout_optio
 std::vector<int> CheapCustomer::order(const std::vector<Workout> &workout_options){
     std::vector<int> output={};
 
-    if(workout_options.size()>0)
+    if(!workout_options.empty())
         output.push_back(workout_options[find_cheapest_workout(workout_options)].getId());
 
     return output;
 }
 
 std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_options){
-    std::vector<const Workout*> anaerobic_workouts={};
+
+    typedef std::pair<int, int> workout_info; //left id, right price
+
+    std::vector<workout_info> anaerobic_workouts={};
     std::vector<int> output={};
 
-    for(int i=0;i<workout_options.size();i++)
-        if(workout_options[i].getType()==ANAEROBIC){
-            const Workout *p_workout;
-            p_workout=&workout_options[i];
-            anaerobic_workouts.push_back(p_workout);
+    for(int i=0;i<workout_options.size();i++)   // find all anaerobic workouts
+        if(workout_options[i].getType()==ANAEROBIC)
+            anaerobic_workouts.emplace_back(workout_options[i].getId(),workout_options[i].getPrice());
 
-        }
+    // now sorting anaerobic_workouts by price, min price to max, insertion sort
+    int i,j,key_price,key_id;
 
-    // now sort anaerobic_workouts by price, min price to max, insertion sort
-    int i,j,key;
     for(i=1;i<anaerobic_workouts.size();i++){
-        key=anaerobic_workouts[i]->getPrice();
+        key_id=anaerobic_workouts[i].first;
+        key_price=anaerobic_workouts[i].second;
         j=i-1;
 
-        while(j>=0 && key<anaerobic_workouts[j]->getPrice()){
+        while (j>=0 && key_price<anaerobic_workouts[j].second ||
+              (key_price==anaerobic_workouts[j].second && key_id>anaerobic_workouts[j].first)){
             anaerobic_workouts[j+1]=anaerobic_workouts[j];
             j--;
         }
 
-        anaerobic_workouts[j+1]=anaerobic_workouts[i];
+        anaerobic_workouts[j+1]=workout_info(key_id,key_price);
     }
 
     for(i=anaerobic_workouts.size()-1;i>=0;i--)
-        output.push_back(anaerobic_workouts[i]->getId());
+        output.push_back(anaerobic_workouts[i].first);
 
 
     return output;
+
+
 }
 
 std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_options){
@@ -132,9 +136,16 @@ int find_cheapest_workout(const std::vector<Workout> &workout_options){
         return -1;
 
     int min_index=0;
-    for(int i=1;i<workout_options.size();i++)
-        if(workout_options[i].getPrice() < workout_options[min_index].getPrice())
-            min_index=i;
+
+    for(int i=1;i<workout_options.size();i++) {
+        if (workout_options[i].getPrice() < workout_options[min_index].getPrice())
+            min_index = i;
+
+        else if (workout_options[i].getPrice() == workout_options[min_index].getPrice())
+            if (workout_options[i].getId() < workout_options[min_index].getId())
+                min_index = i;
+
+    }
 
     return min_index;
 }
@@ -148,13 +159,15 @@ int find_cheapest_workout(const std::vector<Workout> &workout_options,WorkoutTyp
 
     }
 
-    if(min_index!=-1){
+    if(min_index!=-1)
         for(;i<workout_options.size();i++)
-            if(workout_options[i].getType()==type && workout_options[i].getPrice() < workout_options[min_index].getPrice())
-                min_index=i;
+            if(workout_options[i].getType()==type)
+                if (workout_options[i].getPrice()<workout_options[min_index].getPrice())
+                    min_index=i;
 
-
-    }
+            else if(workout_options[i].getPrice()==workout_options[min_index].getPrice())
+                    if(workout_options[i].getId()<workout_options[min_index].getId())
+                           min_index=i;
 
     return min_index;
 }
@@ -162,22 +175,22 @@ int find_cheapest_workout(const std::vector<Workout> &workout_options,WorkoutTyp
 int find_most_expensive_mixed_workout(const std::vector<Workout> &workout_options){
     int max_index=-1,i;
 
-    for(int i=0;max_index==-1 && i<workout_options.size();i++){ // finding first instance of mixed
+    for(i=0;max_index==-1 && i<workout_options.size();i++){ // finding first instance of mixed
         if(workout_options[i].getType()==MIXED)
             max_index=i;
 
     }
 
-    if(max_index!=-1){
-        for(int i=i;i<workout_options.size();i++)
-            if(workout_options[i].getType()==MIXED && workout_options[i].getPrice() > workout_options[max_index].getPrice())
-                max_index=i;
-
-
-    }
+    if(max_index!=-1)
+        for(i;i<workout_options.size();i++)
+            if(workout_options[i].getType()==MIXED)
+                if(workout_options[i].getPrice()>workout_options[max_index].getPrice())
+                    max_index=i;
+                else if(workout_options[i].getPrice()==workout_options[max_index].getPrice())
+                        if(workout_options[i].getId()<workout_options[max_index].getId())
+                            max_index=i;
 
     return max_index;
-
 
 }
 

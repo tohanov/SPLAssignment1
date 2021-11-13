@@ -20,6 +20,7 @@ CommandHashPair BaseAction::hashedCommandPairs[] = { // static class property
 BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { // static 
 
 	std::string readingStr;
+	commandStream >> readingStr;
 	size_t commandTypeHash = hasher(readingStr);
 
 	commandStream >> readingStr; // first word in the command

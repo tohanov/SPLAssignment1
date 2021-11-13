@@ -15,12 +15,18 @@ public:
     std::string getName() const;
     int getPrice() const;
     WorkoutType getType() const;
+	
+	// added
+	static WorkoutType workoutTypeFromStr (const std::string &workoutTypeStr);
+	static const std::string& strFromWorkoutType (WorkoutType w_type);
 private:
 	const int id;
     const std::string name;
     const int price;
     const WorkoutType type;
-};
 
+	// added
+	static const std::string workoutTypeStrs[];
+};
 
 #endif

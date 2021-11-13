@@ -55,8 +55,12 @@ void Studio::start() {
 		commandStream.str(command);
 		commandStream.clear();	// clearing set flags
 
-		BaseAction* actionPtr;// = BaseAction::actionFromCommand(commandStream);
-		//actionPtr->act(*this);
+		BaseAction* actionPtr = BaseAction::actionFromCommand(commandStream);
+
+//		cout << "after actionFromCommand()" << endl; // TODO: remove debug line
+		actionPtr->act(*this);
+
+//		cout << "after act()" << endl; // TODO: remove debug line
 
 		actionsLog.push_back(actionPtr);
 	} while(command.compare("closeall") != 0);
@@ -141,7 +145,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 				// TODO: remove debug line
 				cout << "at config section 'workoutOptions' got str: '" << readingStr << "' ::: '" << workoutType << "' ::: '" << cost << "'" << endl;
 				
-				workout_options.push_back(Workout(workout_options.size(), readingStr, cost, workoutTypeFromStr(workoutType)));
+				workout_options.push_back(Workout(workout_options.size(), readingStr, cost, Workout::workoutTypeFromStr(workoutType)));
 			}
 		}
 	}
@@ -155,14 +159,14 @@ void trim (string &str) {
 }
 
 
-WorkoutType workoutTypeFromStr (const std::string &workoutTypeStr) { // assuming workoutTypeStr is trimmed
-
-	switch(workoutTypeStr[0]){
-		case 'A':
-			return WorkoutType::ANAEROBIC;
-		case 'M':
-			return WorkoutType::MIXED;
-		default: // 'C'
-			return WorkoutType::CARDIO;
-	}
-}
+//WorkoutType workoutTypeFromStr (const std::string &workoutTypeStr) { // assuming workoutTypeStr is trimmed
+//
+//	switch(workoutTypeStr[0]){
+//		case 'A':
+//			return WorkoutType::ANAEROBIC;
+//		case 'M':
+//			return WorkoutType::MIXED;
+//		default: // 'C'
+//			return WorkoutType::CARDIO;
+//	}
+//}

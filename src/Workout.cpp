@@ -42,3 +42,25 @@ int Workout::getPrice() const {
 WorkoutType Workout::getType() const {
 	return type;
 }
+
+
+const std::string Workout::workoutTypeStrs[] = {"ANAEROBIC", "MIXED", "CARDIO"}; // static property
+
+
+WorkoutType Workout::workoutTypeFromStr (const std::string &workoutTypeStr) { // assuming workoutTypeStr is trimmed
+
+	switch(workoutTypeStr[0]){
+		case 'A':
+			return WorkoutType::ANAEROBIC;
+		case 'M':
+			return WorkoutType::MIXED;
+		default: // 'C'
+			return WorkoutType::CARDIO;
+	}
+}
+
+
+const std::string& Workout::strFromWorkoutType (WorkoutType w_type) {
+
+	return workoutTypeStrs[w_type];
+}
