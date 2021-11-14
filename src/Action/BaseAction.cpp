@@ -1,7 +1,5 @@
 #include "Action.h"
 
-// TODO: complete implementation
-
 //class BaseAction{
 //public:
 //    BaseAction();
@@ -34,6 +32,7 @@ string BaseAction::getStatusStr() const {
 
 
 void BaseAction::error(std::string ba_errorMsg) {
+	status = ActionStatus::ERROR;
 	errorMsg = ba_errorMsg;
 }
 

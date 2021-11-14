@@ -1,5 +1,4 @@
 #include "Action.h"
-// TODO: complete implementation
 
 
 //class BaseAction{
@@ -40,7 +39,10 @@ PrintWorkoutOptions::PrintWorkoutOptions () {
 
 
 void PrintWorkoutOptions::act(Studio& studio) {
+	// never results in an error
 	const string COMMA = ", ";
+	
+	// TODO: see if there are assignments of references to objects, and fix (should be reference to reference)
 	const std::vector<Workout>& refWorkoutOptions = studio.getWorkoutOptions();
 
 	for (Workout wo : refWorkoutOptions) {
