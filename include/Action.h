@@ -11,9 +11,9 @@ enum ActionStatus{
     COMPLETED, ERROR
 };
 
+
 // begin added
-// forward declaration for use in struct
-class BaseAction;
+class BaseAction; // forward declaration for use in struct
 
 struct  CommandHashPair {
 	size_t commandTypeHash;
@@ -37,12 +37,17 @@ protected:
     void complete();
     void error(std::string errorMsg);
     std::string getErrorMsg() const;
+	
+	// added
+	string getStatusStr() const;
 private:
     std::string errorMsg;
     ActionStatus status;
+
 	// added
-	static std::hash<std::string> hasher;
-	static CommandHashPair hashedCommandPairs[];
+	static const std::hash<std::string> hasher;
+	static const CommandHashPair hashedCommandPairs[];
+	static const string statusStrs[];
 };
 
 
@@ -57,7 +62,7 @@ private:
 	const int trainerId;
 	std::vector<Customer *> customers;
 	// added
-	static std::string strategies[];
+	static const std::string strategies[];
 };
 
 

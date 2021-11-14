@@ -18,8 +18,7 @@ enum ConfigSection {
 };
 
 // added
-//WorkoutType workoutTypeFromStr (const std::string &workoutTypeStr);
-void trim (std::string &str);
+void trim (std::string &str, const char* typeOfWhitespaces);
 
 class Studio{		
 public:

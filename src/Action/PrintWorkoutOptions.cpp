@@ -40,17 +40,19 @@ PrintWorkoutOptions::PrintWorkoutOptions () {
 
 
 void PrintWorkoutOptions::act(Studio& studio) {
-	// TODO
 	const string COMMA = ", ";
 	const std::vector<Workout>& refWorkoutOptions = studio.getWorkoutOptions();
 
 	for (Workout wo : refWorkoutOptions) {
 		cout << wo.getName() << COMMA << Workout::strFromWorkoutType(wo.getType()) << COMMA << wo.getPrice() << endl;
 	}
+
+	complete();
 }
 
 
 std::string PrintWorkoutOptions::toString() const {
-	//TODO
-	return "***PLACEHOLDER***";
+	return "workout_options " + getStatusStr();
 }
+
+

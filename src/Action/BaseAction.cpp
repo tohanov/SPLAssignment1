@@ -28,6 +28,21 @@ BaseAction::BaseAction () {
 }
 
 
+string BaseAction::getStatusStr() const {
+	return (getStatus() == ActionStatus::COMPLETED) ? "Completed": ("Error: " + getErrorMsg());
+}
+
+
+void BaseAction::error(std::string ba_errorMsg) {
+	errorMsg = ba_errorMsg;
+}
+
+
+void BaseAction::complete() {
+	status = ActionStatus::COMPLETED;
+}
+
+
 ActionStatus BaseAction::getStatus() const {
 	return status;
 }

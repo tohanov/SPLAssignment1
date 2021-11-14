@@ -2,9 +2,9 @@
 
 using namespace std;
 
-std::string OpenTrainer::strategies[] = {"swt", "chp", "mcl", "fbd"};// static class property
-std::hash<std::string> BaseAction::hasher;// static class property
-CommandHashPair BaseAction::hashedCommandPairs[] = { // static class property
+const std::string OpenTrainer::strategies[] = {"swt", "chp", "mcl", "fbd"};// static class property
+const std::hash<std::string> BaseAction::hasher;// static class property
+const CommandHashPair BaseAction::hashedCommandPairs[10] = { // static class property
 	{hasher("open"), 	OpenTrainer::actionFromCommand},
 	{hasher("order"), 	Order::actionFromCommand},
 	{hasher("move"), 	MoveCustomer::actionFromCommand},
@@ -16,14 +16,15 @@ CommandHashPair BaseAction::hashedCommandPairs[] = { // static class property
 	{hasher("backup"), 	BackupStudio::actionFromCommand},
 	{hasher("restore"), RestoreStudio::actionFromCommand}
 };
+const string BaseAction::statusStrs[] = {"Completed", "Error: "}; // static class property
+
 
 BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { // static 
 
 	std::string readingStr;
-	commandStream >> readingStr;
-	size_t commandTypeHash = hasher(readingStr);
-
 	commandStream >> readingStr; // first word in the command
+
+	size_t commandTypeHash = hasher(readingStr);
 
 	for (CommandHashPair i : hashedCommandPairs) {
 		if (commandTypeHash == i.commandTypeHash) {
@@ -33,7 +34,7 @@ BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { /
 }
 
 
-BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) {
+BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { // static
 	int trainerId;
 
 	string customerName;
@@ -45,7 +46,7 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) {
 
 	commandStream >> trainerId;
 
-	for (int customerTempId = 0; getline(commandStream, customerName, ','); ++customerTempId) {
+	for (int customerTempId = 0; getline(commandStream, customerName, ','); ++customerTempId) { // static
 		commandStream >> customerStrategy;
 		
 		if (customerStrategy == strategies[0]) {
@@ -64,7 +65,7 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) {
 }
 
 
-BaseAction* Order::actionFromCommand(std::istringstream &commandStream) {
+BaseAction* Order::actionFromCommand(std::istringstream &commandStream) { // static
 	int trainerId;
 	commandStream >> trainerId;
 
@@ -72,7 +73,7 @@ BaseAction* Order::actionFromCommand(std::istringstream &commandStream) {
 }
 
 
-BaseAction* MoveCustomer::actionFromCommand(std::istringstream &commandStream) {
+BaseAction* MoveCustomer::actionFromCommand(std::istringstream &commandStream) { // static
 	int src, dst, customerId;
 
 	commandStream >> src;
@@ -83,7 +84,7 @@ BaseAction* MoveCustomer::actionFromCommand(std::istringstream &commandStream) {
 }
 
 
-BaseAction* Close::actionFromCommand(std::istringstream &commandStream) {
+BaseAction* Close::actionFromCommand(std::istringstream &commandStream) { // static
 	int trainerId;
 	commandStream >> trainerId;
 	
@@ -91,17 +92,17 @@ BaseAction* Close::actionFromCommand(std::istringstream &commandStream) {
 }
 
 
-BaseAction* CloseAll::actionFromCommand(std::istringstream &commandStream) {
+BaseAction* CloseAll::actionFromCommand(std::istringstream &commandStream) { // static
 	return new CloseAll();
 }
 
 
-BaseAction* PrintWorkoutOptions::actionFromCommand(std::istringstream &commandStream) {
+BaseAction* PrintWorkoutOptions::actionFromCommand(std::istringstream &commandStream) { // static
 	return new PrintWorkoutOptions();
 }
 
 
-BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStream) {
+BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStream) { // static
 	int trainerId;
 	commandStream >> trainerId;
 
@@ -109,17 +110,17 @@ BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStr
 }
 
 
-BaseAction* PrintActionsLog::actionFromCommand(std::istringstream &commandStream) {
+BaseAction* PrintActionsLog::actionFromCommand(std::istringstream &commandStream) { // static
 	return new PrintActionsLog();
 }
 
 
-BaseAction* BackupStudio::actionFromCommand(std::istringstream &commandStream) {
+BaseAction* BackupStudio::actionFromCommand(std::istringstream &commandStream) { // static
 	return new BackupStudio();
 }
 
 
-BaseAction* RestoreStudio::actionFromCommand(std::istringstream &commandStream) {
+BaseAction* RestoreStudio::actionFromCommand(std::istringstream &commandStream) { // static
 	return new RestoreStudio();
 }
 

@@ -1,7 +1,6 @@
 #include <fstream>		// for std::fstream
 #include <sstream>      // for std::istringstream
 #include <limits>		// for numeric_limits<streamsize>::max()
-//#include <cctype>		// for isspace()
 #include "Studio.h"
 
 //class Studio{
@@ -49,7 +48,7 @@ void Studio::start() {
 	string command; // for storing current user input
 
 	do {
-		cout << "action> ";
+		cout << "action> "; // TODO: see if need to remove this for automatic checks to pass
 		cin >> command;
 		
 		commandStream.str(command);
@@ -63,7 +62,7 @@ void Studio::start() {
 //		cout << "after act()" << endl; // TODO: remove debug line
 
 		actionsLog.push_back(actionPtr);
-	} while(command.compare("closeall") != 0);
+	} while(command.compare("closeall") != 0); // TODO: maybe == operator is better
 }
 
 
@@ -96,11 +95,12 @@ void Studio::parseConfigFile(fstream &configFile) {
 	string workoutType;
 
 	const char* typeOfWhitespaces = " \t\n\r\f\v";
+
 	size_t numOfTrainers = 0;
 	ConfigSection currentConfigSection = ConfigSection::numOfTrainers;
 
 	while( std::getline(configFile, configLine) ) { //read data from file object and put it into string.
-		cout << "configLine is: " << configLine << endl; // TODO: remove debug line
+		cout << "[*] configLine is: " << configLine << endl; // TODO: remove debug line
 		inputStreamFromStr.str(configLine);
 		inputStreamFromStr.clear(); // clearing potentially set flags like EOF
 
@@ -115,7 +115,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 				inputStreamFromStr >> numOfTrainers;
 				
 				// TODO: remove debug line
-				cout << "at config section 'numOfTrainers' got int: '" << numOfTrainers << "'" << endl;
+				cout << "[*] at config section 'numOfTrainers' got int: '" << numOfTrainers << "'" << endl;
 
 				currentConfigSection = ConfigSection::trainersCapacities;
 			}
@@ -127,7 +127,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 					inputStreamFromStr.ignore(numeric_limits<streamsize>::max(), ','); // ignores everything upto and including the next comma character
 
 					// TODO: remove debug line
-					cout << "at config section 'trainersCapacities' got capacity: '" << capacity << "'" << endl;
+					cout << "[*] at config section 'trainersCapacities' got capacity: '" << capacity << "'" << endl;
 					trainers.push_back(new Trainer(capacity));
 				}
 			
@@ -136,14 +136,14 @@ void Studio::parseConfigFile(fstream &configFile) {
 			else { // currentConfigSection == ConfigSection::workoutOptions
 				int cost;
 				std::getline(inputStreamFromStr, readingStr, ',');
-				trim(readingStr);
+				trim(readingStr, typeOfWhitespaces);
 				std::getline(inputStreamFromStr, workoutType, ',');
-				trim(workoutType);
+				trim(workoutType, typeOfWhitespaces);
 				inputStreamFromStr >> cost;
 
 
 				// TODO: remove debug line
-				cout << "at config section 'workoutOptions' got str: '" << readingStr << "' ::: '" << workoutType << "' ::: '" << cost << "'" << endl;
+				cout << "[*] at config section 'workoutOptions' got str: '" << readingStr << "' ::: '" << workoutType << "' ::: '" << cost << "'" << endl;
 				
 				workout_options.push_back(Workout(workout_options.size(), readingStr, cost, Workout::workoutTypeFromStr(workoutType)));
 			}
@@ -152,21 +152,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 }
 
 
-void trim (string &str) {
-	const char* typeOfWhitespaces = " \t\n\r\f\v";
-	str.erase(str.find_last_not_of(typeOfWhitespaces) + 1);
+void trim (string &str, const char* typeOfWhitespaces) {
+	str.erase(str.find_last_not_of(typeOfWhitespaces) + 1); // TODO: see if this kind of indexing might throw an error
 	str.erase(0,str.find_first_not_of(typeOfWhitespaces));
 }
-
-
-//WorkoutType workoutTypeFromStr (const std::string &workoutTypeStr) { // assuming workoutTypeStr is trimmed
-//
-//	switch(workoutTypeStr[0]){
-//		case 'A':
-//			return WorkoutType::ANAEROBIC;
-//		case 'M':
-//			return WorkoutType::MIXED;
-//		default: // 'C'
-//			return WorkoutType::CARDIO;
-//	}
-//}
