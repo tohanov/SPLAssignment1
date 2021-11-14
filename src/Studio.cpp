@@ -49,10 +49,14 @@ void Studio::start() {
 
 	do {
 		cout << "action> "; // TODO: see if need to remove this for automatic checks to pass
-		cin >> command;
+		getline(cin, command);
 		
 		commandStream.str(command);
 		commandStream.clear();	// clearing set flags
+
+		// cout << "[*] inside Studio::start()" << endl; // TODO: remove debug line
+		// cout << "[*] got command: " << command << endl; // TODO: remove debug line
+		// cout << "[*] stream.str() is: " << commandStream.str() << endl; // TODO: remove debug line
 
 		BaseAction* actionPtr = BaseAction::actionFromCommand(commandStream);
 
@@ -72,6 +76,9 @@ int Studio::getNumOfTrainers() const {
 
 
 Trainer* Studio::getTrainer(int tid) {
+
+	// cout << "[*] inside Studio::getTrainer()" << endl; // TODO: remove debug line
+	// cout << "[*] trying to get trainer #" << tid << endl; // TODO: remove debug line
 	return trainers[tid];
 }
 

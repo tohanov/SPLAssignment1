@@ -106,6 +106,10 @@ BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStr
 	int trainerId;
 	commandStream >> trainerId;
 
+	// cout << "[*] inside PrintTrainerStatus::actionFromCommand()" << endl; // TODO: remove debug line
+	// cout << "[*] stream.srt() is: " << commandStream.str() << endl;
+	// cout << "[*] got trainerId: " << trainerId << endl; // TODO: remove debug line
+
 	return new PrintTrainerStatus(trainerId);
 }
 

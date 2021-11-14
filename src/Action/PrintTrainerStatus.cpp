@@ -21,9 +21,11 @@ PrintTrainerStatus::PrintTrainerStatus (int id) : trainerId(id) {
 
 void PrintTrainerStatus::act(Studio& studio) {
 	// never results in an error
+
+	// cout << "[*] inside PrintTrainerStatus::act()" << endl; // TODO: remove debug line
 	Trainer& ref_trainer = *(studio.getTrainer(trainerId));
 	bool isOpen = ref_trainer.isOpen();
-	cout << "Trainer " << trainerId << " status: " << isOpen << endl;
+	cout << "Trainer " << trainerId << " status: " << (isOpen ? "open" : "closed")  << endl;
 
 	if (isOpen) {
 		std::vector<Customer*>& ref_customers = ref_trainer.getCustomers();
