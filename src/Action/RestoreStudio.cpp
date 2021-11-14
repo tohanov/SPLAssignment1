@@ -14,5 +14,5 @@ void RestoreStudio::act(Studio& studio) {
 
 std::string RestoreStudio::toString() const {
 	//TODO
-	return "***PLACEHOLDER***";
+	return "restore";
 }
