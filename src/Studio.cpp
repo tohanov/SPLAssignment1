@@ -3,6 +3,10 @@
 #include <limits>		// for numeric_limits<streamsize>::max()
 #include "Studio.h"
 
+
+extern Studio* backup;
+
+
 //class Studio{
 //public:
 //	Studio();
@@ -23,14 +27,63 @@
 using namespace std;
 
 Studio::Studio() {
+	// TODO: ???
 }
+
+
+Studio::Studio (const Studio &ref_otherStudio) {
+	// never results in an error
+
+	// TODO
+	// need copies of 
+    // std::vector<Trainer*> trainers;
+    // std::vector<Workout> workout_options;
+    // std::vector<BaseAction*> actionsLog;
+
+
+	copyFrom(ref_otherStudio);
+ }
+
+
+ 
+Studio& Studio::operator= (const Studio &ref_otherStudio) {
+	// TODO
+	// guarding from self assignment
+	if (this == &ref_otherStudio) {
+		return *this;
+	}
+
+	// TODO: for vectors of elements with copy assignmets, if length of vector is smaller than given vector 
+
+	copyFrom(ref_otherStudio);
+
+	return *this;
+}
+
+
+void Studio::copyFrom(const Studio &ref_otherStudio) {
+	open = ref_otherStudio.open;
+	// workout_options = ref_otherStudio.workout_options; // copy assignment
+	for (Workout workout : ref_otherStudio.workout_options) {
+		workout_options.push_back(Workout(workout));
+	}
+
+	for (Trainer* ptr_trainer : ref_otherStudio.trainers) {
+		trainers.push_back(new Trainer(*ptr_trainer));
+	}
+
+	for (BaseAction* ptr_action : ref_otherStudio.actionsLog) {
+		actionsLog.push_back(ptr_action->duplicate());
+	}
+}
+
 
 Studio::Studio(const std::string &configFilePath) {
 
 	fstream configFile;
 	configFile.open(configFilePath, ios::in);
 
-	if(configFile.is_open()) { //checking whether the file is open
+	if(configFile.is_open()) {
 		Studio::parseConfigFile(configFile);
 	}
 	else {
@@ -104,7 +157,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 	const char* typeOfWhitespaces = " \t\n\r\f\v";
 
 	size_t numOfTrainers = 0;
-	ConfigSection currentConfigSection = ConfigSection::numOfTrainers;
+	ConfigSection currentConfigSection = ConfigSection::NUM_OF_TRAINERS;
 
 	while( std::getline(configFile, configLine) ) { //read data from file object and put it into string.
 		cout << "[*] configLine is: " << configLine << endl; // TODO: remove debug line
@@ -118,15 +171,15 @@ void Studio::parseConfigFile(fstream &configFile) {
 			continue;
 		}
 		else {
-			if (currentConfigSection == ConfigSection::numOfTrainers) {
+			if (currentConfigSection == ConfigSection::NUM_OF_TRAINERS) {
 				inputStreamFromStr >> numOfTrainers;
 				
 				// TODO: remove debug line
 				cout << "[*] at config section 'numOfTrainers' got int: '" << numOfTrainers << "'" << endl;
 
-				currentConfigSection = ConfigSection::trainersCapacities;
+				currentConfigSection = ConfigSection::TRAINERS_CAPACITIES;
 			}
-			else if (currentConfigSection == ConfigSection::trainersCapacities) {
+			else if (currentConfigSection == ConfigSection::TRAINERS_CAPACITIES) {
 				int capacity;
 
 				for (int i = 0; i < numOfTrainers; ++i) {
@@ -138,9 +191,9 @@ void Studio::parseConfigFile(fstream &configFile) {
 					trainers.push_back(new Trainer(capacity));
 				}
 			
-				currentConfigSection = ConfigSection::workoutOptions;
+				currentConfigSection = ConfigSection::WORKOUT_OPTIONS;
 			}
-			else { // currentConfigSection == ConfigSection::workoutOptions
+			else { // currentConfigSection == ConfigSection::WORKOUT_OPTIONS
 				int cost;
 				std::getline(inputStreamFromStr, readingStr, ',');
 				trim(readingStr, typeOfWhitespaces);

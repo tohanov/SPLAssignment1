@@ -44,6 +44,11 @@ WorkoutType Workout::getType() const {
 }
 
 
+
+Workout::Workout (const Workout &ref_otherWorkout) : id(ref_otherWorkout.id), name(ref_otherWorkout.name), price(ref_otherWorkout.price), type(ref_otherWorkout.type) {
+}
+
+
 const std::string Workout::workoutTypeStrs[] = {"ANAEROBIC", "MIXED", "CARDIO"}; // static property
 
 

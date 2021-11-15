@@ -17,6 +17,7 @@ public:
     WorkoutType getType() const;
 	
 	// added
+    Workout (const Workout &ref_otherWorkout);
 	static WorkoutType workoutTypeFromStr (const std::string &workoutTypeStr);
 	static const std::string& strFromWorkoutType (WorkoutType w_type);
 private:

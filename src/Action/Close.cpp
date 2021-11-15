@@ -2,6 +2,7 @@
 
 // TODO: complete implementation
 
+
 Close::Close (int id) : trainerId(id) {
 
 }

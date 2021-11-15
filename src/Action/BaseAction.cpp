@@ -50,3 +50,11 @@ ActionStatus BaseAction::getStatus() const {
 std::string BaseAction::getErrorMsg() const {
 	return errorMsg;
 }
+
+
+void matchFlags(BaseAction *source, BaseAction *destination) { // static
+	destination->status = source->status;
+	if (source->status == ActionStatus::ERROR){
+		destination->errorMsg = source->errorMsg;
+	}
+}

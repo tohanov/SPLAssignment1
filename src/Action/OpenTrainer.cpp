@@ -2,6 +2,7 @@
 
 // TODO: complete implementation
 
+
 OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList) : trainerId(id), customers(customersList) {
 
 }

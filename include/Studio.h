@@ -8,17 +8,17 @@
 #include "Trainer.h"
 #include "Action.h"
 
-//using namespace std;
 
-
+// begin added
 enum ConfigSection {
-	numOfTrainers,
-	trainersCapacities,
-	workoutOptions
+	NUM_OF_TRAINERS,
+	TRAINERS_CAPACITIES,
+	WORKOUT_OPTIONS
 };
 
-// added
 void trim (std::string &str, const char* typeOfWhitespaces);
+// end added
+
 
 class Studio{		
 public:
@@ -29,7 +29,13 @@ public:
     Trainer* getTrainer(int tid);
 	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
     std::vector<Workout>& getWorkoutOptions();
-	//TODO: rule of 5 (has trainers, actionsLog)
+
+    // added
+	//TODO: need rule of 5 (has trainers, actionsLog)
+    Studio (const Studio &old_obj); // copy constructor
+    Studio& operator=(const Studio& ref_otherStudio); // TODO: copy assignment operator
+    Studio& operator=(const Studio&& ref_otherStudio); // TODO: copy assignment operator
+    virtual ~Studio(); // TODO: destructor
 private:
     bool open;
     std::vector<Trainer*> trainers;
@@ -38,6 +44,7 @@ private:
 	
 	// added
 	void parseConfigFile(std::fstream &configFile);
+    void copyFrom(const Studio &ref_otherStudio);
 };
 
 #endif

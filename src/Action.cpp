@@ -5,6 +5,7 @@
 #include "Action.h"
 #include "Studio.h"
 
+
 #include "Action/BaseAction.cpp"
 #include "Action/OpenTrainer.cpp"
 #include "Action/Order.cpp"
@@ -14,7 +15,12 @@
 #include "Action/PrintWorkoutOptions.cpp"
 #include "Action/PrintTrainerStatus.cpp"
 #include "Action/PrintActionsLog.cpp"
+
+
+extern Studio* backup;
+
 #include "Action/BackupStudio.cpp"
 #include "Action/RestoreStudio.cpp"
+
 
 #include "Action/actionFromCommand.cpp"

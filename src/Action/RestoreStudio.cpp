@@ -2,6 +2,7 @@
 
 // TODO: complete implementation
 
+
 RestoreStudio::RestoreStudio() {
 
 }
@@ -9,10 +10,18 @@ RestoreStudio::RestoreStudio() {
 
 void RestoreStudio::act(Studio& studio) {
 	// TODO
+	if (backup == nullptr) {
+		error("No backup available");
+		return;
+	}
+
+	// delete &studio;
+	studio = *backup; // should copy (not move)
+
+	complete();
 }
 
 
 std::string RestoreStudio::toString() const {
-	//TODO
 	return "restore";
 }
