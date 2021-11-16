@@ -16,8 +16,8 @@ void CloseAll::act(Studio &studio) {
 
     complete();
 
-    std::cout<<"Studio is now closed!"<<endl;
-    exit(0);
+    // std::cout<<"Studio is now closed!"<<endl;
+    // exit(0);
 }
 
 

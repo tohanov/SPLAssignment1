@@ -24,10 +24,6 @@ Customer::~Customer() = default;
 //Customer& Customer::operator=(const Customer &to_assign) {}
 
 
-
-
-
-
 int Customer::getId() const{
     return id;
 }
@@ -197,8 +193,6 @@ int find_most_expensive_mixed_workout(const std::vector<Workout> &workout_option
     return max_index;
 
 }
-
-
 
 
 // needed for backup functionality

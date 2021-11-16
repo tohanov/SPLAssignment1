@@ -174,7 +174,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 		inputStreamFromStr.str(configLine);
 		inputStreamFromStr.clear(); // clearing potentially set flags like EOF
 
-		if (configLine[0] == '#') { // ignoring comment lines
+		if (configLine[0] == '#') { // TODO: ask on forums if can be whitespace before the #
 			continue;
 		}
 		else if (configLine.find_first_not_of(typeOfWhitespaces) == string::npos) {

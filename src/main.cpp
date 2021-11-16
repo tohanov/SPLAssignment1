@@ -17,5 +17,8 @@ int main(int argc, char** argv){
     	delete backup;
     	backup = nullptr;
     }
+
+    // cout << "[*] after destruction of backup" << endl;
+
     return 0;
 }
