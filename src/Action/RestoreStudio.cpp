@@ -23,7 +23,7 @@ void RestoreStudio::act(Studio& studio) {
 
 
 std::string RestoreStudio::toString() const {
-	return "restore";
+	return "restore" + getStatusStr();
 }
 
 
