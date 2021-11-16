@@ -19,7 +19,7 @@ std::string Order::toString() const {
 
 
 BaseAction* Order::duplicate() {
-	Order* ptr_newOrderAction = new Order(trainerId);
+	Order* ptr_newOrderAction = new Order(this->trainerId);
 	
     void matchFlags(this, ptr_newOrderAction);
 
