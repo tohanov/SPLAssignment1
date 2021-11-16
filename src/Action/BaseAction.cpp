@@ -52,7 +52,7 @@ std::string BaseAction::getErrorMsg() const {
 }
 
 
-void matchFlags(BaseAction *source, BaseAction *destination) { // static
+void BaseAction::matchFlags(BaseAction *source, BaseAction *destination) { // static
 	destination->status = source->status;
 	if (source->status == ActionStatus::ERROR){
 		destination->errorMsg = source->errorMsg;

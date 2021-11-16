@@ -75,7 +75,7 @@ public:
 
 	// added
 	static BaseAction* actionFromCommand(std::istringstream &commandStream);
-    virtual OpenTrainer* duplicate();
+    virtual BaseAction* duplicate();
 private:
 	const int trainerId;
 	std::vector<Customer *> customers;

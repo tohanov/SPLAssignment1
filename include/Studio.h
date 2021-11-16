@@ -44,7 +44,7 @@ private:
 	
 	// added
 	void parseConfigFile(std::fstream &configFile);
-    void copyFrom(const Studio &ref_otherStudio);
+    void copyPropertiesFrom(const Studio &ref_otherStudio);
 };
 
 #endif

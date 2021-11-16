@@ -36,12 +36,11 @@ Studio::Studio (const Studio &ref_otherStudio) {
 
 	// TODO
 	// need copies of 
-    // std::vector<Trainer*> trainers;
-    // std::vector<Workout> workout_options;
-    // std::vector<BaseAction*> actionsLog;
+	// std::vector<Trainer*> trainers;
+	// std::vector<Workout> workout_options;
+	// std::vector<BaseAction*> actionsLog;
 
-
-	copyFrom(ref_otherStudio);
+	copyPropertiesFrom(ref_otherStudio);
  }
 
 
@@ -55,15 +54,21 @@ Studio& Studio::operator= (const Studio &ref_otherStudio) {
 
 	// TODO: for vectors of elements with copy assignmets, if length of vector is smaller than given vector 
 
-	copyFrom(ref_otherStudio);
+	// workout_options shouldn't change if already exists, which it does since this is inside assignment operator
+	workout_options.erase();
+	trainers.erase();
+	actionsLog.erase();
+	copyPropertiesFrom(ref_otherStudio);
 
 	return *this;
 }
 
 
-void Studio::copyFrom(const Studio &ref_otherStudio) {
-	open = ref_otherStudio.open;
+void Studio::copyPropertiesFrom(const Studio &ref_otherStudio) {
 	// workout_options = ref_otherStudio.workout_options; // copy assignment
+
+	open = ref_otherStudio.open;
+
 	for (Workout workout : ref_otherStudio.workout_options) {
 		workout_options.push_back(Workout(workout));
 	}
