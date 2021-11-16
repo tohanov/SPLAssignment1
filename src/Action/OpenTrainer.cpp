@@ -21,14 +21,14 @@ std::string OpenTrainer::toString() const {
 
 BaseAction* OpenTrainer::duplicate() {
 	// TODO sync with how the copying of customers happens in the constructor
-	vector<Cutomer *> newCustomers;
+	vector<Customer *> newCustomers;
 	for (Customer *ptr_customer : this->customers) {
-		newCustomers.push_back(new Customer(*ptr_customer));
+		newCustomers.push_back(ptr_customer->duplicate());
 	}
 
-	Order* ptr_newOpenTrainerAction = new OpenTrainer(this->trainerId, newCustomers);
+	OpenTrainer* ptr_newOpenTrainerAction = new OpenTrainer(this->trainerId, newCustomers);
 	
-    void matchFlags(this, ptr_newOpenTrainerAction);
+    BaseAction::matchFlags(this, ptr_newOpenTrainerAction);
 
 	return ptr_newOpenTrainerAction;
 }

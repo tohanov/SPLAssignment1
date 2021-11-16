@@ -55,3 +55,13 @@ std::string PrintTrainerStatus::toString() const {
 
 	return retStrStream.str();
 }
+
+
+BaseAction* PrintTrainerStatus::duplicate() {
+
+	PrintTrainerStatus *ptr_printTrainerAction = new PrintTrainerStatus(this->trainerId);
+
+	BaseAction::matchFlags(this, ptr_printTrainerAction);
+
+	return ptr_printTrainerAction;
+}

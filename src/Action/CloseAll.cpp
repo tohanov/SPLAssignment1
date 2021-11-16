@@ -21,7 +21,7 @@ std::string CloseAll::toString() const {
 
 BaseAction* CloseAll::duplicate() {
 
-	Close *ptr_newCloseAllAction = new CloseAll();
+	CloseAll *ptr_newCloseAllAction = new CloseAll();
 
 	BaseAction::matchFlags(this, ptr_newCloseAllAction);
 

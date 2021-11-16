@@ -194,3 +194,35 @@ int find_most_expensive_mixed_workout(const std::vector<Workout> &workout_option
 
 }
 
+
+
+
+// needed for backup functionality
+Customer* SweatyCustomer::duplicate() {
+    SweatyCustomer *ptr_newSweatyCustomer = new SweatyCustomer(this->getName(), this->getId());
+    return ptr_newSweatyCustomer;
+}
+
+
+// needed for backup functionality
+Customer* CheapCustomer::duplicate() {
+    CheapCustomer *ptr_newCheapCustomer = new CheapCustomer(this->getName(), this->getId());
+    
+    return ptr_newCheapCustomer;
+}
+
+
+// needed for backup functionality
+Customer* HeavyMuscleCustomer::duplicate() {
+    HeavyMuscleCustomer *ptr_newHeavyCustomer = new HeavyMuscleCustomer(this->getName(), this->getId());
+    
+    return ptr_newHeavyCustomer;
+}
+
+
+// needed for backup functionality
+Customer* FullBodyCustomer::duplicate() {
+    FullBodyCustomer *ptr_newFullCustomer = new FullBodyCustomer(this->getName(), this->getId());
+    
+    return ptr_newFullCustomer;
+}

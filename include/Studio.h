@@ -34,7 +34,7 @@ public:
 	//TODO: need rule of 5 (has trainers, actionsLog)
     Studio (const Studio &old_obj); // copy constructor
     Studio& operator=(const Studio& ref_otherStudio); // TODO: copy assignment operator
-    Studio& operator=(const Studio&& ref_otherStudio); // TODO: copy assignment operator
+    // Studio& operator=(const Studio&& ref_otherStudio); // TODO: copy assignment operator
     virtual ~Studio(); // TODO: destructor
 private:
     bool open;

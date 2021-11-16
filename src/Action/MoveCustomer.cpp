@@ -18,9 +18,8 @@ std::string MoveCustomer::toString() const {
 }
 
 
-BaseAction* Close::duplicate() {
-
-	Close *ptr_newMoveAction = new Close(this->src, this->dst, this->customerId);
+BaseAction* MoveCustomer::duplicate() {
+	MoveCustomer *ptr_newMoveAction = new MoveCustomer(this->srcTrainer, this->dstTrainer, this->id);
 
 	BaseAction::matchFlags(this, ptr_newMoveAction);
 

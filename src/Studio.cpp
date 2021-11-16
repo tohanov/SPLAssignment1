@@ -30,6 +30,10 @@ Studio::Studio() {
 	// TODO: ???
 }
 
+Studio::~Studio() {
+	// TODO
+}
+
 
 Studio::Studio (const Studio &ref_otherStudio) {
 	// never results in an error
@@ -55,9 +59,9 @@ Studio& Studio::operator= (const Studio &ref_otherStudio) {
 	// TODO: for vectors of elements with copy assignmets, if length of vector is smaller than given vector 
 
 	// workout_options shouldn't change if already exists, which it does since this is inside assignment operator
-	workout_options.erase();
-	trainers.erase();
-	actionsLog.erase();
+	workout_options.clear();
+	trainers.erase(trainers.begin());
+	actionsLog.erase(actionsLog.begin());
 	copyPropertiesFrom(ref_otherStudio);
 
 	return *this;

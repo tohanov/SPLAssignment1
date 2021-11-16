@@ -20,3 +20,12 @@ void BackupStudio::act(Studio& studio) {
 std::string BackupStudio::toString() const {
 	return "backup";
 }
+
+
+BaseAction* BackupStudio::duplicate() {
+	BackupStudio *ptr_newBackupAction = new BackupStudio();
+
+	BaseAction::matchFlags(this, ptr_newBackupAction);
+
+	return ptr_newBackupAction;
+}
