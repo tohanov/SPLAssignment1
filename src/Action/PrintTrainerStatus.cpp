@@ -1,7 +1,5 @@
 #include "Action.h"
 
-// TODO: complete implementation
-
 
 //class PrintWorkoutOptions : public BaseAction {
 //public:
@@ -50,10 +48,12 @@ void PrintTrainerStatus::act(Studio& studio) {
 
 
 std::string PrintTrainerStatus::toString() const {
-	ostringstream retStrStream;
-	retStrStream << "status " << trainerId << " " << getStatusStr();
+	// ostringstream retStrStream;
+	// retStrStream << "status " << trainerId << " " << getStatusStr();
 
-	return retStrStream.str();
+	// return retStrStream.str();
+
+	return "status " + to_string(trainerId) + " Completed";
 }
 
 

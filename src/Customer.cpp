@@ -37,19 +37,23 @@ std::string Customer::getName() const{
 }
 
 std::string SweatyCustomer::toString() const {
-    return "Customer's type: sweaty customer. Customer's name: "+this->getName()+". Customer's  id: "+std::to_string(getId());
+    // return "Customer's type: sweaty customer. Customer's name: "+this->getName()+". Customer's  id: "+std::to_string(getId());
+    return this->getName() + ",swt";
 }
 
 std::string CheapCustomer::toString() const {
-    return "Customer's type: cheap customer. Customer's name: "+this->getName()+". Customer's  id: "+std::to_string(getId());
+    // return "Customer's type: cheap customer. Customer's name: "+this->getName()+". Customer's  id: "+std::to_string(getId());
+    return this->getName() + ",chp";
 }
 
 std::string HeavyMuscleCustomer::toString() const {
-    return "Customer's type: heavy muscle customer. Customer's name: "+this->getName()+". Customer's  id: "+std::to_string(getId());
+    // return "Customer's type: heavy muscle customer. Customer's name: "+this->getName()+". Customer's  id: "+std::to_string(getId());
+    return this->getName() + ",mcl";
 }
 
 std::string FullBodyCustomer::toString() const {
-    return "Customer's type: full body customer. Customer's name: "+this->getName()+". Customer's  id: "+std::to_string(getId());
+    // return "Customer's type: full body customer. Customer's name: "+this->getName()+". Customer's  id: "+std::to_string(getId());
+    return this->getName() + ",fbd";
 }
 
 // implementation of the virtual function "order"

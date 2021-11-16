@@ -92,13 +92,14 @@ Studio::Studio(const std::string &configFilePath) {
 	fstream configFile;
 	configFile.open(configFilePath, ios::in);
 
-	if(configFile.is_open()) {
+	// supposedly we can assume the config file exists
+	// if(configFile.is_open()) {
 		Studio::parseConfigFile(configFile);
-	}
-	else {
-		// TODO: correct the error message and handling
-		cout << "ERROR: file wasn't opened." << endl;
-	}
+	// }
+	// else {
+	// 	// TODO: correct the error message and handling
+	// 	cout << "ERROR: file wasn't opened." << endl;
+	// }
 
 	configFile.close(); //close the file object.
 }
@@ -110,7 +111,7 @@ void Studio::start() {
 	string command; // for storing current user input
 
 	do {
-		cout << "action> "; // TODO: see if need to remove this for automatic checks to pass
+		// cout << "action> "; // TODO: see if need to remove this for automatic checks to pass
 		getline(cin, command);
 		
 		commandStream.str(command);
@@ -128,7 +129,7 @@ void Studio::start() {
 //		cout << "after act()" << endl; // TODO: remove debug line
 
 		actionsLog.push_back(actionPtr);
-	} while(command.compare("closeall") != 0); // TODO: maybe == operator is better
+	} while(command != "closeall"); // command.compare("closeall") != 0
 }
 
 
@@ -169,7 +170,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 	ConfigSection currentConfigSection = ConfigSection::NUM_OF_TRAINERS;
 
 	while( std::getline(configFile, configLine) ) { //read data from file object and put it into string.
-		cout << "[*] configLine is: " << configLine << endl; // TODO: remove debug line
+		// cout << "[*] configLine is: " << configLine << endl; // TODO: remove debug line
 		inputStreamFromStr.str(configLine);
 		inputStreamFromStr.clear(); // clearing potentially set flags like EOF
 
@@ -184,7 +185,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 				inputStreamFromStr >> numOfTrainers;
 				
 				// TODO: remove debug line
-				cout << "[*] at config section 'numOfTrainers' got int: '" << numOfTrainers << "'" << endl;
+				// cout << "[*] at config section 'numOfTrainers' got int: '" << numOfTrainers << "'" << endl;
 
 				currentConfigSection = ConfigSection::TRAINERS_CAPACITIES;
 			}
@@ -196,7 +197,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 					inputStreamFromStr.ignore(numeric_limits<streamsize>::max(), ','); // ignores everything upto and including the next comma character
 
 					// TODO: remove debug line
-					cout << "[*] at config section 'trainersCapacities' got capacity: '" << capacity << "'" << endl;
+					// cout << "[*] at config section 'trainersCapacities' got capacity: '" << capacity << "'" << endl;
 					trainers.push_back(new Trainer(capacity));
 				}
 			
@@ -212,7 +213,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 
 
 				// TODO: remove debug line
-				cout << "[*] at config section 'workoutOptions' got str: '" << readingStr << "' ::: '" << workoutType << "' ::: '" << cost << "'" << endl;
+				// cout << "[*] at config section 'workoutOptions' got str: '" << readingStr << "' ::: '" << workoutType << "' ::: '" << cost << "'" << endl;
 				
 				workout_options.push_back(Workout(workout_options.size(), readingStr, cost, Workout::workoutTypeFromStr(workoutType)));
 			}

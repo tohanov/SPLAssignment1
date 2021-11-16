@@ -18,7 +18,7 @@ void BackupStudio::act(Studio& studio) {
 
 
 std::string BackupStudio::toString() const {
-	return "backup" + getStatusStr();
+	return "backup Completed";// + getStatusStr();
 }
 
 

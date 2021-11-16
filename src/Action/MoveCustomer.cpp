@@ -1,20 +1,41 @@
 #include "Action.h"
 
-// TODO: complete implementation
-
 MoveCustomer::MoveCustomer (int src, int dst, int customerId) : srcTrainer(src), dstTrainer(dst), id(customerId) {
 
 }
 
 
-void MoveCustomer::act(Studio& studio) {
-	// TODO
+void MoveCustomer::act(Studio &studio) {
+    Trainer *src_trainer = studio.getTrainer(srcTrainer), *dst_trainer = studio.getTrainer(dstTrainer);
+
+    if (src_trainer == nullptr || dst_trainer == nullptr || !src_trainer->isOpen() || !dst_trainer->isOpen()) {
+        error("Cannot move customer");
+        return;
+    }
+
+    if (dst_trainer->getCapacity() == dst_trainer->getCustomers().size()) {
+        error("Cannot move customer");
+        return;
+    }
+
+    Customer *c = src_trainer->getCustomer(id);
+
+    if (c == nullptr) {
+        error("Cannot move customer");
+        return;
+    }
+
+    src_trainer->removeCustomer(c->getId());
+    dst_trainer->addCustomer(c);
+
+    dst_trainer->order(c->getId(),c->order(studio.getWorkoutOptions()),studio.getWorkoutOptions());
+
+    complete();
 }
 
 
 std::string MoveCustomer::toString() const {
-	//TODO
-	return "***PLACEHOLDER***";
+	return "move " + to_string(srcTrainer) + " " + to_string(dstTrainer) + " " + to_string(id) + " " + getStatusStr();
 }
 
 

@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "Workout.h"
-#include "Action.h"
+// #include "Action.h"
 #include "Customer.h"
 
 typedef std::pair<int, Workout> OrderPair;
@@ -36,8 +36,10 @@ private:
     static int number_of_trainers;
     const int get_id() const;
     static void update_number_of_trainers();
-    void update_salary();
+    void update_salary(int sum);
 
+    int find_customer_index(int id);
+    int find_insertion_index(int id);
 };
 
 

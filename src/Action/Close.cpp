@@ -1,21 +1,28 @@
 #include "Action.h"
 
-// TODO: complete implementation
-
 
 Close::Close (int id) : trainerId(id) {
 
 }
 
 
-void Close::act(Studio& studio) {
-	// TODO
+void Close::act(Studio &studio) {
+    Trainer *t1=studio.getTrainer(trainerId);
+
+    if(t1== nullptr || !t1->isOpen()) {
+        error("Trainer does not exist or is not open");
+        return;
+    }
+
+    t1->closeTrainer();
+    std::cout<<"Trainer "+ to_string(trainerId)+" closed. Salary "+ to_string(t1->getSalary())+"NIS"<<std::endl;
+
+    complete();
 }
 
 
 std::string Close::toString() const {
-	//TODO
-	return "***PLACEHOLDER***";
+	return "close " + to_string(trainerId) + " " + getStatusStr();
 }
 
 

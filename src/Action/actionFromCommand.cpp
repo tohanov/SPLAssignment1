@@ -1,10 +1,10 @@
 #include "Action.h"
 
-using namespace std;
 
-const std::string OpenTrainer::strategies[] = {"swt", "chp", "mcl", "fbd"};// static class property
-const std::hash<std::string> BaseAction::hasher;// static class property
-const CommandHashPair BaseAction::hashedCommandPairs[10] = { // static class property
+const std::string 				OpenTrainer::strategies[] = {"swt", "chp", "mcl", "fbd"};// static class property
+const string 					BaseAction::statusStrs[] = {"Completed", "Error: "}; // static class property
+const std::hash<std::string> 	BaseAction::hasher;// static class property
+const CommandHashPair 			BaseAction::hashedCommandPairs[10] = { // static class property
 	{hasher("open"), 	OpenTrainer::actionFromCommand},
 	{hasher("order"), 	Order::actionFromCommand},
 	{hasher("move"), 	MoveCustomer::actionFromCommand},
@@ -16,7 +16,6 @@ const CommandHashPair BaseAction::hashedCommandPairs[10] = { // static class pro
 	{hasher("backup"), 	BackupStudio::actionFromCommand},
 	{hasher("restore"), RestoreStudio::actionFromCommand}
 };
-const string BaseAction::statusStrs[] = {"Completed", "Error: "}; // static class property
 
 
 BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { // static 

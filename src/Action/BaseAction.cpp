@@ -22,7 +22,7 @@
 
 
 BaseAction::BaseAction () {
-	// TODO
+
 }
 
 
@@ -34,6 +34,8 @@ string BaseAction::getStatusStr() const {
 void BaseAction::error(std::string ba_errorMsg) {
 	status = ActionStatus::ERROR;
 	errorMsg = ba_errorMsg;
+
+    cout << errorMsg << endl;
 }
 
 
