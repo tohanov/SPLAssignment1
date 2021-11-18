@@ -2,7 +2,7 @@
 
 
 const std::string 				OpenTrainer::strategies[] = {"swt", "chp", "mcl", "fbd"};// static class property
-const string 					BaseAction::statusStrs[] = {"Completed", "Error: "}; // static class property
+// const string 					BaseAction::statusStrs[] = {"Completed", "Error: "}; // static class property
 const std::hash<std::string> 	BaseAction::hasher;// static class property
 const CommandHashPair 			BaseAction::hashedCommandPairs[10] = { // static class property
 	{hasher("open"), 	OpenTrainer::actionFromCommand},
@@ -41,7 +41,7 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { 
 	Customer* customer;
 
 	// TODO: maybe should be on stack
-	vector<Customer*> *customers = new vector<Customer*>;
+	vector<Customer*> customers; // = new vector<Customer*>;
 
 	commandStream >> trainerId;
 
@@ -57,10 +57,12 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { 
 		} else { // "fbd" due to correctness of input
 			customer = new FullBodyCustomer(customerName, customerTempId);
 		}
-		(*customers).push_back(customer);
+
+		(/* * */customers).push_back(customer);
 	}
 
-	return new OpenTrainer(trainerId, *customers);
+	// ask someone about passing customers as a reference like this. causes a memory leak if created on heap
+	return new OpenTrainer(trainerId, /* * */customers);
 }
 
 

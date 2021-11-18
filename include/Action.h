@@ -63,7 +63,7 @@ private:
 	// added
 	static const std::hash<std::string> hasher;
 	static const CommandHashPair hashedCommandPairs[];
-	static const string statusStrs[];
+	// static const string statusStrs[];
 };
 
 
