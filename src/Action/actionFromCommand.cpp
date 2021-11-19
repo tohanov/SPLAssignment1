@@ -35,6 +35,7 @@ BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { /
 
 BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { // static
 	int trainerId;
+	// char dummyChar;
 
 	string customerName;
 	string customerStrategy;
@@ -43,10 +44,11 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { 
 	// TODO: maybe should be on stack
 	vector<Customer*> customers; // = new vector<Customer*>;
 
-	commandStream >> trainerId;
+	commandStream >> trainerId >> ws;
+	// commandStream >> dummyChar;
 
 	for (int customerTempId = 0; getline(commandStream, customerName, ','); ++customerTempId) { // static
-		commandStream >> customerStrategy;
+		commandStream >> customerStrategy >> ws;
 		
 		if (customerStrategy == strategies[0]) {
 			customer = new SweatyCustomer(customerName, customerTempId);
@@ -59,6 +61,7 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { 
 		}
 
 		(/* * */customers).push_back(customer);
+		// commandStream >> dummyChar;
 	}
 
 	// ask someone about passing customers as a reference like this. causes a memory leak if created on heap
