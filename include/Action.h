@@ -48,6 +48,7 @@ public:
 	// added
 	static BaseAction* actionFromCommand(std::istringstream &commandStream);
     virtual BaseAction* duplicate()=0;
+    virtual ~BaseAction();
 protected:
     void complete();
     void error(std::string errorMsg);
@@ -81,7 +82,7 @@ private:
 	std::vector<Customer *> customers;
     
 	// added
-	static const std::string strategies[];
+	// static const std::string strategies[];
 };
 
 

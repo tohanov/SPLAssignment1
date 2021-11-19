@@ -11,7 +11,7 @@ void PrintActionsLog::act(Studio& studio) {
 	const std::vector<BaseAction*>& ref_actions = studio.getActionsLog();
 
 	for (BaseAction* action : ref_actions) {
-		cout << (*action).toString() << endl;
+		cout << action->toString() << endl;
 	}
 	
 	complete();

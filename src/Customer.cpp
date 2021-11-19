@@ -2,7 +2,7 @@
 #include <string>
 //Constructors:
 //Constructor of base class
-Customer::Customer(std::string c_name, int c_id):id(c_id),name(c_name){}
+Customer::Customer(std::string c_name, int c_id):name(c_name),id(c_id){}
 
 //Constructors of the derived classes
 SweatyCustomer::SweatyCustomer(std::string name, int id):Customer(name,id){}
@@ -57,7 +57,7 @@ std::string FullBodyCustomer::toString() const {
 std::vector<int> SweatyCustomer::order(const std::vector<Workout> &workout_options){
     std::vector<int> output={};
 
-    for(int i=0;i<workout_options.size();i++)
+    for(size_t i=0;i<workout_options.size();i++)
         if(workout_options[i].getType()==CARDIO)
             output.push_back(workout_options[i].getId());
 
@@ -81,19 +81,20 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
     std::vector<workout_info> anaerobic_workouts={};
     std::vector<int> output={};
 
-    for(int i=0;i<workout_options.size();i++)   // find all anaerobic workouts
+    for(size_t i=0;i<workout_options.size();i++)   // find all anaerobic workouts
         if(workout_options[i].getType()==ANAEROBIC)
             anaerobic_workouts.emplace_back(workout_options[i].getId(),workout_options[i].getPrice());
 
     // now sorting anaerobic_workouts by price, min price to max, insertion sort
-    int i,j,key_price,key_id;
+    size_t i,j;
+    int key_price,key_id;
 
     for(i=1;i<anaerobic_workouts.size();i++){
         key_id=anaerobic_workouts[i].first;
         key_price=anaerobic_workouts[i].second;
         j=i-1;
 
-        while (j>=0 && key_price<anaerobic_workouts[j].second ||
+        while ((j>=0 && key_price<anaerobic_workouts[j].second) ||
               (key_price==anaerobic_workouts[j].second && key_id>anaerobic_workouts[j].first)){
             anaerobic_workouts[j+1]=anaerobic_workouts[j];
             j--;
@@ -135,9 +136,9 @@ int find_cheapest_workout(const std::vector<Workout> &workout_options){
     if(workout_options.empty())
         return -1;
 
-    int min_index=0;
+    size_t min_index=0;
 
-    for(int i=1;i<workout_options.size();i++) {
+    for(size_t i=1;i<workout_options.size();i++) {
         if (workout_options[i].getPrice() < workout_options[min_index].getPrice())
             min_index = i;
 
@@ -151,45 +152,46 @@ int find_cheapest_workout(const std::vector<Workout> &workout_options){
 }
 
 int find_cheapest_workout(const std::vector<Workout> &workout_options,WorkoutType type){
-    int min_index=-1,i;
+    size_t min_index=-1,i; // compiler will treat (-1) as the max value of unsigned long
 
-    for(i=0;min_index==-1 && i<workout_options.size();i++){ // finding first instance of desired type
+    for(i=0;min_index==static_cast<size_t>(-1) && i<workout_options.size();i++){ // finding first instance of desired type
         if(workout_options[i].getType()==type)
             min_index=i;
 
     }
 
-    if(min_index!=-1)
+    if(min_index!=static_cast<size_t>(-1)) {
         for(;i<workout_options.size();i++)
-            if(workout_options[i].getType()==type)
+            if(workout_options[i].getType()==type) {
                 if (workout_options[i].getPrice()<workout_options[min_index].getPrice())
                     min_index=i;
-
-            else if(workout_options[i].getPrice()==workout_options[min_index].getPrice())
+            }
+            else if(workout_options[i].getPrice()==workout_options[min_index].getPrice()) {
                     if(workout_options[i].getId()<workout_options[min_index].getId())
                            min_index=i;
-
+            }
+    }
     return min_index;
 }
 
 int find_most_expensive_mixed_workout(const std::vector<Workout> &workout_options){
-    int max_index=-1,i;
+    size_t max_index=-1,i;
 
-    for(i=0;max_index==-1 && i<workout_options.size();i++){ // finding first instance of mixed
+    for(i=0;max_index==static_cast<size_t>(-1) && i<workout_options.size();i++){ // finding first instance of mixed
         if(workout_options[i].getType()==MIXED)
             max_index=i;
 
     }
 
-    if(max_index!=-1)
-        for(i;i<workout_options.size();i++)
-            if(workout_options[i].getType()==MIXED)
+    if(max_index!=static_cast<size_t>(-1))
+        for(/*i*/;i<workout_options.size();i++)
+            if(workout_options[i].getType()==MIXED){
                 if(workout_options[i].getPrice()>workout_options[max_index].getPrice())
                     max_index=i;
                 else if(workout_options[i].getPrice()==workout_options[max_index].getPrice())
                         if(workout_options[i].getId()<workout_options[max_index].getId())
                             max_index=i;
-
+            }
     return max_index;
 
 }

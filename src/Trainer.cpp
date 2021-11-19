@@ -4,7 +4,7 @@
 int Trainer::number_of_trainers=0;
 
 
-Trainer::Trainer(int t_capacity):id(number_of_trainers),capacity(t_capacity){
+Trainer::Trainer(int t_capacity) : capacity(t_capacity), id(number_of_trainers){
     current_salary=0;
     open=false;
 
@@ -51,7 +51,6 @@ Trainer::~Trainer() {
     for (auto p:customersList) {
         delete p;
     }
-
 }
 
 
@@ -61,12 +60,11 @@ int Trainer::getCapacity() const{
 
 
 void Trainer::addCustomer(Customer* customer){
-    if(customersList.size()<capacity){
+    if(customersList.size()<static_cast<size_t>(capacity)){
 
        int insertion_index=find_insertion_index(customer->getId());
-       auto it=customersList.insert(customersList.begin()+insertion_index,customer);
+       /*auto it=*/customersList.insert(customersList.begin()+insertion_index,customer);
    }
-
 }
 
 
@@ -119,8 +117,8 @@ std::vector<OrderPair>& Trainer::getOrders(){
 
 void Trainer::order(const int customer_id, const std::vector<int> workout_ids, const std::vector<Workout> &workout_options) {
 
-    for(int i=0;i<workout_ids.size();i++)
-        for(int j=0;j<workout_options.size();j++)
+    for(size_t i=0;i<workout_ids.size();i++)
+        for(size_t j=0;j<workout_options.size();j++)
             if(workout_options[j].getId()==workout_ids[i]) {
                 orderList.emplace_back(customer_id, workout_options[j]);
 

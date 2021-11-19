@@ -5,38 +5,22 @@
 
 
 extern Studio* backup;
-
-
-//class Studio{
-//public:
-//	Studio();
-//    Studio(const std::string &configFilePath);
-//    void start();
-//    int getNumOfTrainers() const;
-//    Trainer* getTrainer(int tid);
-//	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
-//    std::vector<Workout>& getWorkoutOptions();
-//
-//private:
-//    bool open;
-//    std::vector<Trainer*> trainers;
-//    std::vector<Workout> workout_options;
-//    std::vector<BaseAction*> actionsLog;
-//};
-
 using namespace std;
+
 
 Studio::Studio() {
 	// TODO: ???
 }
 
+
+//Destructor
 Studio::~Studio() {
-	// TODO
+	deleteVectors();
 }
 
 
+// Copy constructor
 Studio::Studio (const Studio &ref_otherStudio) {
-	// never results in an error
 
 	// TODO
 	// need copies of 
@@ -48,8 +32,14 @@ Studio::Studio (const Studio &ref_otherStudio) {
  }
 
 
- 
-Studio& Studio::operator= (const Studio &ref_otherStudio) {
+// Move constructor
+Studio::Studio(const Studio &&ref_otherStudio) {
+	movePropertiesFrom(ref_otherStudio.open, &ref_otherStudio.workout_options, &ref_otherStudio.trainers, &ref_otherStudio.actionsLog);
+ }
+
+
+// Copy Assignment operator
+Studio& Studio::operator=(const Studio &ref_otherStudio) {
 	// TODO
 	// guarding from self assignment
 	if (this == &ref_otherStudio) {
@@ -57,14 +47,39 @@ Studio& Studio::operator= (const Studio &ref_otherStudio) {
 	}
 
 	// TODO: for vectors of elements with copy assignmets, if length of vector is smaller than given vector 
+	this->deleteVectors();
 
 	// workout_options shouldn't change if already exists, which it does since this is inside assignment operator
-	workout_options.clear();
-	trainers.erase(trainers.begin());
-	actionsLog.erase(actionsLog.begin());
 	copyPropertiesFrom(ref_otherStudio);
 
 	return *this;
+}
+
+
+// Move Assignment operator
+Studio& Studio::operator=(const Studio &&ref_otherStudio) {
+	// TODO
+	this->deleteVectors();
+
+	movePropertiesFrom(ref_otherStudio.open, &ref_otherStudio.workout_options, &ref_otherStudio.trainers, &ref_otherStudio.actionsLog);
+
+	return *this;
+}
+
+
+void Studio::deleteVectors() {
+	workout_options.clear(); // will call destructors
+
+	for (Trainer *ptr_trainer : trainers) {
+		delete ptr_trainer;
+	}
+
+	for (BaseAction *ptr_action : actionsLog) {
+		delete ptr_action;
+	}
+
+	trainers.erase(trainers.begin(), trainers.end());
+	actionsLog.erase(actionsLog.begin(), actionsLog.end());
 }
 
 
@@ -73,6 +88,7 @@ void Studio::copyPropertiesFrom(const Studio &ref_otherStudio) {
 
 	open = ref_otherStudio.open;
 
+	// deep copy
 	for (Workout workout : ref_otherStudio.workout_options) {
 		workout_options.push_back(Workout(workout));
 	}
@@ -87,19 +103,37 @@ void Studio::copyPropertiesFrom(const Studio &ref_otherStudio) {
 }
 
 
+void Studio::movePropertiesFrom(const bool open, const vector<Workout> *ptr_workoutOptions, const vector<Trainer*> *ptr_trainers, const vector<BaseAction*> *ptr_actionsLog) {
+	// this->deleteVectors();
+
+	this->open = open;
+
+	// shallow copies because moving
+	for (Workout workout : *ptr_workoutOptions) {
+		this->workout_options.push_back(workout);
+	}
+	for (Trainer *ptr_trainer : *ptr_trainers) {
+		this->trainers.push_back(ptr_trainer);
+	}
+	for (BaseAction *action : *ptr_actionsLog) {
+		this->actionsLog.push_back(action);
+	}
+}
+
+
 Studio::Studio(const std::string &configFilePath) {
 
 	fstream configFile;
 	configFile.open(configFilePath, ios::in);
 
 	// supposedly we can assume the config file exists
-	// if(configFile.is_open()) {
+	if(configFile.is_open()) {
 		Studio::parseConfigFile(configFile);
-	// }
-	// else {
-	// 	// TODO: correct the error message and handling
-	// 	cout << "ERROR: file wasn't opened." << endl;
-	// }
+	}
+	else {
+		// TODO: correct the error message and handling
+		cout << "[*] ERROR: file wasn't opened." << endl;
+	}
 
 	configFile.close(); //close the file object.
 }
@@ -188,11 +222,12 @@ void Studio::parseConfigFile(fstream &configFile) {
 				// cout << "[*] at config section 'numOfTrainers' got int: '" << numOfTrainers << "'" << endl;
 
 				currentConfigSection = ConfigSection::TRAINERS_CAPACITIES;
+
 			}
 			else if (currentConfigSection == ConfigSection::TRAINERS_CAPACITIES) {
 				int capacity;
 
-				for (int i = 0; i < numOfTrainers; ++i) {
+				for (size_t i = 0; i < numOfTrainers; ++i) {
 					inputStreamFromStr >> capacity;
 					inputStreamFromStr.ignore(numeric_limits<streamsize>::max(), ','); // ignores everything upto and including the next comma character
 
@@ -202,6 +237,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 				}
 			
 				currentConfigSection = ConfigSection::WORKOUT_OPTIONS;
+				
 			}
 			else { // currentConfigSection == ConfigSection::WORKOUT_OPTIONS
 				int cost;

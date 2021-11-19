@@ -14,14 +14,14 @@ void OpenTrainer::act(Studio &studio) {
         return;
     }
 
-    if (t1->getCustomers().size()+customers.size()>t1->getCapacity()){
+    if (t1->getCustomers().size()+customers.size()>static_cast<size_t>(t1->getCapacity())){
         error("Trainer's capacity is not enough!");
         return;
     }
 
     t1->openTrainer();
 
-    for (int i = 0; i < customers.size(); ++i) {
+    for (size_t i = 0; i < customers.size(); ++i) {
         t1->addCustomer(customers[i]);
     }
 
@@ -30,7 +30,7 @@ void OpenTrainer::act(Studio &studio) {
 
 
 std::string OpenTrainer::toString() const {
-	// TODO: concatenation operation should be faster
+	// TODO: concatenation operation should be faster?
 	ostringstream iss;
 
 	iss << "open " << this->trainerId;
@@ -39,7 +39,7 @@ std::string OpenTrainer::toString() const {
 		iss << " " << ptr_customer->toString();
 	}
 
-	iss << " " << getStatusStr() << endl;
+	iss << " " << getStatusStr();
 
 	return iss.str();
 }

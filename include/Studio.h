@@ -32,9 +32,10 @@ public:
 
     // added
 	//TODO: need rule of 5 (has trainers, actionsLog)
-    Studio (const Studio &old_obj); // copy constructor
-    Studio& operator=(const Studio& ref_otherStudio); // TODO: copy assignment operator
-    // Studio& operator=(const Studio&& ref_otherStudio); // TODO: copy assignment operator
+    Studio (const Studio &ref_otherStudio); // copy constructor
+    Studio (const Studio &&ref_otherStudio); // move constructor
+    Studio& operator=(const Studio &ref_otherStudio); // TODO: copy assignment operator
+    Studio& operator=(const Studio &&ref_otherStudio); // TODO: move assignment operator
     virtual ~Studio(); // TODO: destructor
 private:
     bool open;
@@ -44,7 +45,9 @@ private:
 	
 	// added
 	void parseConfigFile(std::fstream &configFile);
+    void deleteVectors ();
     void copyPropertiesFrom(const Studio &ref_otherStudio);
+    void movePropertiesFrom(const bool open, const vector<Workout> *ptr_workoutOptions, const vector<Trainer*> *ptr_trainers, const vector<BaseAction*> *ptr_actionsLog);
 };
 
 #endif

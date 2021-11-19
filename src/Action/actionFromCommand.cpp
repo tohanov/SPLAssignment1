@@ -1,7 +1,7 @@
 #include "Action.h"
 
 
-const std::string 				OpenTrainer::strategies[] = {"swt", "chp", "mcl", "fbd"};// static class property
+// const std::string 				OpenTrainer::strategies[] = {"swt", "chp", "mcl", "fbd"};// static class property
 // const string 					BaseAction::statusStrs[] = {"Completed", "Error: "}; // static class property
 const std::hash<std::string> 	BaseAction::hasher;// static class property
 const CommandHashPair 			BaseAction::hashedCommandPairs[10] = { // static class property
@@ -30,6 +30,8 @@ BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { /
  			return (*i.matchingFunction)(commandStream);
 		}
 	}
+
+	return nullptr; // Unreachable code, if the input is valid (which is assumed). This was put here to avoid a warning from the compiler
 }
 
 
@@ -50,11 +52,11 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { 
 	for (int customerTempId = 0; getline(commandStream, customerName, ','); ++customerTempId) { // static
 		commandStream >> customerStrategy >> ws;
 		
-		if (customerStrategy == strategies[0]) {
+		if (customerStrategy == "swt") {
 			customer = new SweatyCustomer(customerName, customerTempId);
-		} else if (customerStrategy == strategies[1]) {
+		} else if (customerStrategy == "chp") {
 			customer = new CheapCustomer(customerName, customerTempId);
-		} else if (customerStrategy == strategies[2]) {
+		} else if (customerStrategy == "mcl") {
 			customer = new HeavyMuscleCustomer(customerName, customerTempId);
 		} else { // "fbd" due to correctness of input
 			customer = new FullBodyCustomer(customerName, customerTempId);

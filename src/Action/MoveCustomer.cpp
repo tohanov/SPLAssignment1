@@ -1,5 +1,6 @@
 #include "Action.h"
 
+
 MoveCustomer::MoveCustomer (int src, int dst, int customerId) : srcTrainer(src), dstTrainer(dst), id(customerId) {
 
 }
@@ -13,7 +14,7 @@ void MoveCustomer::act(Studio &studio) {
         return;
     }
 
-    if (dst_trainer->getCapacity() == dst_trainer->getCustomers().size()) {
+    if (static_cast<size_t>(dst_trainer->getCapacity()) == dst_trainer->getCustomers().size()) {
         error("Cannot move customer");
         return;
     }
