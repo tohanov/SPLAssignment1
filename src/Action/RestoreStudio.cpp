@@ -23,12 +23,11 @@ void RestoreStudio::act(Studio& studio) {
 
 
 std::string RestoreStudio::toString() const {
-	return "restore" + getStatusStr();
+	return "restore " + getStatusStr();
 }
 
 
 BaseAction* RestoreStudio::duplicate() {
-
 	RestoreStudio *ptr_restoreAction = new RestoreStudio();
 
 	BaseAction::matchFlags(this, ptr_restoreAction);
