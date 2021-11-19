@@ -26,10 +26,10 @@ void PrintTrainerStatus::act(Studio& studio) {
 
 		cout << "Orders:" << endl;
 		for (OrderPair pair : ref_orders) {
-			cout << pair.second.getName() << " " << pair.second.getPrice() << " " << pair.first;
+			cout << pair.second.getName() << " " << pair.second.getPrice() << " " << pair.first << endl;
 		}
 
-		cout << "Current Trainer's Salary: " << ref_trainer.getSalary() << endl;
+		cout << "Current Trainer's Salary: " << ref_trainer.getSalary() << "NIS" << endl;
 	}
 
 	complete();
