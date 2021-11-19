@@ -77,7 +77,7 @@ std::vector<int> CheapCustomer::order(const std::vector<Workout> &workout_option
 std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_options){
 
     typedef std::pair<int, int> workout_info; //left id, right price
-
+    
     std::vector<workout_info> anaerobic_workouts={};
     std::vector<int> output={};
 
@@ -103,9 +103,8 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
         anaerobic_workouts[j+1]=workout_info(key_id,key_price);
     }
 
-    for(i=anaerobic_workouts.size()-1;i>=0;i--)
-        output.push_back(anaerobic_workouts[i].first);
-
+    for(i = anaerobic_workouts.size(); i >= 1; i--)
+        output.push_back(anaerobic_workouts[ i-1 ].first);
 
     return output;
 
