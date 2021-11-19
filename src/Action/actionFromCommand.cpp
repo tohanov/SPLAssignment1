@@ -5,23 +5,23 @@
 // const string 					BaseAction::statusStrs[] = {"Completed", "Error: "}; // static class property
 const hash<string> 		BaseAction::hasher;// static class property
 const CommandHashPair 	BaseAction::hashedCommandPairs[10] = { // static class property
-	{hasher("open"), 	OpenTrainer::actionFromCommand},
-	{hasher("order"), 	Order::actionFromCommand},
-	{hasher("move"), 	MoveCustomer::actionFromCommand},
-	{hasher("close"), 	Close::actionFromCommand},
-	{hasher("closeall"), CloseAll::actionFromCommand},
-	{hasher("workout_options"), PrintWorkoutOptions::actionFromCommand},
-	{hasher("status"), 	PrintTrainerStatus::actionFromCommand},
-	{hasher("log"), 	PrintActionsLog::actionFromCommand},
-	{hasher("backup"), 	BackupStudio::actionFromCommand},
-	{hasher("restore"), RestoreStudio::actionFromCommand}
+	{ hasher("order"), 		Order::actionFromCommand },
+	{ hasher("move"), 		MoveCustomer::actionFromCommand },
+	{ hasher("close"), 		Close::actionFromCommand },
+	{ hasher("open"), 		OpenTrainer::actionFromCommand },
+	{ hasher("closeall"), 	CloseAll::actionFromCommand },
+	{ hasher("workout_options"), PrintWorkoutOptions::actionFromCommand },
+	{ hasher("status"), 	PrintTrainerStatus::actionFromCommand },
+	{ hasher("log"), 		PrintActionsLog::actionFromCommand },
+	{ hasher("backup"), 	BackupStudio::actionFromCommand },
+	{ hasher("restore"), 	RestoreStudio::actionFromCommand }
 };
 
 
 BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { // static 
 
 	string readingStr;
-	commandStream >> readingStr; // first word in the command
+	commandStream >> readingStr; // the first word is the command
 
 	size_t commandTypeHash = hasher(readingStr);
 

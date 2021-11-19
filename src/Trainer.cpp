@@ -139,7 +139,14 @@ void Trainer::openTrainer(){
 void Trainer::closeTrainer(){
     if (!open)
         std::cout<<"Trainer already closed"<<std::endl;
-    open= false;
+    else{
+        open= false;
+        orderList.clear();
+        for (auto p:customersList) {
+            delete p;
+        }
+        customersList.clear();
+    }
 }
 
 

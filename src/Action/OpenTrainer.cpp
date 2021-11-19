@@ -7,23 +7,41 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList) : train
 
 
 void OpenTrainer::act(Studio &studio) {
-    Trainer* t1=studio.getTrainer(trainerId);
 
-    if(t1== nullptr || t1->isOpen()) {
-        error("Workout session does not exist or is already open");
+	const string errMsg = "Workout session does not exist or is already open";
+
+    if(trainerId<0 || trainerId >= studio.getNumOfTrainers()){
+
+        for(Customer* cus:customers)    //deleting unused customers
+            delete cus;
+
+        error(errMsg);
         return;
     }
 
-    if (t1->getCustomers().size()+customers.size()>static_cast<size_t>(t1->getCapacity())){
-        error("Trainer's capacity is not enough!");
+    Trainer* t1=studio.getTrainer(trainerId);
+
+    if(t1->isOpen()) {
+        error(errMsg);
         return;
     }
 
     t1->openTrainer();
 
-    for (size_t i = 0; i < customers.size(); ++i) {
-        t1->addCustomer(customers[i]);
+    size_t i=0;
+    int current_num_of_customers=t1->getCustomers().size();
+    while (i<customers.size() && current_num_of_customers < t1->getCapacity()){
+          t1->addCustomer(customers[i]);
+          i++;
+          current_num_of_customers++;
     }
+
+    while (i<customers.size()){     // deleting customers that could not be added
+
+        delete customers[i];
+        i++;
+    }
+
 
     complete();
 }

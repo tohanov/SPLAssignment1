@@ -1,6 +1,5 @@
 #include "Action.h"
 
-// TODO: complete implementation
 
 BackupStudio::BackupStudio () {
 

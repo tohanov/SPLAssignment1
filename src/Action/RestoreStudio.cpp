@@ -1,7 +1,5 @@
 #include "Action.h"
 
-// TODO: complete implementation
-
 
 RestoreStudio::RestoreStudio() {
 
