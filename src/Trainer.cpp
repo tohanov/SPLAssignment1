@@ -17,12 +17,31 @@ Trainer::Trainer(const Trainer &to_copy):capacity(to_copy.getCapacity()),id(to_c
     current_salary=to_copy.current_salary;
     open=to_copy.open;
 
-    //deep copies
-    for(int i=0;i<to_copy.customersList.size();i++)
-        customersList.push_back(to_copy.customersList[i]);
+    for(auto c:to_copy.customersList) {
+        // if (c->get_type() == "swt") {
+        //     auto *p_customer = new SweatyCustomer(c->getName(), c->getId());
+        //     customersList.push_back(p_customer);
+        // }
+        // else if(c->get_type()=="chp"){
+        //     auto* p_customer=new CheapCustomer(c->getName(),c->getId());
+        //     customersList.push_back(p_customer);
+        // }
+        // else if(c->get_type()=="mcl"){
+        //     auto* p_customer=new HeavyMuscleCustomer(c->getName(),c->getId());
+        //     customersList.push_back(p_customer);
+        // }
 
-    for(int i=0;i<to_copy.orderList.size();i++)
-        orderList.push_back(to_copy.orderList[i]);
+        // else{
+        //     auto* p_customer=new FullBodyCustomer(c->getName(),c->getId());
+        //     customersList.push_back(p_customer);
+        // }
+        auto *p_customer = c->duplicate();
+        customersList.push_back(p_customer);
+    }
+
+
+    for(auto &order : to_copy.orderList)
+       orderList.push_back(order);
 
 }
 
