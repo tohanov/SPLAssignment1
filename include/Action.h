@@ -17,7 +17,7 @@ class BaseAction; // forward declaration for use in struct
 
 struct CommandHashPair {
 	size_t commandTypeHash;
-	BaseAction* (*matchingFunction)(std::istringstream &commandStream);
+	BaseAction* (*matchingFunction)(istringstream &commandStream);
 };
 
 enum ActionType {

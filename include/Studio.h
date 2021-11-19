@@ -37,6 +37,7 @@ public:
     Studio& operator=(const Studio &ref_otherStudio); // TODO: copy assignment operator
     Studio& operator=(const Studio &&ref_otherStudio); // TODO: move assignment operator
     virtual ~Studio(); // TODO: destructor
+    void setClosed();
 private:
     bool open;
     std::vector<Trainer*> trainers;

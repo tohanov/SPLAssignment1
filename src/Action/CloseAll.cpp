@@ -14,6 +14,7 @@ void CloseAll::act(Studio &studio) {
             std::cout<<"Trainer "+ to_string(i)+" closed. Salary "+ to_string(studio.getTrainer(i)->getSalary())+"NIS"<<std::endl;
         }
 
+    studio.setClosed();
     complete();
 
     // std::cout<<"Studio is now closed!"<<endl;
@@ -27,7 +28,6 @@ std::string CloseAll::toString() const {
 
 
 BaseAction* CloseAll::duplicate() {
-
 	CloseAll *ptr_newCloseAllAction = new CloseAll();
 
 	BaseAction::matchFlags(this, ptr_newCloseAllAction);

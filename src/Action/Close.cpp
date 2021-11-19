@@ -15,7 +15,7 @@ void Close::act(Studio &studio) {
     }
 
     t1->closeTrainer();
-    std::cout<<"Trainer "+ to_string(trainerId)+" closed. Salary "+ to_string(t1->getSalary())+"NIS"<<std::endl;
+    cout <<"Trainer "+ to_string(trainerId)+" closed. Salary "+ to_string(t1->getSalary())+"NIS"<<std::endl;
 
     complete();
 }

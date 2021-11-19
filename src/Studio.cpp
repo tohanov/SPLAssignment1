@@ -140,9 +140,11 @@ Studio::Studio(const std::string &configFilePath) {
 
 
 void Studio::start() {
-	std::istringstream commandStream;
-	std::cout << "Studio is now open!" << std::endl;
+	istringstream commandStream;
 	string command; // for storing current user input
+
+	open = true;
+	cout << "Studio is now open!" << endl;
 
 	do {
 		// cout << "action> "; // TODO: see if need to remove this for automatic checks to pass
@@ -163,7 +165,7 @@ void Studio::start() {
 //		cout << "after act()" << endl; // TODO: remove debug line
 
 		actionsLog.push_back(actionPtr);
-	} while(command != "closeall"); // command.compare("closeall") != 0
+	} 	while(this->open); // command.compare("closeall") != 0
 }
 
 
@@ -173,9 +175,6 @@ int Studio::getNumOfTrainers() const {
 
 
 Trainer* Studio::getTrainer(int tid) {
-
-	// cout << "[*] inside Studio::getTrainer()" << endl; // TODO: remove debug line
-	// cout << "[*] trying to get trainer #" << tid << endl; // TODO: remove debug line
 	return trainers[tid];
 }
 
@@ -203,7 +202,7 @@ void Studio::parseConfigFile(fstream &configFile) {
 	size_t numOfTrainers = 0;
 	ConfigSection currentConfigSection = ConfigSection::NUM_OF_TRAINERS;
 
-	while( std::getline(configFile, configLine) ) { //read data from file object and put it into string.
+	while( getline(configFile, configLine) ) { //read data from file object and put it into string.
 		// cout << "[*] configLine is: " << configLine << endl; // TODO: remove debug line
 		inputStreamFromStr.str(configLine);
 		inputStreamFromStr.clear(); // clearing potentially set flags like EOF
@@ -241,9 +240,9 @@ void Studio::parseConfigFile(fstream &configFile) {
 			}
 			else { // currentConfigSection == ConfigSection::WORKOUT_OPTIONS
 				int cost;
-				std::getline(inputStreamFromStr, readingStr, ',');
+				getline(inputStreamFromStr, readingStr, ',');
 				trim(readingStr, typeOfWhitespaces);
-				std::getline(inputStreamFromStr, workoutType, ',');
+				getline(inputStreamFromStr, workoutType, ',');
 				trim(workoutType, typeOfWhitespaces);
 				inputStreamFromStr >> cost;
 
@@ -255,6 +254,12 @@ void Studio::parseConfigFile(fstream &configFile) {
 			}
 		}
 	}
+}
+
+
+
+void Studio::setClosed() {
+	open = false;
 }
 
 

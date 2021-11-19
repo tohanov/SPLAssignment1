@@ -3,8 +3,8 @@
 
 // const std::string 				OpenTrainer::strategies[] = {"swt", "chp", "mcl", "fbd"};// static class property
 // const string 					BaseAction::statusStrs[] = {"Completed", "Error: "}; // static class property
-const std::hash<std::string> 	BaseAction::hasher;// static class property
-const CommandHashPair 			BaseAction::hashedCommandPairs[10] = { // static class property
+const hash<string> 		BaseAction::hasher;// static class property
+const CommandHashPair 	BaseAction::hashedCommandPairs[10] = { // static class property
 	{hasher("open"), 	OpenTrainer::actionFromCommand},
 	{hasher("order"), 	Order::actionFromCommand},
 	{hasher("move"), 	MoveCustomer::actionFromCommand},
@@ -20,7 +20,7 @@ const CommandHashPair 			BaseAction::hashedCommandPairs[10] = { // static class 
 
 BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { // static 
 
-	std::string readingStr;
+	string readingStr;
 	commandStream >> readingStr; // first word in the command
 
 	size_t commandTypeHash = hasher(readingStr);
@@ -31,6 +31,7 @@ BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { /
 		}
 	}
 
+	cout << "[*] reached unreachable code" << endl; // TODO: remove debug line
 	return nullptr; // Unreachable code, if the input is valid (which is assumed). This was put here to avoid a warning from the compiler
 }
 
@@ -46,11 +47,11 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { 
 	// TODO: maybe should be on stack
 	vector<Customer*> customers; // = new vector<Customer*>;
 
-	commandStream >> trainerId >> ws;
+	commandStream >> trainerId >> std::ws;
 	// commandStream >> dummyChar;
 
 	for (int customerTempId = 0; getline(commandStream, customerName, ','); ++customerTempId) { // static
-		commandStream >> customerStrategy >> ws;
+		commandStream >> customerStrategy >> std::ws;
 		
 		if (customerStrategy == "swt") {
 			customer = new SweatyCustomer(customerName, customerTempId);
