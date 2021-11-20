@@ -19,10 +19,14 @@ void OpenTrainer::act(Studio &studio) {
         return;
     }
 
+
     Trainer* t1=studio.getTrainer(trainerId);
 
     if(t1->isOpen()) {
         error(errMsg);
+        for(Customer* cus:customers)    //deleting unused customers
+            delete cus;
+
         return;
     }
 
@@ -42,7 +46,6 @@ void OpenTrainer::act(Studio &studio) {
         i++;
     }
 
-
     complete();
 }
 
@@ -54,10 +57,10 @@ std::string OpenTrainer::toString() const {
 	iss << "open " << this->trainerId;
 
 	for (Customer *ptr_customer : customers) {
-		iss << " " << ptr_customer->toString();
+		iss << ' ' << ptr_customer->toString();
 	}
 
-	iss << " " << getStatusStr();
+	iss << ' ' << getStatusStr();
 
 	return iss.str();
 }

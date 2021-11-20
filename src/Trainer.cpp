@@ -47,11 +47,7 @@ Trainer::Trainer(const Trainer &to_copy):capacity(to_copy.getCapacity()),id(to_c
 
 
 //Destructor
-Trainer::~Trainer() {
-    for (auto p:customersList) {
-        delete p;
-    }
-}
+Trainer::~Trainer() = default;
 
 
 int Trainer::getCapacity() const{
@@ -130,7 +126,7 @@ void Trainer::order(const int customer_id, const std::vector<int> workout_ids, c
 
 void Trainer::openTrainer(){
     if (open)
-        std::cout<<"Trainer already open"<<std::endl;
+        std::cout<<"Trainer already open"<<std::endl; // TODO: error?
     else
         open= true;
 }
@@ -138,7 +134,7 @@ void Trainer::openTrainer(){
 
 void Trainer::closeTrainer(){
     if (!open)
-        std::cout<<"Trainer already closed"<<std::endl;
+        std::cout<<"Trainer already closed"<<std::endl; // TODO: error?
     else{
         open= false;
         orderList.clear();
