@@ -27,7 +27,7 @@ BaseAction* PrintActionsLog::duplicate() {
 
 	PrintActionsLog *ptr_printLogAction = new PrintActionsLog();
 
-	BaseAction::matchFlags(this, ptr_printLogAction);
+	// BaseAction::matchFlags(this, ptr_printLogAction);
 
 	return ptr_printLogAction;
 }

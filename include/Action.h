@@ -49,6 +49,7 @@ public:
 	static BaseAction* actionFromCommand(std::istringstream &commandStream);
     virtual BaseAction* duplicate()=0;
     virtual ~BaseAction();
+    static void matchFlags(BaseAction *source, BaseAction *destination);
 protected:
     void complete();
     void error(std::string errorMsg);
@@ -56,7 +57,6 @@ protected:
 	
 	// added
 	string getStatusStr() const;
-    static void matchFlags(BaseAction *source, BaseAction *destination);
 private:
     std::string errorMsg;
     ActionStatus status;

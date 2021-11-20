@@ -24,7 +24,7 @@ std::string BackupStudio::toString() const {
 BaseAction* BackupStudio::duplicate() {
 	BackupStudio *ptr_newBackupAction = new BackupStudio();
 
-	BaseAction::matchFlags(this, ptr_newBackupAction);
+	// BaseAction::matchFlags(this, ptr_newBackupAction);
 
 	return ptr_newBackupAction;
 }

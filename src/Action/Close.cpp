@@ -37,10 +37,9 @@ std::string Close::toString() const {
 
 
 BaseAction* Close::duplicate() {
-
 	Close *ptr_newCloseAction = new Close(this->trainerId);
 
-	BaseAction::matchFlags(this, ptr_newCloseAction);
+	// BaseAction::matchFlags(this, ptr_newCloseAction);
 
 	return ptr_newCloseAction;
 }

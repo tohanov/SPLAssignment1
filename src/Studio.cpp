@@ -34,7 +34,7 @@ Studio::Studio (const Studio &ref_otherStudio) {
 
 // Move constructor
 Studio::Studio(const Studio &&ref_otherStudio) {
-	movePropertiesFrom(ref_otherStudio.open, &ref_otherStudio.workout_options, &ref_otherStudio.trainers, &ref_otherStudio.actionsLog);
+	movePropertiesFrom(&ref_otherStudio);
  }
 
 
@@ -58,10 +58,9 @@ Studio& Studio::operator=(const Studio &ref_otherStudio) {
 
 // Move Assignment operator
 Studio& Studio::operator=(const Studio &&ref_otherStudio) {
-	// TODO
 	this->deleteVectors();
 
-	movePropertiesFrom(ref_otherStudio.open, &ref_otherStudio.workout_options, &ref_otherStudio.trainers, &ref_otherStudio.actionsLog);
+	movePropertiesFrom(&ref_otherStudio);
 
 	return *this;
 }
@@ -98,25 +97,29 @@ void Studio::copyPropertiesFrom(const Studio &ref_otherStudio) {
 	}
 
 	for (BaseAction* ptr_action : ref_otherStudio.actionsLog) {
-		actionsLog.push_back(ptr_action->duplicate());
+		BaseAction* ptr_duplicateAction = ptr_action->duplicate();
+
+		BaseAction::matchFlags(ptr_action, ptr_duplicateAction);
+
+		actionsLog.push_back(ptr_duplicateAction);
 	}
 }
 
 
-void Studio::movePropertiesFrom(const bool open, const vector<Workout> *ptr_workoutOptions, const vector<Trainer*> *ptr_trainers, const vector<BaseAction*> *ptr_actionsLog) {
+void Studio::movePropertiesFrom(const Studio *ptr_otherStudio) {
 	// this->deleteVectors();
 
-	this->open = open;
+	this->open = ptr_otherStudio->open;
 
 	// shallow copies because moving
-	for (Workout workout : *ptr_workoutOptions) {
+	for (Workout workout : ptr_otherStudio->workout_options) {
 		this->workout_options.push_back(workout);
 	}
-	for (Trainer *ptr_trainer : *ptr_trainers) {
+	for (Trainer *ptr_trainer : ptr_otherStudio->trainers) {
 		this->trainers.push_back(ptr_trainer);
 	}
-	for (BaseAction *action : *ptr_actionsLog) {
-		this->actionsLog.push_back(action);
+	for (BaseAction *ptr_action : ptr_otherStudio->actionsLog) {
+		this->actionsLog.push_back(ptr_action);
 	}
 }
 

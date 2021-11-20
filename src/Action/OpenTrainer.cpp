@@ -75,7 +75,7 @@ BaseAction* OpenTrainer::duplicate() {
 
 	OpenTrainer* ptr_newOpenTrainerAction = new OpenTrainer(this->trainerId, newCustomers);
 	
-    BaseAction::matchFlags(this, ptr_newOpenTrainerAction);
+    // BaseAction::matchFlags(this, ptr_newOpenTrainerAction);
 
 	return ptr_newOpenTrainerAction;
 }

@@ -29,7 +29,7 @@ std::string CloseAll::toString() const {
 BaseAction* CloseAll::duplicate() {
 	CloseAll *ptr_newCloseAllAction = new CloseAll();
 
-	BaseAction::matchFlags(this, ptr_newCloseAllAction);
+	// BaseAction::matchFlags(this, ptr_newCloseAllAction);
 
 	return ptr_newCloseAllAction;
 }

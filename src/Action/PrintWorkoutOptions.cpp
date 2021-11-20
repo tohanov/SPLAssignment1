@@ -29,7 +29,7 @@ std::string PrintWorkoutOptions::toString() const {
 BaseAction* PrintWorkoutOptions::duplicate() {
 	PrintWorkoutOptions *ptr_printWorkoutAction = new PrintWorkoutOptions();
 
-	BaseAction::matchFlags(this, ptr_printWorkoutAction);
+	// BaseAction::matchFlags(this, ptr_printWorkoutAction);
 
 	return ptr_printWorkoutAction;
 }

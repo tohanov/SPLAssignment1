@@ -48,7 +48,7 @@ private:
 	void parseConfigFile(std::fstream &configFile);
     void deleteVectors ();
     void copyPropertiesFrom(const Studio &ref_otherStudio);
-    void movePropertiesFrom(const bool open, const vector<Workout> *ptr_workoutOptions, const vector<Trainer*> *ptr_trainers, const vector<BaseAction*> *ptr_actionsLog);
+    void movePropertiesFrom(const Studio *ptr_otherStudio);
 };
 
 #endif

@@ -38,7 +38,6 @@ BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { /
 
 BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { // static
 	int trainerId;
-	// char dummyChar;
 
 	string customerName;
 	string customerStrategy;
@@ -48,7 +47,6 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { 
 	vector<Customer*> customers; // = new vector<Customer*>;
 
 	commandStream >> trainerId >> std::ws;
-	// commandStream >> dummyChar;
 
 	for (int customerTempId = 0; getline(commandStream, customerName, ','); ++customerTempId) { // static
 		commandStream >> customerStrategy >> std::ws;
@@ -64,10 +62,9 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { 
 		}
 
 		(/* * */customers).push_back(customer);
-		// commandStream >> dummyChar;
 	}
 
-	// ask someone about passing customers as a reference like this. causes a memory leak if created on heap
+	// TODO: ask someone about passing customers as a reference like this. causes a memory leak if created on heap
 	return new OpenTrainer(trainerId, /* * */customers);
 }
 
@@ -112,10 +109,6 @@ BaseAction* PrintWorkoutOptions::actionFromCommand(std::istringstream &commandSt
 BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStream) { // static
 	int trainerId;
 	commandStream >> trainerId;
-
-	// cout << "[*] inside PrintTrainerStatus::actionFromCommand()" << endl; // TODO: remove debug line
-	// cout << "[*] stream.srt() is: " << commandStream.str() << endl;
-	// cout << "[*] got trainerId: " << trainerId << endl; // TODO: remove debug line
 
 	return new PrintTrainerStatus(trainerId);
 }

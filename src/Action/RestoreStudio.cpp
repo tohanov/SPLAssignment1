@@ -28,7 +28,7 @@ std::string RestoreStudio::toString() const {
 BaseAction* RestoreStudio::duplicate() {
 	RestoreStudio *ptr_restoreAction = new RestoreStudio();
 
-	BaseAction::matchFlags(this, ptr_restoreAction);
+	// BaseAction::matchFlags(this, ptr_restoreAction);
 
 	return ptr_restoreAction;
 }

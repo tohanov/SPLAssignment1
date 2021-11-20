@@ -43,7 +43,7 @@ std::string MoveCustomer::toString() const {
 BaseAction* MoveCustomer::duplicate() {
 	MoveCustomer *ptr_newMoveAction = new MoveCustomer(this->srcTrainer, this->dstTrainer, this->id);
 
-	BaseAction::matchFlags(this, ptr_newMoveAction);
+	// BaseAction::matchFlags(this, ptr_newMoveAction);
 
 	return ptr_newMoveAction;
 }
