@@ -7,10 +7,15 @@ Order::Order (int id) : trainerId(id) {
 
 
 void Order::act(Studio &studio) {
+    if(trainerId<0 || trainerId >= studio.getNumOfTrainers()){
+        error("Trainer does not exist or is not open");
+        return;
+    }
+
     Trainer* t1=studio.getTrainer(trainerId);
 
-    if(t1== nullptr || !t1->isOpen()) {
-        error("Workout session does not exist or is not open");
+    if(!t1->isOpen()) {
+        error("Trainer does not exist or is not open");
         return;
     }
 
