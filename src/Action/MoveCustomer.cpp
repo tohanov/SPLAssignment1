@@ -31,6 +31,10 @@ void MoveCustomer::act(Studio &studio) {
 
     dst_trainer->order(c->getId(),c->order(studio.getWorkoutOptions()),studio.getWorkoutOptions());
 
+    if(src_trainer->getCustomers().empty()){
+        Close c(srcTrainer);
+        c.act(studio);
+    }
     complete();
 }
 

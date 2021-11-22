@@ -134,7 +134,7 @@ Studio::Studio(const std::string &configFilePath) {
 		Studio::parseConfigFile(configFile);
 	}
 	else {
-		// TODO: correct the error message and handling
+		// TODO: remove?
 		cout << "[*] ERROR: file wasn't opened." << endl;
 	}
 
