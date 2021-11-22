@@ -1,5 +1,5 @@
 #include "Trainer.h"
-
+#include <typeinfo>
 
 int Trainer::number_of_trainers=0;
 
@@ -18,15 +18,16 @@ Trainer::Trainer(const Trainer &to_copy):capacity(to_copy.getCapacity()),id(to_c
     open=to_copy.open;
 
     for(auto c:to_copy.customersList) {
-        // if (c->get_type() == "swt") {
+        // TODO: change back
+        // if (typeid(c) == typeid(SweatyCustomer*)) {
         //     auto *p_customer = new SweatyCustomer(c->getName(), c->getId());
         //     customersList.push_back(p_customer);
         // }
-        // else if(c->get_type()=="chp"){
+        // else if(typeid(c) == typeid(CheapCustomer*)){
         //     auto* p_customer=new CheapCustomer(c->getName(),c->getId());
         //     customersList.push_back(p_customer);
         // }
-        // else if(c->get_type()=="mcl"){
+        // else if(typeid(c) == typeid(HeavyMuscleCustomer*)){
         //     auto* p_customer=new HeavyMuscleCustomer(c->getName(),c->getId());
         //     customersList.push_back(p_customer);
         // }
@@ -47,7 +48,11 @@ Trainer::Trainer(const Trainer &to_copy):capacity(to_copy.getCapacity()),id(to_c
 
 
 //Destructor
-Trainer::~Trainer() = default;
+Trainer::~Trainer() {
+    for (Customer *ptr_customer : customersList) {
+        delete ptr_customer;
+    }
+}
 
 
 int Trainer::getCapacity() const{
