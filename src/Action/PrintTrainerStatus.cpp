@@ -6,6 +6,7 @@ PrintTrainerStatus::PrintTrainerStatus (int id) : trainerId(id) {
 }
 
 
+// TODO: fix error caused by deletion of unused clients
 void PrintTrainerStatus::act(Studio& studio) {
 	// never results in an error
 
@@ -15,14 +16,14 @@ void PrintTrainerStatus::act(Studio& studio) {
 	cout << "Trainer " << trainerId << " status: " << (isOpen ? "open" : "closed")  << endl;
 
 	if (isOpen) {
-		vector<Customer*>& ref_customers = ref_trainer.getCustomers();
+		vector<Customer*> &ref_customers = ref_trainer.getCustomers();
 
 		cout << "Customers:" << endl;
 		for (Customer* ptr_customer : ref_customers) {
 			cout << ptr_customer->getId() << ' ' << ptr_customer->getName() << endl;
 		}
 
-		vector<OrderPair>& ref_orders = ref_trainer.getOrders();
+		vector<OrderPair> &ref_orders = ref_trainer.getOrders();
 
 		cout << "Orders:" << endl;
 		for (OrderPair pair : ref_orders) {

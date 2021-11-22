@@ -3,8 +3,9 @@
 
 // const std::string 				OpenTrainer::strategies[] = {"swt", "chp", "mcl", "fbd"};// static class property
 // const string 					BaseAction::statusStrs[] = {"Completed", "Error: "}; // static class property
-const hash<string> 		BaseAction::hasher;// static class property
-const CommandHashPair 	BaseAction::hashedCommandPairs[10] = { // static class property
+
+const hash<string> 		BaseAction::hasher; 					// static class property
+const CommandHashPair 	BaseAction::hashedCommandPairs[10] = { 	// static class property
 	{ hasher("order"), 		Order::actionFromCommand },
 	{ hasher("move"), 		MoveCustomer::actionFromCommand },
 	{ hasher("close"), 		Close::actionFromCommand },
@@ -18,7 +19,7 @@ const CommandHashPair 	BaseAction::hashedCommandPairs[10] = { // static class pr
 };
 
 
-BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { // static 
+BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static 
 
 	string readingStr;
 	commandStream >> readingStr; // the first word is the command
@@ -27,7 +28,7 @@ BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { /
 
 	for (CommandHashPair i : hashedCommandPairs) {
 		if (commandTypeHash == i.commandTypeHash) {
- 			return (*i.matchingFunction)(commandStream);
+ 			return (*i.matchingFunction)(commandStream, ref_studio);
 		}
 	}
 
@@ -36,7 +37,7 @@ BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream) { /
 }
 
 
-BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { // static
+BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
 	int trainerId;
 
 	string customerName;
@@ -48,17 +49,18 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { 
 
 	commandStream >> trainerId >> std::ws;
 
-	for (int customerTempId = 0; getline(commandStream, customerName, ','); ++customerTempId) { // static
+	while ( getline(commandStream, customerName, ',') ) {
 		commandStream >> customerStrategy >> std::ws;
-		
+		int customerId = ref_studio.getNextCustomerId();
+
 		if (customerStrategy == "swt") {
-			customer = new SweatyCustomer(customerName, customerTempId);
+			customer = new SweatyCustomer(customerName, customerId);
 		} else if (customerStrategy == "chp") {
-			customer = new CheapCustomer(customerName, customerTempId);
+			customer = new CheapCustomer(customerName, customerId);
 		} else if (customerStrategy == "mcl") {
-			customer = new HeavyMuscleCustomer(customerName, customerTempId);
+			customer = new HeavyMuscleCustomer(customerName, customerId);
 		} else { // "fbd" due to correctness of input
-			customer = new FullBodyCustomer(customerName, customerTempId);
+			customer = new FullBodyCustomer(customerName, customerId);
 		}
 
 		(/* * */customers).push_back(customer);
@@ -69,7 +71,7 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream) { 
 }
 
 
-BaseAction* Order::actionFromCommand(std::istringstream &commandStream) { // static
+BaseAction* Order::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
 	int trainerId;
 	commandStream >> trainerId;
 
@@ -77,7 +79,7 @@ BaseAction* Order::actionFromCommand(std::istringstream &commandStream) { // sta
 }
 
 
-BaseAction* MoveCustomer::actionFromCommand(std::istringstream &commandStream) { // static
+BaseAction* MoveCustomer::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
 	int src, dst, customerId;
 
 	commandStream >> src;
@@ -88,7 +90,7 @@ BaseAction* MoveCustomer::actionFromCommand(std::istringstream &commandStream) {
 }
 
 
-BaseAction* Close::actionFromCommand(std::istringstream &commandStream) { // static
+BaseAction* Close::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
 	int trainerId;
 	commandStream >> trainerId;
 	
@@ -96,17 +98,17 @@ BaseAction* Close::actionFromCommand(std::istringstream &commandStream) { // sta
 }
 
 
-BaseAction* CloseAll::actionFromCommand(std::istringstream &commandStream) { // static
+BaseAction* CloseAll::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
 	return new CloseAll();
 }
 
 
-BaseAction* PrintWorkoutOptions::actionFromCommand(std::istringstream &commandStream) { // static
+BaseAction* PrintWorkoutOptions::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
 	return new PrintWorkoutOptions();
 }
 
 
-BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStream) { // static
+BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
 	int trainerId;
 	commandStream >> trainerId;
 
@@ -114,17 +116,17 @@ BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStr
 }
 
 
-BaseAction* PrintActionsLog::actionFromCommand(std::istringstream &commandStream) { // static
+BaseAction* PrintActionsLog::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
 	return new PrintActionsLog();
 }
 
 
-BaseAction* BackupStudio::actionFromCommand(std::istringstream &commandStream) { // static
+BaseAction* BackupStudio::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
 	return new BackupStudio();
 }
 
 
-BaseAction* RestoreStudio::actionFromCommand(std::istringstream &commandStream) { // static
+BaseAction* RestoreStudio::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
 	return new RestoreStudio();
 }
 

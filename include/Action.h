@@ -12,12 +12,16 @@ enum ActionStatus {
 };
 
 
+//Forward declaration
+class Studio;
+
+
 // begin added
 class BaseAction; // forward declaration for use in struct
 
 struct CommandHashPair {
 	size_t commandTypeHash;
-	BaseAction* (*matchingFunction)(istringstream &commandStream);
+	BaseAction* (*matchingFunction)(istringstream &commandStream, Studio &ref_studio);
 };
 
 enum ActionType {
@@ -36,9 +40,6 @@ enum ActionType {
 // end added
 
 
-//Forward declaration
-class Studio;
-
 class BaseAction{
 public:
     BaseAction();
@@ -46,7 +47,7 @@ public:
     virtual void act(Studio& studio)=0;
     virtual std::string toString() const=0;
 	// added
-	static BaseAction* actionFromCommand(std::istringstream &commandStream);
+	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate()=0;
     virtual ~BaseAction();
     static void matchFlags(BaseAction *source, BaseAction *destination);
@@ -75,7 +76,7 @@ public:
     std::string toString() const;
 
 	// added
-	static BaseAction* actionFromCommand(std::istringstream &commandStream);
+	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate();
 private:
 	const int trainerId;
@@ -93,7 +94,7 @@ public:
     std::string toString() const;
 
 	// added
-	static BaseAction* actionFromCommand(std::istringstream &commandStream);
+	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate();
 private:
     const int trainerId;
@@ -107,7 +108,7 @@ public:
     std::string toString() const;
 
 	// added
-	static BaseAction* actionFromCommand(std::istringstream &commandStream);
+	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate();
 private:
     const int srcTrainer;
@@ -123,7 +124,7 @@ public:
     std::string toString() const;
 
 	// added
-	static BaseAction* actionFromCommand(std::istringstream &commandStream);
+	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate();
 private:
     const int trainerId;
@@ -137,7 +138,7 @@ public:
     std::string toString() const;
 
 	// added
-	static BaseAction* actionFromCommand(std::istringstream &commandStream);
+	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate();
 private:
 };
@@ -150,7 +151,7 @@ public:
     std::string toString() const;
 
 	// added
-	static BaseAction* actionFromCommand(std::istringstream &commandStream);
+	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate();
 private:
 };
@@ -163,7 +164,7 @@ public:
     std::string toString() const;
 
 	// added
-	static BaseAction* actionFromCommand(std::istringstream &commandStream);
+	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate();
 private:
     const int trainerId;
@@ -177,7 +178,7 @@ public:
     std::string toString() const;
 
 	// added
-	static BaseAction* actionFromCommand(std::istringstream &commandStream);
+	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate();
 private:
 };
@@ -190,7 +191,7 @@ public:
     std::string toString() const;
 
 	// added
-	static BaseAction* actionFromCommand(std::istringstream &commandStream);
+	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate();
 private:
 };
@@ -203,7 +204,7 @@ public:
     std::string toString() const;
     
 	// added
-	static BaseAction* actionFromCommand(std::istringstream &commandStream);
+	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate();
 
 };

@@ -8,7 +8,7 @@ extern Studio* backup;
 using namespace std;
 
 
-Studio::Studio() {
+Studio::Studio() : nextCustomerId(0) {
 	// TODO: ???
 }
 
@@ -86,6 +86,7 @@ void Studio::copyPropertiesFrom(const Studio &ref_otherStudio) {
 	// workout_options = ref_otherStudio.workout_options; // copy assignment
 
 	open = ref_otherStudio.open;
+	nextCustomerId = ref_otherStudio.nextCustomerId;
 
 	// deep copy
 	for (Workout workout : ref_otherStudio.workout_options) {
@@ -110,6 +111,7 @@ void Studio::movePropertiesFrom(const Studio *ptr_otherStudio) {
 	// this->deleteVectors();
 
 	this->open = ptr_otherStudio->open;
+	this->nextCustomerId = ptr_otherStudio->nextCustomerId;
 
 	// shallow copies because moving
 	for (Workout workout : ptr_otherStudio->workout_options) {
@@ -123,10 +125,13 @@ void Studio::movePropertiesFrom(const Studio *ptr_otherStudio) {
 	}
 }
 
-
-Studio::Studio(const std::string &configFilePath) {
+// TODO: see what default values need to be set
+Studio::Studio(const std::string &configFilePath) : nextCustomerId(0) {
 
 	fstream configFile;
+	// this->open = true;
+	// this->nextCustomerId = 0;
+	
 	configFile.open(configFilePath, ios::in);
 
 	// supposedly we can assume the config file exists
@@ -146,7 +151,7 @@ void Studio::start() {
 	istringstream commandStream;
 	string command; // for storing current user input
 
-	open = true;
+	this->open = true;
 	cout << "Studio is now open!" << endl;
 
 	do {
@@ -160,7 +165,7 @@ void Studio::start() {
 		// cout << "[*] got command: " << command << endl; // TODO: remove debug line
 		// cout << "[*] stream.str() is: " << commandStream.str() << endl; // TODO: remove debug line
 
-		BaseAction* actionPtr = BaseAction::actionFromCommand(commandStream);
+		BaseAction* actionPtr = BaseAction::actionFromCommand(commandStream, *this);
 
 //		cout << "after actionFromCommand()" << endl; // TODO: remove debug line
 		actionPtr->act(*this);
@@ -269,4 +274,9 @@ void Studio::setClosed() {
 void trim (string &str, const char* typeOfWhitespaces) {
 	str.erase(str.find_last_not_of(typeOfWhitespaces) + 1); // TODO: see if this kind of indexing might throw an error
 	str.erase(0,str.find_first_not_of(typeOfWhitespaces));
+}
+
+
+int Studio::getNextCustomerId() {
+	return nextCustomerId++;
 }
