@@ -76,13 +76,14 @@ std::string OpenTrainer::toString() const {
 
 BaseAction* OpenTrainer::duplicate() {
 	// TODO: sync with how the copying of customers happens in the constructor
-	vector<Customer *> newCustomers;
-	for (Customer *ptr_customer : this->customers) {
-		newCustomers.push_back(ptr_customer->duplicate());
-	}
+	vector<Customer *> dummyVector;
+	// for (Customer *ptr_customer : this->customers) {
+	// 	newCustomers.push_back(ptr_customer->duplicate());
+	// }
 
-	OpenTrainer* ptr_newOpenTrainerAction = new OpenTrainer(this->trainerId, newCustomers);
-	
+	OpenTrainer* ptr_newOpenTrainerAction = new OpenTrainer(this->trainerId, dummyVector);
+	ptr_newOpenTrainerAction->rebuiltCommandStr = this->rebuiltCommandStr;
+
     // BaseAction::matchFlags(this, ptr_newOpenTrainerAction);
 
 	return ptr_newOpenTrainerAction;
