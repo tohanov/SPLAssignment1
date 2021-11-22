@@ -40,7 +40,7 @@ void MoveCustomer::act(Studio &studio) {
 
 
 std::string MoveCustomer::toString() const {
-	return "move " + to_string(srcTrainer) + " " + to_string(dstTrainer) + " " + to_string(id) + " " + getStatusStr();
+	return "move " + to_string(srcTrainer) + ' ' + to_string(dstTrainer) + ' ' + to_string(id) + ' ' + getStatusStr();
 }
 
 

@@ -1,5 +1,5 @@
 #include "Trainer.h"
-#include <typeinfo>
+// #include <typeinfo>
 
 int Trainer::number_of_trainers=0;
 
@@ -52,6 +52,8 @@ Trainer::~Trainer() {
     for (Customer *ptr_customer : customersList) {
         delete ptr_customer;
     }
+
+    customersList.clear();
 }
 
 

@@ -7,7 +7,8 @@ Close::Close (int id) : trainerId(id) {
 
 
 void Close::act(Studio &studio) {
-    const string errMsg = "Trainer does not exist or is not open";
+    // TODO: move error string to class scope?
+    static const string errMsg = "Trainer does not exist or is not open";
     
     if(trainerId<0 || trainerId >= studio.getNumOfTrainers()) {
         error(errMsg);
@@ -32,7 +33,7 @@ void Close::act(Studio &studio) {
 
 
 std::string Close::toString() const {
-	return "close " + to_string(trainerId) + " " + getStatusStr();
+	return "close " + to_string(trainerId) + ' ' + getStatusStr();
 }
 
 

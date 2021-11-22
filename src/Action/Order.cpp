@@ -35,7 +35,7 @@ void Order::act(Studio &studio) {
 
 
 std::string Order::toString() const {
-	return "order " + to_string(trainerId) + " " + getStatusStr();
+	return "order " + to_string(trainerId) + ' ' + getStatusStr();
 }
 
 

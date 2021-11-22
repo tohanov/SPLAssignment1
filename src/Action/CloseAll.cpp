@@ -15,8 +15,9 @@ void CloseAll::act(Studio &studio) {
         }
     }
 
-    cout<<"Studio is now closed!"<<endl;
     studio.setClosed();
+
+    // cout<<"Studio is now closed!"<<endl;
     complete();
 }
 

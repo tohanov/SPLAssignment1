@@ -16,7 +16,7 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList) : train
     this->rebuiltCommandStr = oss.str();
     
     oss.str("");
-    oss.clear();
+    oss.clear(); // flags
 }
 
 
@@ -64,13 +64,13 @@ void OpenTrainer::act(Studio &studio) {
         }
     }
 
-    this->rebuiltCommandStr += ' ' + getStatusStr();
+    // this->rebuiltCommandStr += ' ' + getStatusStr();
 }
 
 
 std::string OpenTrainer::toString() const {
 	// TODO: concatenation operation should be faster?
-	return rebuiltCommandStr;
+	return rebuiltCommandStr + ' ' + getStatusStr();
 }
 
 

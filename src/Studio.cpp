@@ -69,16 +69,18 @@ Studio& Studio::operator=(const Studio &&ref_otherStudio) {
 void Studio::deleteVectors() {
 	workout_options.clear(); // will call destructors
 
-	for (Trainer *ptr_trainer : trainers) {
+	for (Trainer *ptr_trainer : this->trainers) {
 		delete ptr_trainer;
 	}
 
-	for (BaseAction *ptr_action : actionsLog) {
+	for (BaseAction *ptr_action : this->actionsLog) {
 		delete ptr_action;
 	}
 
-	trainers.erase(trainers.begin(), trainers.end());
-	actionsLog.erase(actionsLog.begin(), actionsLog.end());
+	trainers.clear();
+	actionsLog.clear();
+	// trainers.erase(trainers.begin(), trainers.end());
+	// actionsLog.erase(actionsLog.begin(), actionsLog.end());
 }
 
 
