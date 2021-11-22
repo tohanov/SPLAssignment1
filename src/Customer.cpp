@@ -1,20 +1,29 @@
 #include "Customer.h"
 #include <string>
+#include <algorithm>
+
+
 //Constructors:
 //Constructor of base class
 Customer::Customer(std::string c_name, int c_id):name(c_name),id(c_id){}
 
+
 //Constructors of the derived classes
 SweatyCustomer::SweatyCustomer(std::string name, int id):Customer(name,id){}
 
+
 CheapCustomer::CheapCustomer(std::string name, int id):Customer(name,id){}
+
 
 HeavyMuscleCustomer::HeavyMuscleCustomer(std::string name, int id):Customer(name,id){}
 
+
 FullBodyCustomer::FullBodyCustomer(std::string name, int id):Customer(name,id){}
+
 
 //Copy constructor:
 Customer::Customer(const Customer &to_copy):name(to_copy.getName()),id(to_copy.getId()){}
+
 
 //Destructor
 Customer::~Customer() = default;
@@ -28,32 +37,37 @@ int Customer::getId() const{
     return id;
 }
 
+
 std::string Customer::getName() const{
     return name;
 }
+
 
 std::string SweatyCustomer::toString() const {
     // return "Customer's type: sweaty customer. Customer's name: "+this->getName()+". Customer's  id: "+std::to_string(getId());
     return this->getName() + ",swt";
 }
 
+
 std::string CheapCustomer::toString() const {
     // return "Customer's type: cheap customer. Customer's name: "+this->getName()+". Customer's  id: "+std::to_string(getId());
     return this->getName() + ",chp";
 }
+
 
 std::string HeavyMuscleCustomer::toString() const {
     // return "Customer's type: heavy muscle customer. Customer's name: "+this->getName()+". Customer's  id: "+std::to_string(getId());
     return this->getName() + ",mcl";
 }
 
+
 std::string FullBodyCustomer::toString() const {
     // return "Customer's type: full body customer. Customer's name: "+this->getName()+". Customer's  id: "+std::to_string(getId());
     return this->getName() + ",fbd";
 }
 
-// implementation of the virtual function "order"
 
+// implementation of the virtual function "order"
 std::vector<int> SweatyCustomer::order(const std::vector<Workout> &workout_options){
     std::vector<int> output={};
 
@@ -65,6 +79,7 @@ std::vector<int> SweatyCustomer::order(const std::vector<Workout> &workout_optio
 
 }
 
+
 std::vector<int> CheapCustomer::order(const std::vector<Workout> &workout_options){
     std::vector<int> output={};
 
@@ -74,42 +89,27 @@ std::vector<int> CheapCustomer::order(const std::vector<Workout> &workout_option
     return output;
 }
 
+
 std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_options){
 
-    typedef std::pair<int, int> workout_info; //left id, right price
-    
+    typedef std::pair<int, int> workout_info; //left price, right id
+
     std::vector<workout_info> anaerobic_workouts={};
     std::vector<int> output={};
 
-    for(size_t i=0;i<workout_options.size();i++)   // find all anaerobic workouts
-        if(workout_options[i].getType()==ANAEROBIC)
-            anaerobic_workouts.emplace_back(workout_options[i].getId(),workout_options[i].getPrice());
+    for(const auto & workout_option : workout_options)   // find all anaerobic workouts
+        if(workout_option.getType()==ANAEROBIC)
+            anaerobic_workouts.emplace_back(workout_option.getPrice(),-1 * workout_option.getId());
 
-    // now sorting anaerobic_workouts by price, min price to max, insertion sort
-    size_t i,j;
-    int key_price,key_id;
+    std::sort(anaerobic_workouts.begin(),anaerobic_workouts.end());
 
-    for(i=1;i<anaerobic_workouts.size();i++){
-        key_id=anaerobic_workouts[i].first;
-        key_price=anaerobic_workouts[i].second;
-        j=i-1;
-
-        while ((j>=0 && key_price<anaerobic_workouts[j].second) ||
-              (key_price==anaerobic_workouts[j].second && key_id>anaerobic_workouts[j].first)){
-            anaerobic_workouts[j+1]=anaerobic_workouts[j];
-            j--;
-        }
-
-        anaerobic_workouts[j+1]=workout_info(key_id,key_price);
-    }
-
-    for(i = anaerobic_workouts.size(); i >= 1; i--)
-        output.push_back(anaerobic_workouts[ i-1 ].first);
+    for(size_t i = anaerobic_workouts.size(); i >= 1; i--)
+        output.push_back(-1 * anaerobic_workouts[ i-1 ].second);
 
     return output;
 
-
 }
+
 
 std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_options){
     std::vector<int> output={};
@@ -129,8 +129,8 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
 
 }
 
-//auxiliary functions:
 
+//auxiliary functions:
 int find_cheapest_workout(const std::vector<Workout> &workout_options){
     if(workout_options.empty())
         return -1;
@@ -149,6 +149,7 @@ int find_cheapest_workout(const std::vector<Workout> &workout_options){
 
     return min_index;
 }
+
 
 int find_cheapest_workout(const std::vector<Workout> &workout_options,WorkoutType type){
     size_t min_index=-1,i; // compiler will treat (-1) as the max value of unsigned long
@@ -172,6 +173,7 @@ int find_cheapest_workout(const std::vector<Workout> &workout_options,WorkoutTyp
     }
     return min_index;
 }
+
 
 int find_most_expensive_mixed_workout(const std::vector<Workout> &workout_options){
     size_t max_index=-1,i;
