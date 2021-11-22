@@ -1,8 +1,22 @@
 #include "Action.h"
 
+ostringstream OpenTrainer::oss; // static property of OpenTrainer
 
 OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList) : trainerId(id), customers(customersList) {
 	// TODO: ?expects the vector of customers to be fresh without anyone sharing the same pointers?
+
+	oss << "open " << this->trainerId;
+
+	for (Customer *ptr_customer : customers) {
+		oss << ' ' << ptr_customer->toString();
+	}
+
+	// oss << ' ' << getStatusStr();
+
+    this->rebuiltCommandStr = oss.str();
+    
+    oss.str("");
+    oss.clear();
 }
 
 
@@ -16,53 +30,47 @@ void OpenTrainer::act(Studio &studio) {
             delete cus;
 
         error(errMsg);
-        return;
+        // return;
+    }
+    else {
+
+        Trainer* t1=studio.getTrainer(trainerId);
+
+        if(t1->isOpen()) {
+            error(errMsg);
+            for(Customer* cus:customers)    //deleting unused customers
+                delete cus;
+
+            // return;
+        }
+        else {
+            t1->openTrainer();
+
+            size_t i=0;
+            int current_num_of_customers=t1->getCustomers().size();
+            while (i<customers.size() && current_num_of_customers < t1->getCapacity()){
+                t1->addCustomer(customers[i]);
+                i++;
+                current_num_of_customers++;
+            }
+
+            while (i<customers.size()){     // deleting customers that could not be added
+
+                delete customers[i];
+                i++;
+            }
+
+            complete();
+        }
     }
 
-
-    Trainer* t1=studio.getTrainer(trainerId);
-
-    if(t1->isOpen()) {
-        error(errMsg);
-        for(Customer* cus:customers)    //deleting unused customers
-            delete cus;
-
-        return;
-    }
-
-    t1->openTrainer();
-
-    size_t i=0;
-    int current_num_of_customers=t1->getCustomers().size();
-    while (i<customers.size() && current_num_of_customers < t1->getCapacity()){
-          t1->addCustomer(customers[i]);
-          i++;
-          current_num_of_customers++;
-    }
-
-    while (i<customers.size()){     // deleting customers that could not be added
-
-        delete customers[i];
-        i++;
-    }
-
-    complete();
+    this->rebuiltCommandStr += ' ' + getStatusStr();
 }
 
 
 std::string OpenTrainer::toString() const {
 	// TODO: concatenation operation should be faster?
-	ostringstream iss;
-
-	iss << "open " << this->trainerId;
-
-	for (Customer *ptr_customer : customers) {
-		iss << ' ' << ptr_customer->toString();
-	}
-
-	iss << ' ' << getStatusStr();
-
-	return iss.str();
+	return rebuiltCommandStr;
 }
 
 

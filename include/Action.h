@@ -84,6 +84,8 @@ private:
     
 	// added
 	// static const std::string strategies[];
+    string rebuiltCommandStr;
+    static ostringstream oss;
 };
 
 
