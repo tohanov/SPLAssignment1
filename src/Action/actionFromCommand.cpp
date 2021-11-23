@@ -39,6 +39,11 @@ BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream, Stu
 
 BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
 	int trainerId;
+	commandStream >> trainerId >> std::ws;
+
+	if ( ! Trainer::isValidTrainerId(trainerId)) {
+		return nullptr;
+	}
 
 	string customerName;
 	string customerStrategy;
@@ -46,8 +51,6 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream, St
 
 	// TODO: maybe should be on stack
 	vector<Customer*> customers; // = new vector<Customer*>;
-
-	commandStream >> trainerId >> std::ws;
 
 	while ( getline(commandStream, customerName, ',') ) {
 		commandStream >> customerStrategy >> std::ws;

@@ -301,5 +301,5 @@ bool Trainer::getOpenedBefore() const {
 
 
 bool Trainer::isValidTrainerId(int _trainerId) { // static function
-    return _trainerId >= 0 && _trainerId < Trainer::number_of_trainers;
+    return _trainerId >= 0 && _trainerId < number_of_trainers;
 }
