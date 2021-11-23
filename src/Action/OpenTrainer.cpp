@@ -53,6 +53,8 @@ void OpenTrainer::act(Studio &studio) {
                 current_num_of_customers++;
             }
 
+            studio.notifyCustomersAddition(i);
+
             while (i<customers.size()){     // deleting customers that could not be added
                 delete customers[i];
                 i++;

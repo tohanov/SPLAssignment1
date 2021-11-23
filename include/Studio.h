@@ -38,7 +38,9 @@ public:
     Studio& operator=(const Studio &&ref_otherStudio); // TODO: move assignment operator
     virtual ~Studio(); // TODO: destructor
     void setClosed();
-    int getNextCustomerId(); // TODO: figure out
+    int getLatestCustomerId() const;
+    void notifyCustomersAddition(unsigned int increment);
+
 private:
     bool open;
     std::vector<Trainer*> trainers;
@@ -46,11 +48,12 @@ private:
     std::vector<BaseAction*> actionsLog;
 	
 	// added
+    int latestCustomerId;
+
 	void parseConfigFile(std::fstream &configFile);
     void deleteVectors ();
     void copyPropertiesFrom(const Studio &ref_otherStudio);
     void movePropertiesFrom(const Studio *ptr_otherStudio);
-    int nextCustomerId;
 };
 
 #endif

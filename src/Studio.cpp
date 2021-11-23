@@ -8,7 +8,7 @@ extern Studio* backup;
 using namespace std;
 
 
-Studio::Studio() : nextCustomerId(0) {
+Studio::Studio() : latestCustomerId(-1) {
 	// TODO: ???
 }
 
@@ -88,7 +88,7 @@ void Studio::copyPropertiesFrom(const Studio &ref_otherStudio) {
 	// workout_options = ref_otherStudio.workout_options; // copy assignment
 
 	open = ref_otherStudio.open;
-	nextCustomerId = ref_otherStudio.nextCustomerId;
+	latestCustomerId = ref_otherStudio.latestCustomerId;
 
 	// deep copy
 	for (Workout workout : ref_otherStudio.workout_options) {
@@ -113,7 +113,7 @@ void Studio::movePropertiesFrom(const Studio *ptr_otherStudio) {
 	// this->deleteVectors();
 
 	this->open = ptr_otherStudio->open;
-	this->nextCustomerId = ptr_otherStudio->nextCustomerId;
+	this->latestCustomerId = ptr_otherStudio->latestCustomerId;
 
 	// shallow copies because moving
 	for (Workout workout : ptr_otherStudio->workout_options) {
@@ -128,7 +128,7 @@ void Studio::movePropertiesFrom(const Studio *ptr_otherStudio) {
 }
 
 // TODO: see what default values need to be set
-Studio::Studio(const std::string &configFilePath) : nextCustomerId(0) {
+Studio::Studio(const std::string &configFilePath) : latestCustomerId(-1) {
 
 	fstream configFile;
 	// this->open = true;
@@ -280,6 +280,11 @@ void trim (string &str, const char* typeOfWhitespaces) {
 }
 
 
-int Studio::getNextCustomerId() {
-	return nextCustomerId++;
+int Studio::getLatestCustomerId() const {
+	return latestCustomerId;
+}
+
+
+void Studio::notifyCustomersAddition(unsigned int increment) {
+	latestCustomerId += increment;
 }

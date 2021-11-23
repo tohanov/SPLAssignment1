@@ -41,20 +41,20 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream, St
 	int trainerId;
 	commandStream >> trainerId >> std::ws;
 
-	if ( ! Trainer::isValidTrainerId(trainerId)) {
-		return nullptr;
-	}
+	// TODO: maybe should be on stack
+	vector<Customer*> customers; // = new vector<Customer*>;
+
+	// if ( ! Trainer::isValidTrainerId(trainerId)) {
+	// 	return new OpenTrainer(trainerId, /* * */customers);
+	// }
 
 	string customerName;
 	string customerStrategy;
 	Customer* customer;
 
-	// TODO: maybe should be on stack
-	vector<Customer*> customers; // = new vector<Customer*>;
-
-	while ( getline(commandStream, customerName, ',') ) {
+	for (int customerId = ref_studio.getLatestCustomerId() + 1; getline(commandStream, customerName, ','); ++customerId ) {
 		commandStream >> customerStrategy >> std::ws;
-		int customerId = ref_studio.getNextCustomerId();
+		// int customerId = ref_studio.getNextCustomerId();
 
 		if (customerStrategy == "swt") {
 			customer = new SweatyCustomer(customerName, customerId);
