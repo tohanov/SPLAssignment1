@@ -32,7 +32,7 @@ BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream, Stu
 		}
 	}
 
-	cout << "[*] reached unreachable code" << endl; // TODO: remove debug line
+	// cout << "[*] reached unreachable code" << endl; // TODO: remove debug line
 	return nullptr; // Unreachable code, if the input is valid (which is assumed). This was put here to avoid a warning from the compiler
 }
 
@@ -67,7 +67,7 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream, St
 	}
 
 	// TODO: ask someone about passing customers as a reference like this. causes a memory leak if created on heap
-	return new OpenTrainer(trainerId, /* * */customers);
+	return (customers.size() == 0) ? nullptr : new OpenTrainer(trainerId, /* * */customers);
 }
 
 
@@ -112,7 +112,7 @@ BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStr
 	int trainerId;
 	commandStream >> trainerId;
 
-	return new PrintTrainerStatus(trainerId);
+	return (ref_studio.getTrainer(trainerId)->getOpenedBefore()) ? new PrintTrainerStatus(trainerId) : nullptr;
 }
 
 

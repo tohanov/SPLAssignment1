@@ -47,10 +47,11 @@ public:
     virtual void act(Studio& studio)=0;
     virtual std::string toString() const=0;
 	// added
+    // BaseAction(const BaseAction &ref_otherBaseAction);
 	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate()=0;
     virtual ~BaseAction();
-    static void matchFlags(BaseAction *source, BaseAction *destination);
+    static void matchFlags(const BaseAction *source, BaseAction *destination);
 protected:
     void complete();
     void error(std::string errorMsg);
@@ -78,6 +79,13 @@ public:
 	// added
 	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate();
+
+    // rule of 5
+    virtual ~OpenTrainer();// destructor
+    OpenTrainer(const OpenTrainer &ref_otherOpenTrainer);// copy constructor
+    OpenTrainer(const OpenTrainer &&ref_otherOpenTrainer);// move constructor
+    // OpenTrainer& operator=(const OpenTrainer &ref_otherOpenTrainer);// copy assignment
+    // OpenTrainer& operator=(const OpenTrainer &&ref_otherOpenTrainer);// move assignment
 private:
 	const int trainerId;
 	std::vector<Customer *> customers;
@@ -86,6 +94,12 @@ private:
 	// static const std::string strategies[];
     string rebuiltCommandStr;
     static ostringstream oss;
+
+    // OpenTrainer& performCopy(const OpenTrainer &ref_otherOpenTrainer);
+    // void copyHeaders(const OpenTrainer &ref_source, OpenTrainer &ref_destionation);
+    void copyCustomers(const OpenTrainer &ref_source, OpenTrainer &ref_destination);
+
+    void deleteCustomers();
 };
 
 

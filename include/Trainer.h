@@ -24,9 +24,9 @@ public:
     void closeTrainer();
     int getSalary();
     bool isOpen();
-
+    bool getOpenedBefore();
+    
 private:
-
     int capacity;
     int current_salary;
     const int id;
@@ -40,6 +40,7 @@ private:
 
     int find_customer_index(int id);
     int find_insertion_index(int id);
+    bool openedBefore;
 };
 
 

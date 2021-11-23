@@ -4,7 +4,7 @@
 int Trainer::number_of_trainers=0;
 
 
-Trainer::Trainer(int t_capacity) : capacity(t_capacity), id(number_of_trainers){
+Trainer::Trainer(int t_capacity) : capacity(t_capacity), id(number_of_trainers), openedBefore(false) {
     current_salary=0;
     open=false;
 
@@ -13,7 +13,7 @@ Trainer::Trainer(int t_capacity) : capacity(t_capacity), id(number_of_trainers){
 
 
 //Copy constructor
-Trainer::Trainer(const Trainer &to_copy):capacity(to_copy.getCapacity()),id(to_copy.get_id()) {
+Trainer::Trainer(const Trainer &to_copy):capacity(to_copy.getCapacity()),id(to_copy.get_id()), openedBefore(to_copy.openedBefore) {
     current_salary=to_copy.current_salary;
     open=to_copy.open;
 
@@ -131,7 +131,8 @@ void Trainer::order(const int customer_id, const std::vector<int> workout_ids, c
 }
 
 
-void Trainer::openTrainer(){
+void Trainer::openTrainer() {
+    openedBefore = true;
     if (open)
         std::cout<<"Trainer already open"<<std::endl; // TODO: error?
     else
@@ -217,4 +218,9 @@ void Trainer::update_number_of_trainers() {
 void Trainer::update_salary(int sum){
     current_salary+=sum;
 
+}
+
+
+bool Trainer::getOpenedBefore() {
+    return openedBefore;
 }

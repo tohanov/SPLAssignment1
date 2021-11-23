@@ -5,6 +5,12 @@ BaseAction::BaseAction() {
 
 }
 
+
+// BaseAction::BaseAction(const BaseAction &ref_otherBaseAction) :  status(status), erroMsg(ref_otherBaseAction.errorMsg){
+
+// }
+
+
 BaseAction::~BaseAction() {
 
 }
@@ -38,7 +44,7 @@ std::string BaseAction::getErrorMsg() const {
 }
 
 
-void BaseAction::matchFlags(BaseAction *source, BaseAction *destination) { // static
+void BaseAction::matchFlags(const BaseAction *source, BaseAction *destination) { // static
 	destination->status = source->status;
 
 	if (source->status == ActionStatus::ERROR) {

@@ -12,6 +12,7 @@ void PrintTrainerStatus::act(Studio& studio) {
 
 	// cout << "[*] inside PrintTrainerStatus::act()" << endl; // TODO: remove debug line
 	Trainer &ref_trainer = *(studio.getTrainer(trainerId));
+	
 	bool isOpen = ref_trainer.isOpen();
 	cout << "Trainer " << trainerId << " status: " << (isOpen ? "open" : "closed")  << endl;
 

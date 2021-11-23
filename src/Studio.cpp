@@ -170,11 +170,13 @@ void Studio::start() {
 		BaseAction* actionPtr = BaseAction::actionFromCommand(commandStream, *this);
 
 //		cout << "after actionFromCommand()" << endl; // TODO: remove debug line
-		actionPtr->act(*this);
+		if (actionPtr != nullptr) {
+			actionPtr->act(*this);
+			actionsLog.push_back(actionPtr);
+		}
 
 //		cout << "after act()" << endl; // TODO: remove debug line
 
-		actionsLog.push_back(actionPtr);
 	} 	while(this->open); // command.compare("closeall") != 0
 }
 
