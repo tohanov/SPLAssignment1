@@ -1,6 +1,6 @@
 #include "Customer.h"
 #include <string>
-#include <algorithm>
+#include <algorithm> // for std::sort
 
 
 //Constructors:

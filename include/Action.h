@@ -94,6 +94,7 @@ private:
 	// static const std::string strategies[];
     string rebuiltCommandStr;
     static ostringstream oss;
+    static const string commonErrorMessage;
 
     // OpenTrainer& performCopy(const OpenTrainer &ref_otherOpenTrainer);
     // void copyHeaders(const OpenTrainer &ref_source, OpenTrainer &ref_destionation);
@@ -130,6 +131,7 @@ private:
     const int srcTrainer;
     const int dstTrainer;
     const int id;
+    static const string commonErrorMessage;
 };
 
 

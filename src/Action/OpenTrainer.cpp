@@ -2,6 +2,7 @@
 
 
 ostringstream OpenTrainer::oss; // static property of OpenTrainer
+const string OpenTrainer::commonErrorMessage = "Workout session does not exist or is already open"; // static property
 
 
 OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList) : trainerId(id), customers(customersList) {
@@ -23,45 +24,43 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList) : train
 
 
 void OpenTrainer::act(Studio &studio) {
-	static const string errMsg = "Workout session does not exist or is already open";
-
     // shouldn't do anything if no customers are given, according to answers at the forum
     // if (customers.size() != 0) {
-        if(trainerId<0 || trainerId >= studio.getNumOfTrainers()){
-            error(errMsg);
+    if(trainerId<0 || trainerId >= studio.getNumOfTrainers()){
+        error(commonErrorMessage);
+        deleteCustomers();    //deleting unused customers
+
+        // return;
+    }
+    else {
+        Trainer* t1=studio.getTrainer(trainerId);
+
+        if(t1->isOpen()) {
+            error(commonErrorMessage);
             deleteCustomers();    //deleting unused customers
 
             // return;
         }
         else {
-            Trainer* t1=studio.getTrainer(trainerId);
+            t1->openTrainer();
 
-            if(t1->isOpen()) {
-                error(errMsg);
-                deleteCustomers();    //deleting unused customers
-
-                // return;
+            size_t i=0;
+            int current_num_of_customers=t1->getCustomers().size();
+            while (i<customers.size() && current_num_of_customers < t1->getCapacity()){
+                t1->addCustomer(customers[i]);
+                customers[i] = nullptr;
+                i++;
+                current_num_of_customers++;
             }
-            else {
-                t1->openTrainer();
 
-                size_t i=0;
-                int current_num_of_customers=t1->getCustomers().size();
-                while (i<customers.size() && current_num_of_customers < t1->getCapacity()){
-                    t1->addCustomer(customers[i]);
-                    customers[i] = nullptr;
-                    i++;
-                    current_num_of_customers++;
-                }
-
-                while (i<customers.size()){     // deleting customers that could not be added
-                    delete customers[i];
-                    i++;
-                }
-
-                complete();
+            while (i<customers.size()){     // deleting customers that could not be added
+                delete customers[i];
+                i++;
             }
+
+            complete();
         }
+    }
     // }
 
     // those that were used are now pointed to by the Trainer instance, and those that weren't are now deleted. no need to store pointers
