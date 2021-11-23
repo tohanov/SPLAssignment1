@@ -280,7 +280,7 @@ int Trainer::find_insertion_index(int id) {
 
 
 const int Trainer::get_id() const {
-    return  id;
+    return id;
 }
 
 
@@ -295,6 +295,11 @@ void Trainer::update_salary(int sum){
 }
 
 
-bool Trainer::getOpenedBefore() {
+bool Trainer::getOpenedBefore() const {
     return openedBefore;
+}
+
+
+bool Trainer::isValidTrainerId(int _trainerId) { // static function
+    return _trainerId >= 0 && _trainerId < Trainer::number_of_trainers;
 }

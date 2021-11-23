@@ -22,8 +22,10 @@ public:
     void closeTrainer();
     int getSalary();
     bool isOpen();
-    bool getOpenedBefore();
 
+    //
+    bool getOpenedBefore() const;
+    static bool isValidTrainerId(int trainerId);
     Trainer(const Trainer &to_copy);
     Trainer(const Trainer &&to_move);
     virtual ~Trainer();

@@ -269,7 +269,6 @@ void Studio::parseConfigFile(fstream &configFile) {
 }
 
 
-
 void Studio::setClosed() {
 	open = false;
 }

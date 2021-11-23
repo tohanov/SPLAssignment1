@@ -112,7 +112,7 @@ BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStr
 	int trainerId;
 	commandStream >> trainerId;
 
-	return (ref_studio.getTrainer(trainerId)->getOpenedBefore()) ? new PrintTrainerStatus(trainerId) : nullptr;
+	return (Trainer::isValidTrainerId(trainerId) && ref_studio.getTrainer(trainerId)->getOpenedBefore()) ? new PrintTrainerStatus(trainerId) : nullptr;
 }
 
 

@@ -16,7 +16,7 @@ void PrintTrainerStatus::act(Studio& studio) {
 	bool isOpen = ref_trainer.isOpen();
 	cout << "Trainer " << trainerId << " status: " << (isOpen ? "open" : "closed")  << endl;
 
-	if (isOpen) {
+	if (isOpen && ref_trainer.getOrders().size() != 0) {
 		vector<Customer*> &ref_customers = ref_trainer.getCustomers();
 
 		cout << "Customers:" << endl;

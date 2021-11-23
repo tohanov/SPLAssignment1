@@ -10,7 +10,7 @@ MoveCustomer::MoveCustomer (int src, int dst, int customerId) : srcTrainer(src),
 
 
 void MoveCustomer::act(Studio &studio) {
-    if(srcTrainer<0 || srcTrainer >= studio.getNumOfTrainers() || dstTrainer<0 || dstTrainer >= studio.getNumOfTrainers()){
+    if( ! Trainer::isValidTrainerId(srcTrainer) || ! Trainer::isValidTrainerId(dstTrainer) ) { //srcTrainer<0 || srcTrainer >= studio.getNumOfTrainers() || dstTrainer<0 || dstTrainer >= studio.getNumOfTrainers()){
         error(commonErrorMessage);
         return;
     }
