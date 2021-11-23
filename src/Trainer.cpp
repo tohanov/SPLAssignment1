@@ -12,39 +12,71 @@ Trainer::Trainer(int t_capacity) : capacity(t_capacity), id(number_of_trainers),
 }
 
 
-//Copy constructor
-Trainer::Trainer(const Trainer &to_copy):capacity(to_copy.getCapacity()),id(to_copy.get_id()), openedBefore(to_copy.openedBefore) {
-    current_salary=to_copy.current_salary;
-    open=to_copy.open;
-
-    for(auto c:to_copy.customersList) {
-        // TODO: change back
-        // if (typeid(c) == typeid(SweatyCustomer*)) {
-        //     auto *p_customer = new SweatyCustomer(c->getName(), c->getId());
-        //     customersList.push_back(p_customer);
-        // }
-        // else if(typeid(c) == typeid(CheapCustomer*)){
-        //     auto* p_customer=new CheapCustomer(c->getName(),c->getId());
-        //     customersList.push_back(p_customer);
-        // }
-        // else if(typeid(c) == typeid(HeavyMuscleCustomer*)){
-        //     auto* p_customer=new HeavyMuscleCustomer(c->getName(),c->getId());
-        //     customersList.push_back(p_customer);
-        // }
-
-        // else{
-        //     auto* p_customer=new FullBodyCustomer(c->getName(),c->getId());
-        //     customersList.push_back(p_customer);
-        // }
-        auto *p_customer = c->duplicate();
-        customersList.push_back(p_customer);
-    }
-
-
-    for(auto &order : to_copy.orderList)
-       orderList.push_back(order);
-
+// partial rule of 5 implementation due to presense of const properties
+Trainer::Trainer(const Trainer &to_copy): id(to_copy.get_id()) {	//Copy constructor
+    copy_properties_from_trainer(to_copy);
 }
+
+
+
+Trainer::Trainer(const Trainer &&to_move) : id(to_move.get_id()) {    //move constructor
+    move_properties_from_trainer(&to_move);
+}
+
+
+// Trainer& Trainer::operator=(const Trainer &to_copy) {     //copy assignment
+//     if(this==&to_copy)
+//         return *this;
+
+//     delete_vectors_trainer();
+//     copy_properties_from_trainer(to_copy);
+//         return *this;
+// }
+
+
+// Trainer& Trainer::operator=(const Trainer &&to_move) {    // move assignment
+
+//     delete_vectors_trainer();
+//     move_properties_from_trainer(&to_move);
+//     return *this;
+
+// }
+
+//------------------------------------------------------------
+
+//Copy constructor
+// Trainer::Trainer(const Trainer &to_copy):capacity(to_copy.getCapacity()),id(to_copy.get_id()), openedBefore(to_copy.openedBefore) {
+//     current_salary=to_copy.current_salary;
+//     open=to_copy.open;
+
+//     for(auto c:to_copy.customersList) {
+//         // TODO: change back
+//         // if (typeid(c) == typeid(SweatyCustomer*)) {
+//         //     auto *p_customer = new SweatyCustomer(c->getName(), c->getId());
+//         //     customersList.push_back(p_customer);
+//         // }
+//         // else if(typeid(c) == typeid(CheapCustomer*)){
+//         //     auto* p_customer=new CheapCustomer(c->getName(),c->getId());
+//         //     customersList.push_back(p_customer);
+//         // }
+//         // else if(typeid(c) == typeid(HeavyMuscleCustomer*)){
+//         //     auto* p_customer=new HeavyMuscleCustomer(c->getName(),c->getId());
+//         //     customersList.push_back(p_customer);
+//         // }
+
+//         // else{
+//         //     auto* p_customer=new FullBodyCustomer(c->getName(),c->getId());
+//         //     customersList.push_back(p_customer);
+//         // }
+//         auto *p_customer = c->duplicate();
+//         customersList.push_back(p_customer);
+//     }
+
+
+//     for(auto &order : to_copy.orderList)
+//        orderList.push_back(order);
+
+// }
 
 
 //Destructor
@@ -54,6 +86,48 @@ Trainer::~Trainer() {
     }
 
     customersList.clear();
+}
+
+
+//added functions:
+
+void Trainer::copy_properties_from_trainer(const Trainer &to_copy) {
+    capacity = to_copy.getCapacity();
+    openedBefore = to_copy.openedBefore;
+    open=to_copy.open;
+    current_salary=to_copy.current_salary;
+
+    for(auto customer:to_copy.customersList)
+        customersList.push_back(customer->duplicate());
+
+    for(auto order:to_copy.orderList)
+        orderList.emplace_back(order.first,order.second);
+
+}
+
+void Trainer::move_properties_from_trainer(const Trainer *to_move) {
+    capacity = to_move->getCapacity();
+    openedBefore = to_move->openedBefore;
+    open=to_move->open;
+    current_salary=to_move->current_salary;
+
+    for(auto cus:to_move->customersList)
+        customersList.push_back(cus);
+
+    for(auto order:to_move->orderList)
+        orderList.push_back(order);
+
+}
+
+void Trainer::delete_vectors_trainer() {
+
+    orderList.clear();
+
+    for(auto cus:customersList)
+        delete cus;
+
+    customersList.clear();
+
 }
 
 

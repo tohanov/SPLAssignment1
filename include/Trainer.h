@@ -11,8 +11,6 @@ typedef std::pair<int, Workout> OrderPair;
 class Trainer{
 public:
     Trainer(int t_capacity);
-    Trainer(const Trainer &to_copy);
-    ~Trainer();
     int getCapacity() const;
     void addCustomer(Customer* customer);
     void removeCustomer(int id);
@@ -25,7 +23,10 @@ public:
     int getSalary();
     bool isOpen();
     bool getOpenedBefore();
-    
+
+    Trainer(const Trainer &to_copy);
+    Trainer(const Trainer &&to_move);
+    virtual ~Trainer();
 private:
     int capacity;
     int current_salary;
@@ -41,6 +42,11 @@ private:
     int find_customer_index(int id);
     int find_insertion_index(int id);
     bool openedBefore;
+
+    
+    void copy_properties_from_trainer(const Trainer &to_copy);
+    void move_properties_from_trainer(const Trainer *to_move);
+    void delete_vectors_trainer();
 };
 
 
