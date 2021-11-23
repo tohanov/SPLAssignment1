@@ -10,7 +10,7 @@ void Close::act(Studio &studio) {
     // TODO: move error string to class scope?
     static const string errMsg = "Trainer does not exist or is not open";
     
-    if(trainerId<0 || trainerId >= studio.getNumOfTrainers()) {
+    if( ! Trainer::isValidTrainerId(trainerId)) { //trainerId<0 || trainerId >= studio.getNumOfTrainers()) {
         error(errMsg);
         return;
     }

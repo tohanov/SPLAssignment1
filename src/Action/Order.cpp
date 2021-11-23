@@ -7,7 +7,7 @@ Order::Order (int id) : trainerId(id) {
 
 
 void Order::act(Studio &studio) {
-    if(trainerId<0 || trainerId >= studio.getNumOfTrainers()){
+    if( ! Trainer::isValidTrainerId(trainerId)) {//trainerId<0 || trainerId >= studio.getNumOfTrainers()){
         error("Trainer does not exist or is not open");
         return;
     }

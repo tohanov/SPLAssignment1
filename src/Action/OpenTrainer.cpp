@@ -26,7 +26,7 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList) : train
 void OpenTrainer::act(Studio &studio) {
     // shouldn't do anything if no customers are given, according to answers at the forum
     // if (customers.size() != 0) {
-    if(trainerId<0 || trainerId >= studio.getNumOfTrainers()){
+    if( ! Trainer::isValidTrainerId(trainerId)) { //trainerId<0 || trainerId >= studio.getNumOfTrainers()){
         error(commonErrorMessage);
         deleteCustomers();    //deleting unused customers
 
