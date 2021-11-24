@@ -36,7 +36,7 @@ Orders:
 Rope Jumps 70NIS 4
 Pilates 110NIS 5
 Yoga 90NIS 5
-Current Trainer’s Salary: 270NIS
+Current Trainer's Salary: 270NIS
 Trainer 2 status: closed
 Shuli Is Doing Rope Jumps
 Trainer 0 status: open
@@ -44,13 +44,13 @@ Customers:
 6 Shuli
 Orders:
 Rope Jumps 70NIS 6
-Current Trainer’s Salary: 70NIS
+Current Trainer's Salary: 70NIS
 Trainer 3 status: open
 Customers:
 4 Alice
 Orders:
 Rope Jumps 70NIS 4
-Current Trainer’s Salary: 70NIS
+Current Trainer's Salary: 70NIS
 Error: Trainer does not exist or is not open
 Trainer 0 closed. Salary 270NIS
 Trainer 3 closed. Salary 70NIS
