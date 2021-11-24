@@ -55,12 +55,7 @@ for file in os.listdir(scenariosPath):
 				print("\033[1;31m[!]\033[0m", file, "\033[1;31mFAILED\033[0m")
 				
 				with open(outputsPath+"/" + file.replace(sceneFileExtension, failedOutputExtension), "w") as f:
-					# for line in difflib.unified_diff(outputs.split("\n"), stdout.split("\n"), fromfile='EXPECTED', tofile='OCCURED'):
-						# print(line)
-					# f.writelines(difflib.unified_diff(outputs.split("\n"), stdout.split("\n"), fromfile='EXPECTED',tofile='OCCURED', lineterm="\n"))
-					# f.write(difflib.HtmlDiff().make_file(outputs.split("\n"), stdout.split("\n"), fromfile='EXPECTED',tofile='OCCURED', lineterm="\n"))
-					
-					f.write(difflib.HtmlDiff().make_file(outputs.split("\n"), stdout.split("\n"),'EXPECTED','OCCURED'))
+					f.write(difflib.HtmlDiff().make_file(outputs.split("\n"), stdout.split("\n"), 'EXPECTED', 'OCCURED'))
 			else:
 				print("[+]", file, "passed")
 
