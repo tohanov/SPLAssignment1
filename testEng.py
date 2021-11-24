@@ -8,7 +8,7 @@ scenariosPath = 'tests/scenarios'
 outputsPath = 'tests/outputs'
 sceneFileExtension = '.scene'
 sceneSeparatorPrefix = '\n'
-sceneSeparator = '*****\n'
+sceneSeparator = '*'*5+'\n'
 sceneSeparatorSuffix = '\n'
 # passedOutputExtension = ".pass"
 failedOutputExtension = ".FAIL.html"
@@ -16,17 +16,17 @@ command = ['bin/studio', 'ExampleInput.txt']
 configFilePath = 'ExampleInput.txt'
 
 
-usage = "\n\033[1;32mUsage:\n\n[*]\033[0m Place the script in the project's dir. Make sure there exists a config file '" + configFilePath + "'. Make sure there is a '" + scenariosPath + "' directory. Each scenario should be a text file of commands, and expected output; scenario files should have the extension '"\
+usage = "-"*20 + "\n\033[1;32mUsage:\n\n[*]\033[0m Place the script in the project's dir. Make sure there exists a config file '" + configFilePath + "'. Make sure there is a '" + scenariosPath + "' directory. Each scenario should be a text file of commands, and expected output; scenario files should have the extension '"\
 + sceneFileExtension +\
 "'. Last command in each scenario should be 'closeall'.\n"\
-"\n\n\033[1;32m[*]\033[0m The script is going to mention which scenarios failed. For the failed scenarios, the differences between the expected output and the actual one will be dumped as .html files in the " + outputsPath + " dir.\n"\
-"\n\n\033[1;32m[*]\033[0m format of a .scene file:\n"\
+"\n\n\033[1;32m[*]\033[0m The script is going to mention which scenarios failed. For the failed scenarios, the differences between the expected output and the actual one will be dumped as .html files in the '" + outputsPath + "' dir.\n"\
+"\n\n\033[1;32m[*]\033[0m Format of a .scene file:\n"\
 "\t<series of commands, ending with 'closeall'>\n"\
 "\t<blank line>\n"\
 "\t"+sceneSeparator+\
 "\t<blank line>\n"\
 "\t<expected output>\n"\
-"\n\n\033[1;32m[*]\033[0m To run the script you need python ('sudo apt install python3 -y' on ubuntu/debian systems)\n\n"
+"\n\n\033[1;32m[*]\033[0m This script was written to run in a linux terminal (may or may not run on windows). To run the script you need python (can be installed by running 'sudo apt install python3 -y' on ubuntu/debian systems.)\n\n"+"-"*20
 
 
 if not os.path.isdir(scenariosPath):
