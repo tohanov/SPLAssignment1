@@ -65,32 +65,32 @@ for file in os.listdir(scenariosPath):
 			with open(scenariosPath+"/" + file) as f:
 				testText = f.read()
 			
-			inputs,outputs = testText.split(sceneSeparatorPrefix + sceneSeparator + sceneSeparatorSuffix, 1)
+			userCommands,expectedOutput = testText.split(sceneSeparatorPrefix + sceneSeparator + sceneSeparatorSuffix, 1)
 			
 			with subprocess.Popen(valgrindCommand, stdout=subprocess.PIPE,stderr=subprocess.STDOUT,stdin=subprocess.PIPE,bufsize=1, universal_newlines=True) as p:
-				stdout,stderr = p.communicate(inputs)
+				valgrindOutput,stderr = p.communicate(userCommands)
 				p.wait()
 
 				if p.returncode != 0 or\
-					not "definitely lost: 0" in stdout or\
-					not "indirectly lost: 0" in stdout or\
-					not "possibly lost: 0" in stdout or\
-					not "suppressed: 0" in stdout:
-					print("\033[1;31m[!]\033[0m valgrind check for ", file, "\033[1;31mFAILED\033[0m")
+					"All heap blocks were freed -- no leaks are possible" not in valgrindOutput or\
+					"ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)" not in valgrindOutput:
+					# not "possibly lost: 0" in valgrindOutput or\
+					# not "suppressed: 0" in valgrindOutput:
+					print("\033[1;31m[!]\033[0m valgrind check for", file, "\033[1;31mFAILED\033[0m")
 				else:
 					print("[+] valgrind check for ", file, "passed")
 
 
 			with subprocess.Popen(studioCommand, stdout=subprocess.PIPE,stderr=subprocess.STDOUT,stdin=subprocess.PIPE,bufsize=1, universal_newlines=True) as p:
-				stdout,stderr = p.communicate(inputs)
+				occuredOutput,stderr = p.communicate(userCommands)
 			
-			if stdout != outputs:
+			if expectedOutput != occuredOutput:
 				print("\033[1;31m[!]\033[0m output check for ", file, "\033[1;31mFAILED\033[0m")
 				
 				with open(outputsPath+"/" + file.replace(sceneFileExtension, failedOutputExtension), "w") as f:
-					f.write(difflib.HtmlDiff().make_file(outputs.split("\n"), stdout.split("\n"), 'EXPECTED', 'OCCURED'))
+					f.write(difflib.HtmlDiff().make_file(expectedOutput.split("\n"), occuredOutput.split("\n"), 'EXPECTED', 'OCCURED'))
 			else:
-				print("[+] output check for ", file, "passed")
+				print("[+] output check for", file, "passed")
 
 print()
 
