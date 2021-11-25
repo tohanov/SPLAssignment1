@@ -15,22 +15,39 @@ sceneSeparatorSuffix = '\n'
 failedOutputExtension = ".FAIL.html"
 command = ['bin/studio', 'ExampleInput.txt']
 configFilePath = 'ExampleInput.txt'
+scriptName = os.path.basename(__file__)
 
-
-usage = "-"*20 + "\n\033[1;32mUsage:\n\n[*]\033[0m Place the script in the project's dir. Make sure there exists a config file '" + configFilePath + "'. Make sure there is a '" + scenariosPath + "' directory. Each scenario should be a text file of commands, and expected output; scenario files should have the extension '"\
+usageSeparator = "-"*20
+usage = usageSeparator + "\n\033[1;32mUsage: './" + scriptName + "'\n\n[*]\033[0m\tPlace the script in the project's dir.\n"\
+"\tMake sure the config file '" + configFilePath + "' exists.\n"\
+"\tMake sure the directory '" + scenariosPath + "' exists.\n"\
+"\tEach scenario should be a text file of commands, and expected output; scenario files should have the extension '"\
 + sceneFileExtension +\
-"'. Last command in each scenario should be 'closeall'.\n"\
-"\n\n\033[1;32m[*]\033[0m The script is going to mention which scenarios failed. For the failed scenarios, the differences between the expected output and the actual one will be dumped as .html files in the '" + outputsPath + "' dir (for convenience of viewing in-browser).\n"\
-"\n\n\033[1;32m[*]\033[0m Format of a .scene file:\n"\
-"\t<series of commands, ending with 'closeall'>\n"\
-"\t<blank line>\n"\
-"\t"+sceneSeparator+\
-"\t<blank line>\n"\
-"\t<expected output>\n"\
-"\n\n\033[1;32m[*]\033[0m This script was written to run in a linux terminal (may or may not run on windows). To run the script you need python (can be installed by running 'sudo apt install python3 -y' on ubuntu-based/debian-based systems.)\n\n"+"-"*20
+"'.\n"\
+"\tLast command in each scenario should be 'closeall'.\n"\
+"\n\n"\
+"\033[1;32m[*]\033[0m\tThe script is going to mention which scenarios failed.\n"\
+"\tFor the failed scenarios, the differences between the expected output and the actual one will be dumped as *.html files in the '" + outputsPath + "' dir (to be viewed in-browser).\n"\
+"\n\n"\
+"\033[1;32m[*]\033[0m\tFormat of a *.scene file:\n"\
+"\n"\
+"\t\t<series of commands, ending with 'closeall'>\n"\
+"\t\t<blank line>\n"\
+"\t\t"+sceneSeparator+\
+"\t\t<blank line>\n"\
+"\t\t<expected output>\n"\
+"\n\n\033[1;32m[*]\033[0m \tThis script was written to run in a linux terminal (may or may not run on windows).\n"\
+"\tTo run the script you need python (can be installed by running 'sudo apt install python3 -y' on ubuntu-based/debian-based systems.)\n\n"\
+"You can view this usage information later by running './" + scriptName + " -u' or './" + scriptName + " --usage'.\n"+usageSeparator
 
 
-if "-u" in sys.argv or "--usage" in sys.argv or not os.path.isdir(scenariosPath):
+if "-u" in sys.argv or "--usage" in sys.argv:
+	print(usage)
+	exit()
+	
+if not os.path.isdir(scenariosPath):
+	print("\033[1;31m[!]", scenariosPath, "dir wasn't found.\033[0m")
+
 	print(usage)
 	exit()
 
