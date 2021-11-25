@@ -13,8 +13,9 @@ sceneSeparator = '*'*5+'\n'
 sceneSeparatorSuffix = '\n'
 # passedOutputExtension = ".pass"
 failedOutputExtension = ".FAIL.html"
-command = ['bin/studio', 'ExampleInput.txt']
 configFilePath = 'ExampleInput.txt'
+studioCommand = ['bin/studio', configFilePath]
+valgrindCommand = ['valgrind', '-v', '--leak-check=full', '--show-reachable=yes'] + studioCommand
 scriptName = os.path.basename(__file__)
 
 usageSeparator = "-"*20
@@ -66,16 +67,25 @@ for file in os.listdir(scenariosPath):
 			
 			inputs,outputs = testText.split(sceneSeparatorPrefix + sceneSeparator + sceneSeparatorSuffix, 1)
 			
-			with subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,stdin=subprocess.PIPE,bufsize=1, universal_newlines=True) as p:
+			with subprocess.Popen(valgrindCommand, stdout=subprocess.PIPE,stderr=subprocess.STDOUT,stdin=subprocess.PIPE,bufsize=1, universal_newlines=True) as p:
+				stdout,stderr = p.communicate(inputs)
+				p.wait()
+				if p.returncode != 0:
+					print("\033[1;31m[!]\033[0m valgrind check for ", file, "\033[1;31mFAILED\033[0m")
+				else:
+					print("[+] valgrind check for ", file, "passed")
+
+
+			with subprocess.Popen(studioCommand, stdout=subprocess.PIPE,stderr=subprocess.STDOUT,stdin=subprocess.PIPE,bufsize=1, universal_newlines=True) as p:
 				stdout,stderr = p.communicate(inputs)
 			
 			if stdout != outputs:
-				print("\033[1;31m[!]\033[0m", file, "\033[1;31mFAILED\033[0m")
+				print("\033[1;31m[!]\033[0m output check for ", file, "\033[1;31mFAILED\033[0m")
 				
 				with open(outputsPath+"/" + file.replace(sceneFileExtension, failedOutputExtension), "w") as f:
 					f.write(difflib.HtmlDiff().make_file(outputs.split("\n"), stdout.split("\n"), 'EXPECTED', 'OCCURED'))
 			else:
-				print("[+]", file, "passed")
+				print("[+] output check for ", file, "passed")
 
 print()
 
