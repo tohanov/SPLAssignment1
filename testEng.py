@@ -14,7 +14,8 @@ sceneSeparatorSuffix = '\n'
 # passedOutputExtension = ".pass"
 failedOutputExtension = ".FAIL.html"
 configFilePath = 'ExampleInput.txt'
-studioCommand = ['bin/studio', configFilePath]
+binFilePath = 'bin/studio'
+studioCommand = [binFilePath, configFilePath]
 valgrindCommand = ['valgrind', '-v', '--leak-check=full', '--show-reachable=yes'] + studioCommand
 scriptName = os.path.basename(__file__)
 
@@ -28,7 +29,7 @@ usage = usageSeparator + "\n\033[1;32mUsage: './" + scriptName + "'\n\n[*]\033[0
 "\tLast command in each scenario should be 'closeall'.\n"\
 "\n\n"\
 "\033[1;32m[*]\033[0m\tThe script is going to mention which scenarios failed.\n"\
-"\tFor the failed scenarios, the differences between the expected output and the actual one will be dumped as *.html files in the '" + outputsPath + "' dir (to be viewed in-browser.)n"\
+"\tFor the failed scenarios, the differences between the expected output and the actual one will be dumped as *.html files in the '" + outputsPath + "' dir (to be viewed in-browser.)\n"\
 "\n\n"\
 "\033[1;32m[*]\033[0m\tFormat of a *" + sceneFileExtension + " file:\n"\
 "\n"\
@@ -38,7 +39,7 @@ usage = usageSeparator + "\n\033[1;32mUsage: './" + scriptName + "'\n\n[*]\033[0
 "\t\t<blank line>\n"\
 "\t\t<expected output>\n"\
 "\n\n\033[1;32m[*]\033[0m \tThis script was written to run in a linux terminal (may or may not run on windows).\n"\
-"\tTo run the script you need python (can be installed by running 'sudo apt install python3 -y' on ubuntu-based/debian-based systems.)\n\n"\
+"\tTo run the script you need python and valgrind (can be installed by running 'sudo apt install python3 valgrind -y' on ubuntu-based/debian-based systems.)\n\n"\
 "You can view this usage information later by running './" + scriptName + " -u' or './" + scriptName + " --usage'.\n"+usageSeparator
 
 
@@ -71,23 +72,25 @@ for file in os.listdir(scenariosPath):
 				valgrindOutput,stderr = p.communicate(userCommands)
 				p.wait()
 
-				if p.returncode != 0 or\
-					"All heap blocks were freed -- no leaks are possible" not in valgrindOutput or\
-					"ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)" not in valgrindOutput:
-					# not "possibly lost: 0" in valgrindOutput or\
-					# not "suppressed: 0" in valgrindOutput:
-					print("\033[1;31m[!]\033[0m valgrind check for", file, "\033[1;31mFAILED\033[0m")
+				# reason1 = "All heap blocks were freed -- no leaks are possible" not in valgrindOutput
+				containedErrors = "ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)" not in valgrindOutput
+				if 	p.returncode != 0 or\
+					containedErrors:
+					print("\033[1;31m[!]\033[0m valgrind check for {file} \033[1;31mFAILED\033[0m (exitcode: {returnCode}; {errorSummary})"\
+						.format(file=file, returnCode=p.returncode, errorSummary=valgrindOutput.rsplit("==")[-1].rstrip("\n").lstrip(' ')))
 				else:
-					print("[+] valgrind check for ", file, "passed")
+					print("[+] valgrind check for", file, "passed")
 
 
 			with subprocess.Popen(studioCommand, stdout=subprocess.PIPE,stderr=subprocess.STDOUT,stdin=subprocess.PIPE,bufsize=1, universal_newlines=True) as p:
 				occuredOutput,stderr = p.communicate(userCommands)
 			
 			if expectedOutput != occuredOutput:
-				print("\033[1;31m[!]\033[0m output check for ", file, "\033[1;31mFAILED\033[0m")
+				outputFile = outputsPath + "/" + file.replace(sceneFileExtension, failedOutputExtension)
+				print("\033[1;31m[!]\033[0m output check for {file} \033[1;31mFAILED\033[0m (see: {outputFile})"\
+					.format(file=file, outputFile=outputFile))
 				
-				with open(outputsPath+"/" + file.replace(sceneFileExtension, failedOutputExtension), "w") as f:
+				with open(outputFile, "w") as f:
 					f.write(difflib.HtmlDiff().make_file(expectedOutput.split("\n"), occuredOutput.split("\n"), 'EXPECTED', 'OCCURED'))
 			else:
 				print("[+] output check for", file, "passed")
