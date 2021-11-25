@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import subprocess
 import os
+import sys
 import difflib
 import shutil
 
@@ -29,7 +30,7 @@ usage = "-"*20 + "\n\033[1;32mUsage:\n\n[*]\033[0m Place the script in the proje
 "\n\n\033[1;32m[*]\033[0m This script was written to run in a linux terminal (may or may not run on windows). To run the script you need python (can be installed by running 'sudo apt install python3 -y' on ubuntu-based/debian-based systems.)\n\n"+"-"*20
 
 
-if not os.path.isdir(scenariosPath):
+if "-u" in sys.argv or "--usage" in sys.argv or not os.path.isdir(scenariosPath):
 	print(usage)
 	exit()
 
