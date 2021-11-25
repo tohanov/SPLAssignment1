@@ -2,7 +2,7 @@
 
 
 ostringstream OpenTrainer::oss; // static property of OpenTrainer
-const string OpenTrainer::commonErrorMessage = "Workout session does not exist or is already open"; // static property
+const string OpenTrainer::commonErrorMessage = "Trainer does not exist or is not open"; // static property
 
 
 OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList) : trainerId(id), customers(customersList) {
