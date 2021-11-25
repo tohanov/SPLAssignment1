@@ -27,9 +27,9 @@ usage = usageSeparator + "\n\033[1;32mUsage: './" + scriptName + "'\n\n[*]\033[0
 "\tLast command in each scenario should be 'closeall'.\n"\
 "\n\n"\
 "\033[1;32m[*]\033[0m\tThe script is going to mention which scenarios failed.\n"\
-"\tFor the failed scenarios, the differences between the expected output and the actual one will be dumped as *.html files in the '" + outputsPath + "' dir (to be viewed in-browser).\n"\
+"\tFor the failed scenarios, the differences between the expected output and the actual one will be dumped as *.html files in the '" + outputsPath + "' dir (to be viewed in-browser.)n"\
 "\n\n"\
-"\033[1;32m[*]\033[0m\tFormat of a *.scene file:\n"\
+"\033[1;32m[*]\033[0m\tFormat of a *" + sceneFileExtension + " file:\n"\
 "\n"\
 "\t\t<series of commands, ending with 'closeall'>\n"\
 "\t\t<blank line>\n"\
