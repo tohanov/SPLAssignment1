@@ -70,7 +70,12 @@ for file in os.listdir(scenariosPath):
 			with subprocess.Popen(valgrindCommand, stdout=subprocess.PIPE,stderr=subprocess.STDOUT,stdin=subprocess.PIPE,bufsize=1, universal_newlines=True) as p:
 				stdout,stderr = p.communicate(inputs)
 				p.wait()
-				if p.returncode != 0:
+
+				if p.returncode != 0 or\
+					not "definitely lost: 0" in stdout or\
+					not "indirectly lost: 0" in stdout or\
+					not "possibly lost: 0" in stdout or\
+					not "suppressed: 0" in stdout:
 					print("\033[1;31m[!]\033[0m valgrind check for ", file, "\033[1;31mFAILED\033[0m")
 				else:
 					print("[+] valgrind check for ", file, "passed")

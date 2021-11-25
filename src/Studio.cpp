@@ -150,6 +150,8 @@ Studio::Studio(const std::string &configFilePath) : latestCustomerId(-1) {
 
 
 void Studio::start() {
+
+	// new SweatyCustomer("",0); // TODO: remove
 	istringstream commandStream;
 	string command; // for storing current user input
 
