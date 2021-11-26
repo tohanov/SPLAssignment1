@@ -43,16 +43,32 @@ usage = usageSeparator + "\n\033[1;32mUsage: './" + scriptName + "'\n\n[*]\033[0
 "You can view this usage information later by running './" + scriptName + " -u' or './" + scriptName + " --usage'.\n"+usageSeparator
 
 
-if "-u" in sys.argv or "--usage" in sys.argv:
+if "-u" in sys.argv or\
+	"--usage" in sys.argv:
+	
 	print(usage)
 	exit()
 
 if not os.path.isdir(scenariosPath):
+	print()
 	print("\033[1;31m[!]", scenariosPath, "dir wasn't found.\033[0m")
 
 	print(usage)
 	exit()
 
+if not os.path.isfile(binFilePath):
+	print()
+	print("\033[1;31m[!]", binFilePath, "file wasn't found.\033[0m")
+
+	print(usage)
+	exit()
+
+if not os.path.isfile(configFilePath):
+	print()
+	print("\033[1;31m[!]", configFilePath, "file wasn't found.\033[0m")
+
+	print(usage)
+	exit()
 
 if os.path.isdir(outputsPath):
 	shutil.rmtree(outputsPath)
@@ -63,10 +79,10 @@ for file in os.listdir(scenariosPath):
 		if file.endswith(sceneFileExtension):
 			print("\n[*] running", file)
 			
-			with open(scenariosPath+"/" + file) as f:
-				testText = f.read()
+			with open(scenariosPath + "/" + file) as f:
+				scenario = f.read()
 			
-			userCommands,expectedOutput = testText.split(sceneSeparatorPrefix + sceneSeparator + sceneSeparatorSuffix, 1)
+			userCommands,expectedOutput = scenario.split(sceneSeparatorPrefix + sceneSeparator + sceneSeparatorSuffix, 1)
 			
 			with subprocess.Popen(valgrindCommand, stdout=subprocess.PIPE,stderr=subprocess.STDOUT,stdin=subprocess.PIPE,bufsize=1, universal_newlines=True) as p:
 				valgrindOutput,stderr = p.communicate(userCommands)
@@ -75,8 +91,9 @@ for file in os.listdir(scenariosPath):
 				containedErrors = "ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)" not in valgrindOutput or\
 									"All heap blocks were freed -- no leaks are possible" not in valgrindOutput
 
-				if 	p.returncode != 0 or\
+				if 	p.returncode is not 0 or\
 					containedErrors:
+
 					print("\033[1;31m[!]\033[0m valgrind check for {file} \033[1;31mFAILED\033[0m (exitcode: {returnCode}; {errorSummary})"\
 						.format(file=file, returnCode=p.returncode, errorSummary=valgrindOutput.rsplit("==")[-1].rstrip("\n").lstrip(' ')))
 				else:
