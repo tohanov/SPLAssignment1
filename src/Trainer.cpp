@@ -1,6 +1,6 @@
 #include "Trainer.h"
-// #include <typeinfo>
 
+// static
 int Trainer::number_of_trainers=0;
 
 
@@ -24,59 +24,8 @@ Trainer::Trainer(const Trainer &&to_move) : id(to_move.get_id()) {    //move con
 }
 
 
-// Trainer& Trainer::operator=(const Trainer &to_copy) {     //copy assignment
-//     if(this==&to_copy)
-//         return *this;
-
-//     delete_vectors_trainer();
-//     copy_properties_from_trainer(to_copy);
-//         return *this;
-// }
-
-
-// Trainer& Trainer::operator=(const Trainer &&to_move) {    // move assignment
-
-//     delete_vectors_trainer();
-//     move_properties_from_trainer(&to_move);
-//     return *this;
-
-// }
-
-//------------------------------------------------------------
-
-//Copy constructor
-// Trainer::Trainer(const Trainer &to_copy):capacity(to_copy.getCapacity()),id(to_copy.get_id()), openedBefore(to_copy.openedBefore) {
-//     current_salary=to_copy.current_salary;
-//     open=to_copy.open;
-
-//     for(auto c:to_copy.customersList) {
-//         // TODO: change back
-//         // if (typeid(c) == typeid(SweatyCustomer*)) {
-//         //     auto *p_customer = new SweatyCustomer(c->getName(), c->getId());
-//         //     customersList.push_back(p_customer);
-//         // }
-//         // else if(typeid(c) == typeid(CheapCustomer*)){
-//         //     auto* p_customer=new CheapCustomer(c->getName(),c->getId());
-//         //     customersList.push_back(p_customer);
-//         // }
-//         // else if(typeid(c) == typeid(HeavyMuscleCustomer*)){
-//         //     auto* p_customer=new HeavyMuscleCustomer(c->getName(),c->getId());
-//         //     customersList.push_back(p_customer);
-//         // }
-
-//         // else{
-//         //     auto* p_customer=new FullBodyCustomer(c->getName(),c->getId());
-//         //     customersList.push_back(p_customer);
-//         // }
-//         auto *p_customer = c->duplicate();
-//         customersList.push_back(p_customer);
-//     }
-
-
-//     for(auto &order : to_copy.orderList)
-//        orderList.push_back(order);
-
-// }
+// copy assignment not possible due to presense of const properties
+// move assignment not possible due to presense of const properties
 
 
 //Destructor
@@ -120,7 +69,6 @@ void Trainer::move_properties_from_trainer(const Trainer *to_move) {
 }
 
 void Trainer::delete_vectors_trainer() {
-
     orderList.clear();
 
     for(auto cus:customersList)
@@ -140,13 +88,12 @@ void Trainer::addCustomer(Customer* customer){
     if(customersList.size()<static_cast<size_t>(capacity)){
 
        int insertion_index=find_insertion_index(customer->getId());
-       /*auto it=*/customersList.insert(customersList.begin()+insertion_index,customer);
+       customersList.insert(customersList.begin()+insertion_index,customer);
    }
 }
 
 
 void Trainer::removeCustomer(int id){
-
     int customer_index= find_customer_index(id);
 
     if (customer_index!=-1) {
@@ -170,7 +117,6 @@ void Trainer::removeCustomer(int id){
 
 
 Customer* Trainer::getCustomer(int id){
-
     int customer_index= find_customer_index(id);
 
     if(customer_index!=-1)
@@ -193,22 +139,20 @@ std::vector<OrderPair>& Trainer::getOrders(){
 
 
 void Trainer::order(const int customer_id, const std::vector<int> workout_ids, const std::vector<Workout> &workout_options) {
-
-    for(size_t i=0;i<workout_ids.size();i++)
-        for(size_t j=0;j<workout_options.size();j++)
-            if(workout_options[j].getId()==workout_ids[i]) {
+    for (size_t i = 0; i < workout_ids.size(); i++)
+        for (size_t j = 0; j < workout_options.size(); j++)
+            if (workout_options[j].getId() == workout_ids[i]) {
                 orderList.emplace_back(customer_id, workout_options[j]);
 
                 update_salary(workout_options[j].getPrice());
             }
-
 }
 
 
 void Trainer::openTrainer() {
     openedBefore = true;
     if (open)
-        std::cout<<"Trainer already open"<<std::endl; // TODO: error?
+        std::cout<<"Trainer already open"<<std::endl; // TODO: remove debug before submission
     else
         open= true;
 }
@@ -216,7 +160,7 @@ void Trainer::openTrainer() {
 
 void Trainer::closeTrainer(){
     if (!open)
-        std::cout<<"Trainer already closed"<<std::endl; // TODO: error?
+        std::cout<<"Trainer already closed"<<std::endl; // TODO: remove debug before submission
     else{
         open= false;
         orderList.clear();
@@ -240,7 +184,6 @@ bool Trainer::isOpen(){
 
 //auxiliary functions
 int Trainer::find_customer_index(int id) {
-
     int low = 0, high =customersList.size()-1 , middle;
 
     while (high >= low) {
@@ -295,11 +238,14 @@ void Trainer::update_salary(int sum){
 }
 
 
+// returns true if trainer was opened at least once before
 bool Trainer::getOpenedBefore() const {
     return openedBefore;
 }
 
 
+// static
+// used in checks acrross the project
 bool Trainer::isValidTrainerId(int _trainerId) { // static function
-    return _trainerId >= 0 && _trainerId < number_of_trainers;
+    return (_trainerId >= 0) && (_trainerId < number_of_trainers);
 }

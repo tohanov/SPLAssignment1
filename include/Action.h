@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Customer.h"
 
+
 using namespace std;
 
 enum ActionStatus {
@@ -23,20 +24,6 @@ struct CommandHashPair {
 	size_t commandTypeHash;
 	BaseAction* (*matchingFunction)(istringstream &commandStream, Studio &ref_studio);
 };
-
-enum ActionType {
-    BASE,
-    OPEN_TRAINER,
-    ORDER,
-    MOVE_CUSTOMER,
-    CLOSE,
-    CLOSE_ALL,
-    PRNT_WORKOUT_OPTS,
-    PRNT_TRAINER_STATUS,
-    PRNT_ACTIONS_LOG,
-    BACKUP,
-    RESTORE
-};
 // end added
 
 
@@ -46,11 +33,14 @@ public:
     ActionStatus getStatus() const;
     virtual void act(Studio& studio)=0;
     virtual std::string toString() const=0;
+
 	// added
-    // BaseAction(const BaseAction &ref_otherBaseAction);
+    // static function for redirection to creation of an action matching the user's command
 	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
+    // overriden by child classes to return a duplicate object of the correct class
     virtual BaseAction* duplicate()=0;
-    virtual ~BaseAction();
+    virtual ~BaseAction(); // default desctructor
+    // match status and errorMsg between 2 action objects
     static void matchFlags(const BaseAction *source, BaseAction *destination);
 protected:
     void complete();
@@ -58,15 +48,16 @@ protected:
     std::string getErrorMsg() const;
 	
 	// added
+    // get status of in string form
 	string getStatusStr() const;
 private:
     std::string errorMsg;
     ActionStatus status;
 
 	// added
+    // static properties to help with parsing user input
 	static const std::hash<std::string> hasher;
 	static const CommandHashPair hashedCommandPairs[];
-	// static const string statusStrs[];
 };
 
 
@@ -82,24 +73,23 @@ public:
 
     // rule of 5
     virtual ~OpenTrainer();// destructor
-    OpenTrainer(const OpenTrainer &ref_otherOpenTrainer);// copy constructor
-    OpenTrainer(const OpenTrainer &&ref_otherOpenTrainer);// move constructor
-    // OpenTrainer& operator=(const OpenTrainer &ref_otherOpenTrainer);// copy assignment
-    // OpenTrainer& operator=(const OpenTrainer &&ref_otherOpenTrainer);// move assignment
+    OpenTrainer(const OpenTrainer &ref_otherOpenTrainer); // copy constructor
+    OpenTrainer(const OpenTrainer &&ref_otherOpenTrainer); // move constructor
+    // OpenTrainer& operator=(const OpenTrainer &ref_otherOpenTrainer);     // copy assignment not possible due to presense of const properties
+    // OpenTrainer& operator=(const OpenTrainer &&ref_otherOpenTrainer);    // move assignment not possible due to presense of const properties
 private:
 	const int trainerId;
 	std::vector<Customer *> customers;
     
 	// added
-	// static const std::string strategies[];
+    // storing string of command for ::toString usage, without storing customer objects
     string rebuiltCommandStr;
+    // static property to help with rebuilding commands
     static ostringstream oss;
     static const string commonErrorMessage;
-
-    // OpenTrainer& performCopy(const OpenTrainer &ref_otherOpenTrainer);
-    // void copyHeaders(const OpenTrainer &ref_source, OpenTrainer &ref_destionation);
+    
+    // deep copy of customers used in copy constructor
     void copyCustomers(const OpenTrainer &ref_source, OpenTrainer &ref_destination);
-
     void deleteCustomers();
 };
 
@@ -115,6 +105,9 @@ public:
     virtual BaseAction* duplicate();
 private:
     const int trainerId;
+
+    // added
+    static const string commonErrorMessage;
 };
 
 
@@ -131,6 +124,8 @@ private:
     const int srcTrainer;
     const int dstTrainer;
     const int id;
+
+    // added
     static const string commonErrorMessage;
 };
 
@@ -146,6 +141,9 @@ public:
     virtual BaseAction* duplicate();
 private:
     const int trainerId;
+
+    // added
+    static const string commonErrorMessage;
 };
 
 
@@ -224,6 +222,9 @@ public:
 	// added
 	static BaseAction* actionFromCommand(std::istringstream &commandStream, Studio &ref_studio);
     virtual BaseAction* duplicate();
+private:
 
+    // added
+    static const string commonErrorMessage;
 };
 #endif

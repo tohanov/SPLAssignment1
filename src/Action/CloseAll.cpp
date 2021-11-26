@@ -7,8 +7,7 @@ CloseAll::CloseAll () {
 
 
 void CloseAll::act(Studio &studio) {
-
-    for(int i=0;i<studio.getNumOfTrainers();i++) {
+    for (int i = 0; i < studio.getNumOfTrainers(); i++) {
         if (studio.getTrainer(i)->isOpen()) {
             Close c(i);
             c.act(studio);
@@ -16,21 +15,17 @@ void CloseAll::act(Studio &studio) {
     }
 
     studio.setClosed();
-
-    // cout<<"Studio is now closed!"<<endl;
     complete();
 }
 
 
 std::string CloseAll::toString() const {
-	return "closeall Completed"; // + getStatusStr();
+	return "closeall Completed";
 }
 
 
 BaseAction* CloseAll::duplicate() {
 	CloseAll *ptr_newCloseAllAction = new CloseAll();
-
-	// BaseAction::matchFlags(this, ptr_newCloseAllAction);
 
 	return ptr_newCloseAllAction;
 }

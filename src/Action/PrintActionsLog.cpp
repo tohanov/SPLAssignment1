@@ -2,7 +2,6 @@
 
 
 PrintActionsLog::PrintActionsLog () {
-
 }
 
 
@@ -19,15 +18,12 @@ void PrintActionsLog::act(Studio& studio) {
 
 
 std::string PrintActionsLog::toString() const {
-	return "log Completed"; // + getStatusStr();
+	return "log Completed";
 }
 
 
 BaseAction* PrintActionsLog::duplicate() {
-
 	PrintActionsLog *ptr_printLogAction = new PrintActionsLog();
-
-	// BaseAction::matchFlags(this, ptr_printLogAction);
 
 	return ptr_printLogAction;
 }

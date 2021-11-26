@@ -1,11 +1,12 @@
 #include "Action.h"
 
 
-// const std::string 				OpenTrainer::strategies[] = {"swt", "chp", "mcl", "fbd"};// static class property
-// const string 					BaseAction::statusStrs[] = {"Completed", "Error: "}; // static class property
+// .cpp file of static functions and class properties, made for parsing user input
 
-const hash<string> 		BaseAction::hasher; 					// static class property
-const CommandHashPair 	BaseAction::hashedCommandPairs[10] = { 	// static class property
+// static
+const hash<string> 		BaseAction::hasher;
+// static
+const CommandHashPair 	BaseAction::hashedCommandPairs[10] = {
 	{ hasher("order"), 		Order::actionFromCommand },
 	{ hasher("move"), 		MoveCustomer::actionFromCommand },
 	{ hasher("close"), 		Close::actionFromCommand },
@@ -19,8 +20,8 @@ const CommandHashPair 	BaseAction::hashedCommandPairs[10] = { 	// static class p
 };
 
 
-BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static 
-
+// static
+BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) {
 	string readingStr;
 	commandStream >> readingStr; // the first word is the command
 
@@ -31,22 +32,17 @@ BaseAction* BaseAction::actionFromCommand(std::istringstream &commandStream, Stu
  			return (*i.matchingFunction)(commandStream, ref_studio);
 		}
 	}
-
-	// cout << "[*] reached unreachable code" << endl; // TODO: remove debug line
-	return nullptr; // Unreachable code, if the input is valid (which is assumed). This was put here to avoid a warning from the compiler
+	
+	return nullptr;
 }
 
 
-BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
+// static
+BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) {
 	int trainerId;
 	commandStream >> trainerId >> std::ws;
-
-	// TODO: maybe should be on stack
-	vector<Customer*> customers; // = new vector<Customer*>;
-
-	// if ( ! Trainer::isValidTrainerId(trainerId)) {
-	// 	return new OpenTrainer(trainerId, /* * */customers);
-	// }
+	
+	vector<Customer*> customers;
 
 	string customerName;
 	string customerStrategy;
@@ -54,7 +50,6 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream, St
 
 	for (int customerId = ref_studio.getLatestCustomerId() + 1; getline(commandStream, customerName, ','); ++customerId ) {
 		commandStream >> customerStrategy >> std::ws;
-		// int customerId = ref_studio.getNextCustomerId();
 
 		if (customerStrategy == "swt") {
 			customer = new SweatyCustomer(customerName, customerId);
@@ -66,15 +61,15 @@ BaseAction* OpenTrainer::actionFromCommand(std::istringstream &commandStream, St
 			customer = new FullBodyCustomer(customerName, customerId);
 		}
 
-		(/* * */customers).push_back(customer);
+		customers.push_back(customer);
 	}
 
-	// TODO: ask someone about passing customers as a reference like this. causes a memory leak if created on heap
-	return (customers.size() == 0) ? nullptr : new OpenTrainer(trainerId, /* * */customers);
+	return (customers.size() == 0) ? nullptr : new OpenTrainer(trainerId, customers);
 }
 
 
-BaseAction* Order::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
+// static
+BaseAction* Order::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { 
 	int trainerId;
 	commandStream >> trainerId;
 
@@ -82,7 +77,8 @@ BaseAction* Order::actionFromCommand(std::istringstream &commandStream, Studio &
 }
 
 
-BaseAction* MoveCustomer::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
+// static
+BaseAction* MoveCustomer::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { 
 	int src, dst, customerId;
 
 	commandStream >> src;
@@ -93,7 +89,8 @@ BaseAction* MoveCustomer::actionFromCommand(std::istringstream &commandStream, S
 }
 
 
-BaseAction* Close::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
+// static
+BaseAction* Close::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { 
 	int trainerId;
 	commandStream >> trainerId;
 	
@@ -101,39 +98,43 @@ BaseAction* Close::actionFromCommand(std::istringstream &commandStream, Studio &
 }
 
 
-BaseAction* CloseAll::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
+// static
+BaseAction* CloseAll::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { 
 	return new CloseAll();
 }
 
 
-BaseAction* PrintWorkoutOptions::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
+// static
+BaseAction* PrintWorkoutOptions::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { 
 	return new PrintWorkoutOptions();
 }
 
 
-BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
+// static
+BaseAction* PrintTrainerStatus::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { 
 	int trainerId;
 	commandStream >> trainerId;
 
-	return (Trainer::isValidTrainerId(trainerId) && ref_studio.getTrainer(trainerId)->getOpenedBefore()) ? new PrintTrainerStatus(trainerId) : nullptr;
+	return (Trainer::isValidTrainerId(trainerId) &&
+		ref_studio.getTrainer(trainerId)->getOpenedBefore()) ?
+			new PrintTrainerStatus(trainerId) :
+			nullptr;
 }
 
 
-BaseAction* PrintActionsLog::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
+// static
+BaseAction* PrintActionsLog::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { 
 	return new PrintActionsLog();
 }
 
 
-BaseAction* BackupStudio::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
+// static
+BaseAction* BackupStudio::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { 
 	return new BackupStudio();
 }
 
 
-BaseAction* RestoreStudio::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { // static
+// static
+BaseAction* RestoreStudio::actionFromCommand(std::istringstream &commandStream, Studio &ref_studio) { 
 	return new RestoreStudio();
 }
-
-
-
-
-

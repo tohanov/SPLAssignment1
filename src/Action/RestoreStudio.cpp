@@ -1,20 +1,21 @@
 #include "Action.h"
 
 
-RestoreStudio::RestoreStudio() {
+// static
+const string RestoreStudio::commonErrorMessage = "No backup available";
 
+
+RestoreStudio::RestoreStudio() {
 }
 
 
 void RestoreStudio::act(Studio& studio) {
-	// TODO
 	if (backup == nullptr) {
-		error("No backup available");
+		error(commonErrorMessage);
 		return;
 	}
 
-	// delete &studio;
-	studio = *backup; // should copy (not move)
+	studio = *backup; // copy assignment
 
 	complete();
 }
@@ -27,8 +28,6 @@ std::string RestoreStudio::toString() const {
 
 BaseAction* RestoreStudio::duplicate() {
 	RestoreStudio *ptr_restoreAction = new RestoreStudio();
-
-	// BaseAction::matchFlags(this, ptr_restoreAction);
 
 	return ptr_restoreAction;
 }

@@ -1,11 +1,11 @@
 #include "Action.h"
 
 
+// static
 const string MoveCustomer::commonErrorMessage = "Cannot move customer"; // static property
 
 
 MoveCustomer::MoveCustomer (int src, int dst, int customerId) : srcTrainer(src), dstTrainer(dst), id(customerId) {
-
 }
 
 
@@ -15,7 +15,8 @@ void MoveCustomer::act(Studio &studio) {
         return;
     }
 
-    Trainer *src_trainer = studio.getTrainer(srcTrainer), *dst_trainer = studio.getTrainer(dstTrainer);
+    Trainer *src_trainer = studio.getTrainer(srcTrainer);
+    Trainer *dst_trainer = studio.getTrainer(dstTrainer);
 
     if (!src_trainer->isOpen() || !dst_trainer->isOpen()) {
         error(commonErrorMessage);
@@ -37,12 +38,16 @@ void MoveCustomer::act(Studio &studio) {
     src_trainer->removeCustomer(c->getId());
     dst_trainer->addCustomer(c);
 
-    dst_trainer->order(c->getId(),c->order(studio.getWorkoutOptions()),studio.getWorkoutOptions());
+    dst_trainer->order(
+        c->getId(), 
+        c->order(studio.getWorkoutOptions()), 
+        studio.getWorkoutOptions());
 
-    if(src_trainer->getCustomers().empty()){
+    if(src_trainer->getCustomers().empty()) {
         Close close(srcTrainer);
         close.act(studio);
     }
+
     complete();
 }
 
@@ -54,8 +59,6 @@ std::string MoveCustomer::toString() const {
 
 BaseAction* MoveCustomer::duplicate() {
 	MoveCustomer *ptr_newMoveAction = new MoveCustomer(this->srcTrainer, this->dstTrainer, this->id);
-
-	// BaseAction::matchFlags(this, ptr_newMoveAction);
 
 	return ptr_newMoveAction;
 }

@@ -31,15 +31,14 @@ public:
     std::vector<Workout>& getWorkoutOptions();
 
     // added
-	//TODO: need rule of 5 (has trainers, actionsLog)
     Studio (const Studio &ref_otherStudio); // copy constructor
     Studio (const Studio &&ref_otherStudio); // move constructor
-    Studio& operator=(const Studio &ref_otherStudio); // TODO: copy assignment operator
-    Studio& operator=(const Studio &&ref_otherStudio); // TODO: move assignment operator
-    virtual ~Studio(); // TODO: destructor
-    void setClosed();
-    int getLatestCustomerId() const;
-    void notifyCustomersAddition(unsigned int increment);
+    Studio& operator=(const Studio &ref_otherStudio); // copy assignment operator
+    Studio& operator=(const Studio &&ref_otherStudio); // move assignment operator
+    virtual ~Studio(); // destructor
+    void setClosed(); // notifies the studio that it should close and stop receiving user input
+    int getLatestCustomerId() const; // used for customer unique id mechanism
+    void notifyCustomersAddition(unsigned int increment); // used for customer unique id mechanism
 
 private:
     bool open;
@@ -48,12 +47,12 @@ private:
     std::vector<BaseAction*> actionsLog;
 	
 	// added
-    int latestCustomerId;
+    int latestCustomerId; // used for customer unique id mechanism
 
-	void parseConfigFile(std::fstream &configFile);
-    void deleteVectors ();
-    void copyPropertiesFrom(const Studio &ref_otherStudio);
-    void movePropertiesFrom(const Studio *ptr_otherStudio);
+	void parseConfigFile(std::fstream &configFile); // parse file line by line
+    void deleteVectors(); // used in assignment operators
+    void copyPropertiesFrom(const Studio &ref_otherStudio); // used in copy constuctor and copy assignment operator
+    void movePropertiesFrom(const Studio *ptr_otherStudio); // used in move constuctor and move assignment operator
 };
 
 #endif

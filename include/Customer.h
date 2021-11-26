@@ -6,6 +6,7 @@
 #include "Workout.h"
 #include <iostream>
 
+
 class Customer{
 public:
     Customer(std::string c_name, int c_id);

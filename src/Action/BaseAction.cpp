@@ -2,20 +2,14 @@
 
 
 BaseAction::BaseAction() {
-
 }
-
-
-// BaseAction::BaseAction(const BaseAction &ref_otherBaseAction) :  status(status), erroMsg(ref_otherBaseAction.errorMsg){
-
-// }
 
 
 BaseAction::~BaseAction() {
-
 }
 
 
+// get status of in string form
 string BaseAction::getStatusStr() const {
 	return (getStatus() == ActionStatus::COMPLETED) ? "Completed": ("Error: " + getErrorMsg());
 }
@@ -34,6 +28,7 @@ void BaseAction::complete() {
 }
 
 
+// status as enum value
 ActionStatus BaseAction::getStatus() const {
 	return status;
 }
@@ -44,7 +39,9 @@ std::string BaseAction::getErrorMsg() const {
 }
 
 
-void BaseAction::matchFlags(const BaseAction *source, BaseAction *destination) { // static
+// static public function
+// match status and errorMsg between 2 action objects
+void BaseAction::matchFlags(const BaseAction *source, BaseAction *destination) {
 	destination->status = source->status;
 
 	if (source->status == ActionStatus::ERROR) {

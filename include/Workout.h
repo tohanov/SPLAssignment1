@@ -3,6 +3,7 @@
 
 #include <string>
 
+
 enum WorkoutType{
     ANAEROBIC, MIXED, CARDIO
 };
@@ -17,8 +18,10 @@ public:
     WorkoutType getType() const;
 	
 	// added
-    Workout (const Workout &ref_otherWorkout);
+    Workout (const Workout &ref_otherWorkout); // copy constructor
+    // from string to workout type
 	static WorkoutType workoutTypeFromStr (const std::string &workoutTypeStr);
+    // from workout type to string
 	static const std::string& strFromWorkoutType (WorkoutType w_type);
 private:
 	const int id;
@@ -27,6 +30,7 @@ private:
     const WorkoutType type;
 
 	// added
+    // used in strFromWorkoutType
 	static const std::string workoutTypeStrs[];
 };
 

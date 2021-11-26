@@ -35,7 +35,7 @@ usage = usageSeparator + "\n\033[1;32mUsage: './" + scriptName + "'\n\n[*]\033[0
 "\n"\
 "\t\t<series of commands, ending with 'closeall'>\n"\
 "\t\t<blank line>\n"\
-"\t\t"+sceneSeparator+\
+"\t\t" + sceneSeparator +\
 "\t\t<blank line>\n"\
 "\t\t<expected output>\n"\
 "\n\n\033[1;32m[*]\033[0m \tThis script was written to run in a linux terminal (may or may not run on windows).\n"\
@@ -73,7 +73,8 @@ for file in os.listdir(scenariosPath):
 				p.wait()
 
 				# reason1 = "All heap blocks were freed -- no leaks are possible" not in valgrindOutput
-				containedErrors = "ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)" not in valgrindOutput
+				containedErrors = "ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)" not in valgrindOutput or\
+									"All heap blocks were freed -- no leaks are possible" not in valgrindOutput
 				if 	p.returncode != 0 or\
 					containedErrors:
 					print("\033[1;31m[!]\033[0m valgrind check for {file} \033[1;31mFAILED\033[0m (exitcode: {returnCode}; {errorSummary})"\

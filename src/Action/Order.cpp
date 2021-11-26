@@ -1,21 +1,24 @@
 #include "Action.h"
 
 
-Order::Order (int id) : trainerId(id) {
+// static
+const string Order::commonErrorMessage = "Trainer does not exist or is not open";
 
+
+Order::Order (int id) : trainerId(id) {
 }
 
 
 void Order::act(Studio &studio) {
     if( ! Trainer::isValidTrainerId(trainerId)) {//trainerId<0 || trainerId >= studio.getNumOfTrainers()){
-        error("Trainer does not exist or is not open");
+        error(commonErrorMessage);
         return;
     }
 
     Trainer* t1=studio.getTrainer(trainerId);
 
     if(!t1->isOpen()) {
-        error("Trainer does not exist or is not open");
+        error(commonErrorMessage);
         return;
     }
 
@@ -41,8 +44,6 @@ std::string Order::toString() const {
 
 BaseAction* Order::duplicate() {
 	Order* ptr_newOrderAction = new Order(this->trainerId);
-	
-    // BaseAction::matchFlags(this, ptr_newOrderAction);
 
 	return ptr_newOrderAction;
 }

@@ -29,9 +29,7 @@ Workout::Workout (const Workout &ref_otherWorkout) : id(ref_otherWorkout.id), na
 }
 
 
-const std::string Workout::workoutTypeStrs[] = {"ANAEROBIC", "MIXED", "CARDIO"}; // static property
-
-
+// from string to workout type
 WorkoutType Workout::workoutTypeFromStr (const std::string &workoutTypeStr) { // assuming workoutTypeStr is trimmed
 
 	switch(workoutTypeStr[0]){
@@ -45,6 +43,12 @@ WorkoutType Workout::workoutTypeFromStr (const std::string &workoutTypeStr) { //
 }
 
 
+// static
+// used in strFromWorkoutType
+const std::string Workout::workoutTypeStrs[] = {"ANAEROBIC", "MIXED", "CARDIO"};
+
+
+// from workout type to string
 const std::string& Workout::strFromWorkoutType (WorkoutType w_type) {
 
 	return workoutTypeStrs[w_type];
