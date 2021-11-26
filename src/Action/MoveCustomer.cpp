@@ -2,7 +2,7 @@
 
 
 // static
-const string MoveCustomer::commonErrorMessage = "Cannot move customer"; // static property
+const string MoveCustomer::commonErrorMessage = "Cannot move customer";
 
 
 MoveCustomer::MoveCustomer (int src, int dst, int customerId) : srcTrainer(src), dstTrainer(dst), id(customerId) {
@@ -10,7 +10,7 @@ MoveCustomer::MoveCustomer (int src, int dst, int customerId) : srcTrainer(src),
 
 
 void MoveCustomer::act(Studio &studio) {
-    if( (! Trainer::isValidTrainerId(srcTrainer)) || (! Trainer::isValidTrainerId(dstTrainer)) ) { //srcTrainer<0 || srcTrainer >= studio.getNumOfTrainers() || dstTrainer<0 || dstTrainer >= studio.getNumOfTrainers()){
+    if( (! Trainer::isValidTrainerId(srcTrainer)) || (! Trainer::isValidTrainerId(dstTrainer)) ) {
         error(commonErrorMessage);
         return;
     }
@@ -18,7 +18,7 @@ void MoveCustomer::act(Studio &studio) {
     Trainer *src_trainer = studio.getTrainer(srcTrainer);
     Trainer *dst_trainer = studio.getTrainer(dstTrainer);
 
-    if (!src_trainer->isOpen() || !dst_trainer->isOpen()) {
+    if ( (!src_trainer->isOpen()) || (!dst_trainer->isOpen()) ) {
         error(commonErrorMessage);
         return;
     }

@@ -1,11 +1,10 @@
 #include <sstream>      // for std::istringstream
-//#include <functional>
 #include <string>
 #include <unordered_map>
 #include "Action.h"
 #include "Studio.h"
 
-
+// action source files
 #include "Action/BaseAction.cpp"
 #include "Action/OpenTrainer.cpp"
 #include "Action/Order.cpp"
@@ -22,5 +21,5 @@ extern Studio* backup;
 #include "Action/BackupStudio.cpp"
 #include "Action/RestoreStudio.cpp"
 
-
+// command parsing auxilary static functions source file
 #include "Action/actionFromCommand.cpp"

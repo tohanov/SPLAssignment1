@@ -1,5 +1,6 @@
 #include "Action.h"
 
+
 // static properties of OpenTrainer
 ostringstream OpenTrainer::oss;
 const string OpenTrainer::commonErrorMessage = "Trainer does not exist or is not open";
@@ -96,7 +97,7 @@ void OpenTrainer::copyCustomers(const OpenTrainer &ref_source, OpenTrainer &ref_
 }
 
 
-// free customers
+// free linked customer objects from memory
 void OpenTrainer::deleteCustomers() {
     for(Customer* cus : customers) {
         delete cus;		// will itself perform check for nullptr

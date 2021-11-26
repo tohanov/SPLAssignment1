@@ -46,7 +46,7 @@ usage = usageSeparator + "\n\033[1;32mUsage: './" + scriptName + "'\n\n[*]\033[0
 if "-u" in sys.argv or "--usage" in sys.argv:
 	print(usage)
 	exit()
-	
+
 if not os.path.isdir(scenariosPath):
 	print("\033[1;31m[!]", scenariosPath, "dir wasn't found.\033[0m")
 
@@ -70,11 +70,11 @@ for file in os.listdir(scenariosPath):
 			
 			with subprocess.Popen(valgrindCommand, stdout=subprocess.PIPE,stderr=subprocess.STDOUT,stdin=subprocess.PIPE,bufsize=1, universal_newlines=True) as p:
 				valgrindOutput,stderr = p.communicate(userCommands)
-				p.wait()
-
-				# reason1 = "All heap blocks were freed -- no leaks are possible" not in valgrindOutput
+				
+				p.wait() # so the returncode will be set
 				containedErrors = "ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)" not in valgrindOutput or\
 									"All heap blocks were freed -- no leaks are possible" not in valgrindOutput
+
 				if 	p.returncode != 0 or\
 					containedErrors:
 					print("\033[1;31m[!]\033[0m valgrind check for {file} \033[1;31mFAILED\033[0m (exitcode: {returnCode}; {errorSummary})"\

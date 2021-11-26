@@ -30,8 +30,8 @@ Workout::Workout (const Workout &ref_otherWorkout) : id(ref_otherWorkout.id), na
 
 
 // from string to workout type
-WorkoutType Workout::workoutTypeFromStr (const std::string &workoutTypeStr) { // assuming workoutTypeStr is trimmed
-
+WorkoutType Workout::workoutTypeFromStr (const std::string &workoutTypeStr) {
+	// assuming workoutTypeStr is trimmed and in correct format as allowed to assume
 	switch(workoutTypeStr[0]){
 		case 'A':
 			return WorkoutType::ANAEROBIC;

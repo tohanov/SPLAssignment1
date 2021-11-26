@@ -2,7 +2,6 @@
 
 
 CloseAll::CloseAll () {
-
 }
 
 
