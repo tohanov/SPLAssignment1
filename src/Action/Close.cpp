@@ -22,11 +22,13 @@ void Close::act(Studio &studio) {
         return;
     }
 
+    bool isEmpty=t1->getCustomers().empty();
     t1->closeTrainer();
 
-    cout << "Trainer " + to_string(trainerId) + " closed."\
-            " Salary " + to_string(t1->getSalary()) + "NIS"
-            << std::endl;
+    cout <<"Trainer " + to_string(trainerId) + " closed.";
+    if(!isEmpty)
+        cout << " Salary " + to_string(t1->getSalary()) + "NIS";
+    cout << endl;
 
     complete();
 }
