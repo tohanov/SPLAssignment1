@@ -1,4 +1,4 @@
-all: clean compile link check
+all: clean compile link
 
 
 clean:
